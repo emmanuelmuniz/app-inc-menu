@@ -1,0 +1,35 @@
+{
+  "name": "app-inc-menu",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@next/font": "^14.2.5",
+    "@nextui-org/system": "^2.2.2",
+    "@nextui-org/tabs": "^2.0.32",
+    "@nextui-org/theme": "^2.2.6",
+    "framer-motion": "^11.3.2",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
