@@ -1,0 +1,33 @@
+.tab:hover:not(:focus) {
+    color: theme('colors.inc-green');
+}
+
+.tab:focus {
+    background-color: theme('colors.inc-green');
+}
+
+.tab:focus:not(:hover) {
+    color: black;
+}
+
+.tab-2:hover:not(:focus) {
+    color: theme('colors.inc-light-blue');
+}
+
+.tab-2:focus {
+    background-color: theme('colors.inc-light-blue');
+}
+
+.tab-2:focus:not(:hover) {
+    color: black;
+}
+
+.principal-tabs .react-tabs__tab--selected{
+    background-color: theme('colors.inc-green');
+    color: black;
+}
+
+.secondary-tabs .react-tabs__tab--selected{
+    background-color: theme('colors.inc-light-blue');
+    color: black;
+}

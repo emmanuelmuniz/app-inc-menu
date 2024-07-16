@@ -4,7 +4,8 @@ import logoImage from '@/public/icons/Logo_INC-03.svg';
 import instagramIcon from '@/public/icons/instagram.svg';
 import locationIcon from '@/public/icons/location.svg';
 import NavbarMenu from '@/components/NavbarMenu'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Link from 'next/link'
 import './Navbar.css';
 
 export default function Navbar() {
@@ -22,7 +23,9 @@ export default function Navbar() {
         <>
             <nav className="p-4 px-8 flex justify-between items-center rounded-t-lg border-silver">
                 <div className="flex items-center">
-                    <img src={logoImage.src} alt="Icono de Instagram" className="h-10 mx-4 text-sm" />
+                    <Link href="/">
+                        <img src={logoImage.src} alt="Icono de Instagram" className="h-10 mx-4 text-sm" />
+                    </Link>
                 </div>
 
                 <div className="flex items-center">

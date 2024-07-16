@@ -27,7 +27,7 @@ const config: Config = {
         'silver': '#ecebff',
         'bubble-gum': '#ff77e9',
         'bermuda': '#78dcca',
-        'ghost-white': '#E8EBFF'
+        'ghost-white': '#F7F7F7'
       },
     },
     fontFamily: {
@@ -43,7 +43,7 @@ const config: Config = {
       'teal-hover': '#3392A5',
       'columbia-blue': '#bfdbf7',
       'lavender': '#D1DBFC',
-      'silver': '#C6C6C6',
+      'silver': '#BDBDBD',
       'inc-green': '#D7E078',
       'inc-green-hover': 'B0B56D',
       'inc-light-blue': '#7BD0E4',

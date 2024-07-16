@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import close from '@/public/icons/close.svg';
+import Link from 'next/link'
 
 const NavbarMenu = ({ onClose }) => {
     const menuRef = useRef(null);
@@ -37,11 +38,21 @@ const NavbarMenu = ({ onClose }) => {
             <div ref={menuRef} className="p-6 relative">
                 <div className="text-white text-center text-2xl">
                     <ul>
-                        <li className='my-7'>Home</li>
-                        <li className='my-7'>Carta Digital</li>
-                        <li className='my-7'>Reservas</li>
-                        <li className='my-7'>¿Cómo llegar?</li>
-                        <li className='my-7'>Instagram</li>
+                        <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
+                            <Link href={"/"}>Home</Link>
+                        </li>
+                        <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
+                            <Link href={"/menu"}>Carta Digital</Link>
+                        </li>
+                        <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
+                            <a href="https://www.instagram.com/ineedcoffee.ar">Reservas</a>
+                        </li>
+                        <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
+                            <a href="https://maps.app.goo.gl/UEsQRBtapJzteZkB8">¿Cómo llegar?</a>
+                        </li>
+                        <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
+                            <a href="https://www.instagram.com/ineedcoffee.ar">Instagram</a>
+                        </li>
                     </ul>
                 </div>
             </div>
