@@ -22,12 +22,15 @@
     color: black;
 }
 
-.principal-tabs .react-tabs__tab--selected{
+.principal-tabs .react-tabs__tab--selected {
     background-color: theme('colors.inc-green');
     color: black;
+    border: none;
+
 }
 
-.secondary-tabs .react-tabs__tab--selected{
+.secondary-tabs .react-tabs__tab--selected {
     background-color: theme('colors.inc-light-blue');
     color: black;
+    border: none;
 }

@@ -20,7 +20,7 @@ export default function DigitalMenu() {
                         <Tab className="tab bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">Title 2</Tab>
                     </TabList>
                     <div className="w-full">
-                        <TabPanel classname="w-full">
+                        <TabPanel className="w-full">
                             <Tabs className="w-full secondary-tabs">
                                 <TabList className="flex flex-wrap px-11 pb-2">
                                     <Tab className="tab-2 bg-ghost-white cursor-pointer mr-1 mb-1 p-1 px-4 rounded-sm transition">Promos</Tab>

@@ -3,7 +3,7 @@ import connectMongoDB from "../../../libs/mongodb";
 import Product from "@/models/Product"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, price, description, publish } = await req.json();
+    let { name_es, name_en, name_pt, price, description, publish, category } = await req.json();
 
     let product = {
         name_es: name_es,
@@ -11,7 +11,8 @@ export async function POST(req) {
         name_pt: name_pt,
         price: price,
         description: description,
-        publish: publish
+        publish: publish,
+        category: category
     }
 
     await connectMongoDB();
@@ -24,3 +25,10 @@ export async function GET(req) {
     const products = await Product.find();
     return NextResponse.json({ products });
 }
+
+export async function DELETE(req) {
+    const id = req.nextUrl.searchParams.get("id");
+    await connectMongoDB();
+    await Product.findByIdAndDelete(id);
+    return NextResponse.json({ message: "Product deleted." });
+} 
