@@ -45,13 +45,13 @@ const NavbarMenu = ({ onClose }) => {
                             <Link href={"/menu"}>Carta Digital</Link>
                         </li>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
-                            <a href="https://www.instagram.com/ineedcoffee.ar">Reservas</a>
+                            <a href="https://www.instagram.com/ineedcoffee.ar" target="_blank" rel="noopener noreferrer">Reservas</a>
                         </li>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
-                            <a href="https://maps.app.goo.gl/UEsQRBtapJzteZkB8">¿Cómo llegar?</a>
+                            <a href="https://maps.app.goo.gl/UEsQRBtapJzteZkB8" target="_blank" rel="noopener noreferrer">¿Cómo llegar?</a>
                         </li>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
-                            <a href="https://www.instagram.com/ineedcoffee.ar">Instagram</a>
+                            <a href="https://www.instagram.com/ineedcoffee.ar" target="_blank" rel="noopener noreferrer">Instagram</a>
                         </li>
                     </ul>
                 </div>
