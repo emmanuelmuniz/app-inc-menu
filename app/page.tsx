@@ -1,8 +1,9 @@
-import Site from "@/app/site/page"
+import Menu from "@/app/components/Menu";
 
 export default function Home() {
   return (
     <>
+      <Menu></Menu>
     </>
   );
 }

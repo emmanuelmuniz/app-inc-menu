@@ -44,6 +44,7 @@ const config: Config = {
       'columbia-blue': '#bfdbf7',
       'lavender': '#D1DBFC',
       'silver': '#BDBDBD',
+      'gray': "#DADADA",
       'inc-green': '#D7E078',
       'inc-green-hover': 'B0B56D',
       'inc-light-blue': '#7BD0E4',

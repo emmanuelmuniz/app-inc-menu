@@ -21,7 +21,7 @@ export default function HomeOptions() {
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-1.5 place-content-stretch text-center text-2xl p-1 cursor-pointer">
-                <Link href={"/site/menu"}>
+                <Link href={"/menu"}>
                     <div className="py-24 bg-inc-green relative" >
                         Carta Digital
                         <div className="absolute inset-0 bg-black opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
