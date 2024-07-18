@@ -1,9 +1,9 @@
 "use client"
 
-import logoImage from '@/public/icons/Logo_INC-03.svg';
+import logoImage from '@/public/icons/Logo_INC-03.svg'
 import instagramIcon from '@/public/icons/instagram.svg';
 import locationIcon from '@/public/icons/location.svg';
-import NavbarMenu from '@/components/NavbarMenu'
+import NavbarMenu from '@/app/site/components/NavbarMenu'
 import { useState } from 'react';
 import Link from 'next/link'
 import './Navbar.css';

@@ -39,10 +39,10 @@ const NavbarMenu = ({ onClose }) => {
                 <div className="text-white text-center text-2xl">
                     <ul>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
-                            <Link href={"/"}>Home</Link>
+                            <Link href={"/site"}>Home</Link>
                         </li>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
-                            <Link href={"/menu"}>Carta Digital</Link>
+                            <Link href={"/site/menu"}>Carta Digital</Link>
                         </li>
                         <li className='my-7 cursor-pointer hover:text-inc-green transition duration-300' onClick={onClose}>
                             <a href="https://www.instagram.com/ineedcoffee.ar" target="_blank" rel="noopener noreferrer">Reservas</a>
