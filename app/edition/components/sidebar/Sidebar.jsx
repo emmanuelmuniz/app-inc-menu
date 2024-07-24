@@ -1,86 +1,104 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import './styles.css'
 
-const Sidebar = ({ onMenuItemClick }) => {
-    const [isDropdownOpen, setIsDropdownOpen] = useState({});
-    const [menuItems] = useState([
-        { id: '1', name: 'Home', link: '/' },
-        { id: '2', name: 'About', link: '/about' },
-        {
-            id: '3',
-            name: 'Services',
-            link: '/services',
-            dropdown: [
-                { id: '3-1', name: 'Web Development', link: '/services/web-development' },
-                { id: '3-2', name: 'App Development', link: '/services/app-development' },
-                { id: '3-3', name: 'SEO Services', link: '/services/seo' },
-            ],
-        },
-        { id: '4', name: 'Contact', link: '/contact' },
-    ]);
+const Sidebar = ({ onMenuItemClick, sections, categories }) => {
+    const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const toggleDropdown = (id) => {
-        setIsDropdownOpen((prevState) => ({
-            ...prevState,
-            [id]: !prevState[id],
-        }));
-    };
-
-    const handleItemClick = (id) => {
-        if (onMenuItemClick) {
-            onMenuItemClick(id);
+    const handleSectionClick = (section) => {
+        if (selectedSection != null) {
+            if (selectedSection._id != section._id) {
+                setSelectedSection(section);
+                setSelectedCategory(null);
+            } else {
+                setSelectedSection(null);
+                setSelectedCategory(null);
+            }
+        } else {
+            setSelectedSection(section);
         }
     };
 
+    const handleCategoryClick = (category) => {
+        if (onMenuItemClick) {
+            onMenuItemClick(category);
+        }
+
+        if (selectedCategory != null) {
+            if (selectedSection != null) {
+                if (isIdInSectionCategories(category.section._id)) {
+                    setSelectedCategory(category);
+                } else {
+                    setSelectedSection(findSectionById(category.section._id));
+                    setSelectedCategory(category);
+                }
+            } else {
+                setSelectedSection(findSectionById(category.section._id));
+                setSelectedCategory(category);
+            }
+        } else {
+            if (selectedSection == null) {
+                setSelectedSection(findSectionById(category.section._id));
+                setSelectedCategory(category);
+            } else {
+                setSelectedCategory(category);
+            }
+        }
+    };
+
+    const isIdInSectionCategories = (id) => {
+        return selectedSection._id == id;
+    };
+
+    const findSectionById = (sectionId) => {
+        return sections.find(section => section._id === sectionId);
+    };
+
+
     return (
-        <div className="h-screen w-64 bg-gray-800 text-black p-4">
-            <ul className="space-y-2">
-                {menuItems.map((item) => (
-                    <li key={item.id} className="mb-2 bg-gray-700 rounded p-2">
-                        {item.dropdown ? (
-                            <div>
-                                <button
-                                    onClick={() => toggleDropdown(item.id)}
-                                    className="flex justify-between w-full px-4 py-2 text-left hover:bg-gray-600 rounded focus:outline-none"
-                                >
-                                    {item.name}
-                                    <span>{isDropdownOpen[item.id] ? '▲' : '▼'}</span>
-                                </button>
-                                <ul
-                                    className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${isDropdownOpen[item.id] ? 'max-h-40' : 'max-h-0'
-                                        }`}
-                                >
-                                    {item.dropdown.map((dropdownItem) => (
-                                        <li key={dropdownItem.id} className="mb-1">
-                                            <a
-                                                href={dropdownItem.link}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleItemClick(dropdownItem.id);
-                                                }}
-                                                className="block px-4 py-2 hover:bg-gray-600 rounded"
-                                            >
-                                                {dropdownItem.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ) : (
-                            <a
-                                href={item.link}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleItemClick(item.id);
-                                }}
-                                className="block px-4 py-2 hover:bg-gray-600 rounded"
-                            >
-                                {item.name}
-                            </a>
-                        )}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <>
+                {sections && sections != [] ? (
+                    <div className="w-2/12 bg-gray-800 text-black rounded-sm bg-white h-full rounded-br-xl">
+                        <ul className="space-y-1 bg-silver rounded-sm overflow-hidden rounded-br-xl">
+                            {sections.map((section) => (
+                                <li key={section._id} className={`section text-xl cursor-pointer ${selectedSection && selectedSection._id === section._id ? 'bg-gray text-white' : 'bg-silver text-black'} transition`}>
+                                    <div>
+                                        <div
+                                            key={section._id}
+                                            onClick={() => handleSectionClick(section)}
+                                            className={`section p-2 pl-4 text-xl cursor-pointer hover:bg-gray font-semibold ${selectedSection && selectedSection._id === section._id ? 'bg-inc-light-blue text-white hover:text-white hover:bg-inc-light-blue' : 'bg-silver text-black'} transition`}>
+                                            {section.name_es}
+                                        </div>
+                                        <div>
+                                            <ul className="text-lg">
+                                                {categories.filter(category => category.section._id === section._id)
+                                                    .map((category) => (
+                                                        <li key={category._id} className='cursor-pointer'>
+                                                            <div
+                                                                className={`category section p-2 pl-8 text-lg cursor-pointer hover:bg-gray  
+                                                                ${selectedCategory && selectedCategory._id === category._id ? 'text-inc-light-blue hover:text-inc-light-blue' : 'text-black'} transition`}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleCategoryClick(category);
+                                                                }}
+                                                            >
+                                                                {category.name_es}
+                                                            </div>
+                                                        </li>
+                                                    ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    <div className="text-center text-white">No sections available</div>
+                )}
+            </>
+        </>
     );
 };
 

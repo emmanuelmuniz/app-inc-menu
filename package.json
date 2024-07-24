@@ -24,6 +24,7 @@
     "react-accessible-accordion": "^5.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
+    "react-dropdown": "^1.11.0",
     "react-icons": "^5.2.1",
     "react-spinners": "^0.14.1",
     "react-tabs": "^6.0.2"

@@ -3,7 +3,9 @@ import Editor from "@/app/edition/components/editor/Editor"
 export default function Edition() {
     return (
         <>
-            <Editor/>
+            <div className="">
+                <Editor />
+            </div>
         </>
     );
 }

@@ -47,7 +47,7 @@ export default function DigitalMenu() {
     return (
         <>
             {loading ? (
-                <div className="grid place-content-center w-full mt-72">
+                <div className="grid place-content-center w-full sm:mt-96 mt-80">
                     <MoonLoader size={35} />
                 </div>
             ) : (

@@ -1,0 +1,4 @@
+.section:focus:not(:hover) {
+    background-color: theme('colors.inc-light-blue');
+    color: white;
+}

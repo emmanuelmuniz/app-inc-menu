@@ -1,3 +1,19 @@
-.layout-container {
+.layout-container nav{
     display: none;
+}
+
+.layout-container {
+    padding: 10px;
+    margin: 0 !important;
+    background-color: theme('colors.inc-light-blue');
+    font-family: Helvetica, sans-serif;
+}
+
+.layout-container-2 {
+    width: 100% !important;
+}
+
+.children-div {
+    margin: 0 !important;
+    width: 100%;
 }

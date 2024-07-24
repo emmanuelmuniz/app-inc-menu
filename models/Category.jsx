@@ -1,7 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const sectionSchema = new Schema({
-    section: String,
+    name_es: String,
+    name_en: String,
+    name_pt: String,
     _id: String,
 });
 
@@ -26,7 +28,8 @@ const categorySchema = new Schema(
         publish: Boolean,
         sequence: Number,
         lastUpdateUser: String,
-        products: [productSchema]
+        products: [productSchema],
+        section: sectionSchema
     },
     {
         timestamps: true,
