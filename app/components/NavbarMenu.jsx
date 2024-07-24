@@ -34,7 +34,7 @@ const NavbarMenu = ({ onClose }) => {
                     <img src={close.src} alt="Icono de Cerrar" className="h-5" />
                 </button>
             </div>
-            <div className="border-b-2">2</div>
+            <div className="border-b-2"></div>
             <div ref={menuRef} className="p-6 relative">
                 <div className="text-white text-center text-2xl">
                     <ul>

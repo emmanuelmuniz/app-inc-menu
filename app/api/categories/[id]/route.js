@@ -10,12 +10,13 @@ export async function PUT(req, { params }) {
         description: description,
         sequence: sequence,
         publish: publish,
+        products: products,
         lastUpdateUser: lastUpdateUser } = await req.json();
 
     await connectMongoDB();
     await Category.findByIdAndUpdate(id, {
         name_es, name_en, name_pt, sequence,
-        description, publish, lastUpdateUser
+        description, publish, products, lastUpdateUser
     });
     return NextResponse.json({ message: "Category edited." }, { status: 200 });
 }

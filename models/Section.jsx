@@ -1,9 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new Schema({
-    category: String,
+    name_es: String,
+    name_en: String,
+    name_pt: String,
     _id: String,
-    sequence: String
+    sequence: Number
 });
 
 const sectionSchema = new Schema(
@@ -21,16 +23,6 @@ const sectionSchema = new Schema(
         timestamps: true,
     }
 );
-
-sectionSchema.pre('save', async function (next) {
-    if (this.isNew) {
-        const Section = mongoose.model('Section');
-        const maxSequenceSection = await Section.findOne().sort('-sequence').exec();
-        this.section = maxSequenceSection ? maxSequenceSection.sequence + 1 : 1;
-    }
-    next();
-});
-
 
 const Section = mongoose.models.Section || mongoose.model("Section", sectionSchema);
 

@@ -1,5 +1,22 @@
 import mongoose, { Schema } from "mongoose";
 
+const sectionSchema = new Schema({
+    section: String,
+    _id: String,
+});
+
+const productSchema = new Schema({
+    name_es: String,
+    name_en: String,
+    name_pt: String,
+    description: String,
+    price: Number,
+    _id: String,
+    sequence: Number,
+    publish: Boolean
+});
+
+
 const categorySchema = new Schema(
     {
         name_es: String,
@@ -8,7 +25,8 @@ const categorySchema = new Schema(
         description: String,
         publish: Boolean,
         sequence: Number,
-        lastUpdateUser: String
+        lastUpdateUser: String,
+        products: [productSchema]
     },
     {
         timestamps: true,

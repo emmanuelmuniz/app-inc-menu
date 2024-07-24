@@ -14,6 +14,8 @@ export async function POST(req) {
         publish: publish
     }
 
+    console.log(section)
+
     await connectMongoDB();
     await Section.create(section);
     return NextResponse.json({ message: "Section created" }, { status: 201 });
