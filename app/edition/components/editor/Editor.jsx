@@ -26,7 +26,7 @@ export default function Editor() {
                                     await GetProducts()
                                         .then((response) => {
                                             setProducts(response.products);
-                                            if(sections != []){
+                                            if (sections != []) {
                                                 console.log(sections)
                                             }
                                         });
@@ -40,18 +40,24 @@ export default function Editor() {
         fetchSections();
     }, []);
 
-    const handleMenuItemClick = (id) => {
-        console.log('Selected item ID:', id);
+    const handleMenuItemClick = (sectionId, categoryId) => {
+        if (categoryId == null) {
+            console.log('Selected section ID:', sectionId);
+        } else {
+            console.log('Selected section ID:', sectionId);
+            console.log('Selected section ID:', categoryId);
+        }
+
     };
 
     return (
         <>
             {sections != [] ? (
-                <div className="flex flex-col max-h-50">
+                <div className="flex flex-col h-full">
                     <div className="p-4 text-xl w-full bg-white font-semibold">Productos</div>
-                    <div className="flex">
+                    <div className="flex h-full">
                         <Sidebar className="h-full w-full" onMenuItemClick={handleMenuItemClick} sections={sections} categories={categories} />
-                        <div className="flex max-h-full p-10">
+                        <div className="flex h-full p-10">
                             Prueba
                         </div>
                     </div>

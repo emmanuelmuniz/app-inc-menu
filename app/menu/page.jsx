@@ -6,7 +6,7 @@ import './styles.css';
 import { GetSections } from '@/app/repositories/sections';
 import { GetCategories } from '@/app/repositories/categories';
 import { GetProducts } from '@/app/repositories/products';
-import MoonLoader from "react-spinners/MoonLoader";
+import LoadingDisplay from '@/app/components/LoadingDisplay';
 
 export default function DigitalMenu() {
     const [sections, setSections] = useState([]);
@@ -47,8 +47,8 @@ export default function DigitalMenu() {
     return (
         <>
             {loading ? (
-                <div className="grid place-content-center w-full sm:mt-96 mt-80">
-                    <MoonLoader size={35} />
+                <div className="">
+                    <LoadingDisplay></LoadingDisplay>
                 </div>
             ) : (
                 <div className="pt-3 w-full min-h-[calc(100vh-5.5rem)]">
