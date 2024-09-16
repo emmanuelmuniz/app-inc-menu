@@ -6,36 +6,30 @@ const Sidebar = ({ onMenuItemClick, sections, categories }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const handleSectionClick = (section) => {
-
-        if (onMenuItemClick) {
-            if (selectedCategory != null)
-                onMenuItemClick(selectedSection._id, selectedCategory._id);
-            else
-                onMenuItemClick(section._id, null);
-        }
+        setSelectedCategory(null);
 
         if (selectedSection != null) {
             if (selectedSection._id != section._id) {
                 setSelectedSection(section);
-                setSelectedCategory(null);
             } else {
                 setSelectedSection(null);
-                setSelectedCategory(null);
             }
         } else {
             setSelectedSection(section);
         }
+
+        if (onMenuItemClick) {
+            let selectedSectionId = selectedSection != null ? selectedSection._id : null;
+            onMenuItemClick(selectedSectionId, null);
+        }
     };
 
     const handleCategoryClick = (category) => {
-        if (onMenuItemClick) {
-            onMenuItemClick(selectedSection._id, category._id);
-        }
-
         if (selectedCategory != null) {
             if (selectedSection != null) {
                 if (isIdInSectionCategories(category.section._id)) {
                     setSelectedCategory(category);
+                    console.log("aca 1")
                 } else {
                     setSelectedSection(findSectionById(category.section._id));
                     setSelectedCategory(category);
@@ -56,6 +50,13 @@ const Sidebar = ({ onMenuItemClick, sections, categories }) => {
                     setSelectedCategory(category);
                 }
             }
+        }
+
+        if (onMenuItemClick) {
+            let selectedSectionId = selectedSection != null ? selectedSection._id : null;
+            let selectedCategoryId = selectedCategory != null ? selectedCategory._id : null;
+            console.log(selectedSectionId, selectedCategoryId)
+            onMenuItemClick(selectedSectionId, selectedCategoryId);
         }
     };
 
@@ -116,3 +117,4 @@ const Sidebar = ({ onMenuItemClick, sections, categories }) => {
 };
 
 export default Sidebar;
+

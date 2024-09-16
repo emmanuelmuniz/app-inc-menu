@@ -1,18 +1,23 @@
-.tab:hover:not(:focus) {
+/* .tab:hover:not(:focus) {
     background-color: theme('colors.inc-green');
-}
+} */
 
 .tab:focus {
     background-color: theme('colors.inc-green');
 }
+
+.tab:hover {
+    color: theme('colors.inc-green');
+}
+
 
 .tab:focus:not(:hover) {
     color: black;
     border: none;
 }
 
-.tab-2:hover:not(:focus) {
-    background-color: theme('colors.inc-light-blue');
+.tab-2:hover {
+    color: theme('colors.inc-light-blue');
     border: none;
 }
 

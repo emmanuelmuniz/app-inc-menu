@@ -1,4 +1,6 @@
-.layout-container nav{
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.layout-container nav {
     display: none;
 }
 
@@ -6,7 +8,7 @@
     padding: 10px;
     margin: 0 !important;
     background-color: theme('colors.inc-light-blue');
-    font-family: Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .layout-container-2 {

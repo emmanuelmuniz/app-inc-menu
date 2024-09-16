@@ -1,35 +1,16 @@
-
 .sections-container,
 .categories-container,
-.products-container
-.editor-container {
+.products-container .editor-container {
     height: 70vh;
 }
 
-.tab:focus {
-    background-color: theme('colors.inc-light-blue');
-    border: none !important;
-}
-
 .tab:hover {
-    background-color: theme('colors.gray');
-    color: black !important;
-}
-
-.tab:focus:not(:hover) {
-    color: black;
-    border: none !important;
+    color: theme('colors.inc-light-blue');
+    border: none;
 }
 
 .principal-tabs .react-tabs__tab--selected {
     background-color: theme('colors.inc-light-blue');
-    color: black;
-    border: none;
-
-}
-
-.secondary-tabs .react-tabs__tab--selected {
-    background-color: theme('colors.inc-light-blue');
-    color: black;
+    color: white;
     border: none;
 }
