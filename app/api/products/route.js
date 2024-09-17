@@ -3,7 +3,7 @@ import connectMongoDB from "../../../libs/mongodb";
 import Product from "@/models/Product"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, price, description_es, description_en, description_pt, publish, category, sequence } = await req.json();
+    let { name_es, name_en, name_pt, price, description_es, description_en, description_pt, publish, category } = await req.json();
 
     let product = {
         name_es: name_es,
@@ -14,8 +14,7 @@ export async function POST(req) {
         description_en: description_en,
         description_pt: description_pt,
         publish: publish,
-        category: category,
-        sequence: sequence
+        category: category
     }
 
     await connectMongoDB();

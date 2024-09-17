@@ -4,8 +4,9 @@ export default function LoadingDisplay() {
 
     return (
         <div className="
+        bg-white
         min-w-full
-        mt-80
+        mt-48
         grid
         place-content-center">
             <MoonLoader size={35} />

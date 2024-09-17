@@ -13,6 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@next/font": "^14.2.5",
+    "@nextui-org/modal": "^2.0.41",
     "@nextui-org/system": "^2.2.2",
     "@nextui-org/tabs": "^2.0.32",
     "@nextui-org/theme": "^2.2.6",

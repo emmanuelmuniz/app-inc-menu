@@ -1,4 +1,4 @@
-import {nextui} from '@nextui-org/theme';
+import { nextui } from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -6,9 +6,18 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/[object Object].js"
+    "./node_modules/@nextui-org/theme/dist/components/(modal|tabs).js"
   ],
   theme: {
+    borderRadius: {
+      'none': '0',
+      'sm': '0.2rem',
+      DEFAULT: '0.25rem',
+      'md': '0.375rem',
+      'lg': '0.5rem',
+      'full': '9999px',
+      'large': '12px',
+    },
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -28,7 +37,7 @@ const config: Config = {
         'bubble-gum': '#ff77e9',
         'bermuda': '#78dcca',
         'ghost-white': '#F7F7F7'
-      },
+      }
     },
     fontFamily: {
       gratelos: ['var(--font-awesome-serif)']
