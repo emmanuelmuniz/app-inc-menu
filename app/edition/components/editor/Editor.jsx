@@ -2,14 +2,16 @@
 
 import "./styles.css";
 
+import { useEffect, useState } from 'react';
 import { Modal, ModalContent } from "@nextui-org/modal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { GetCategories } from '@/app/repositories/categories';
 import { GetSections } from '@/app/repositories/sections';
 import { GetProducts } from '@/app/repositories/products';
+
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
-import { useEffect, useState } from 'react';
+import NewProductForm from '@/app/edition/components/newProductForm/NewProductForm';
 
 export default function Editor() {
     const [sections, setSections] = useState([]);
@@ -135,20 +137,22 @@ export default function Editor() {
                         </div>
                     </div>
                 )}
-            </div>
 
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                        </>
-                    )};
-                </ModalContent>
-            </Modal>
+                <div className="">
+                    <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        placement="top-center"
+                        className="sm:min-h-[calc(100vh-10rem)] sm:max-h-[calc(100vh-5rem)]"
+                    >
+                        <ModalContent className="modal-content">
+                            <>
+                                <NewProductForm className="new-product-form" />
+                            </>
+                        </ModalContent>
+                    </Modal>
+                </div>
+            </div>
         </>
     );
 }
