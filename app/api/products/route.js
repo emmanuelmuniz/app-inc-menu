@@ -3,25 +3,32 @@ import connectMongoDB from "../../../libs/mongodb";
 import Product from "@/models/Product"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, price, description_es, description_en, description_pt, publish, category } = await req.json();
+    try {
+        // Parsear el cuerpo de la solicitud
+        let product = await req.json();
 
-    let product = {
-        name_es: name_es,
-        name_en: name_en,
-        name_pt: name_pt,
-        price: price,
-        description_es: description_es,
-        description_en: description_en,
-        description_pt: description_pt,
-        publish: publish,
-        category: category
+        // Conectar a la base de datos
+        await connectMongoDB();
+
+        // Crear el producto y guardarlo en una variable
+        const createdProduct = await Product.create(product);
+
+        // Devolver el producto creado y el código de estado 201
+        return NextResponse.json(
+            {
+                message: "Product created successfully",
+                product: createdProduct
+            },
+            { status: 201 }
+        );
+    } catch (error) {
+        // En caso de error, devolver un código de estado 500 con el mensaje de error
+        return NextResponse.json(
+            { message: "Error creating product", error: error.message },
+            { status: 500 }
+        );
     }
-
-    await connectMongoDB();
-    await Product.create(product);
-    return NextResponse.json({ message: "Product created" }, { status: 201 });
 }
-
 export async function GET(req) {
     await connectMongoDB();
     const products = await Product.find();

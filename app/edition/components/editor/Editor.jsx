@@ -143,11 +143,11 @@ export default function Editor() {
                         isOpen={isOpen}
                         onOpenChange={onOpenChange}
                         placement="top-center"
-                        className="sm:min-h-[calc(100vh-10rem)] sm:max-h-[calc(100vh-5rem)]"
+                        className=""
                     >
                         <ModalContent className="modal-content">
                             <>
-                                <NewProductForm className="new-product-form" />
+                                <NewProductForm categories={categories} className="new-product-form" />
                             </>
                         </ModalContent>
                     </Modal>

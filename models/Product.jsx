@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Tulpen_One } from "next/font/google";
 
 const categorySchema = new Schema({
     name_es: String,
@@ -9,17 +10,45 @@ const categorySchema = new Schema({
 
 const productSchema = new Schema(
     {
-        name_es: String,
-        name_en: String,
-        name_pt: String,
-        price: Number,
-        description_es: String,
-        description_en: String,
-        description_pt: String,
-        publish: Boolean,
-        sequence: Number,
+        name_es: {
+            type: String,
+            required: true
+        },
+        name_en: {
+            type: String,
+            required: false
+        },
+        name_pt: {
+            type: String,
+            required: false
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+        description_es: {
+            type: String,
+            required: true
+        },
+        description_en: {
+            type: String,
+            required: false
+        },
+        description_pt: {
+            type: String,
+            required: false
+        },
+        active: {
+            type: Boolean,
+            required: true
+        },
+        sequence: {
+            type: Number
+        },
         category: categorySchema,
-        lastUpdateUser: String
+        lastUpdateUser: {
+            type: String
+        }
     },
     {
         timestamps: true,
