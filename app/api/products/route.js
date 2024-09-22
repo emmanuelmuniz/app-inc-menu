@@ -4,16 +4,10 @@ import Product from "@/models/Product"
 
 export async function POST(req) {
     try {
-        // Parsear el cuerpo de la solicitud
         let product = await req.json();
-
-        // Conectar a la base de datos
         await connectMongoDB();
-
-        // Crear el producto y guardarlo en una variable
         const createdProduct = await Product.create(product);
 
-        // Devolver el producto creado y el código de estado 201
         return NextResponse.json(
             {
                 message: "Product created successfully",
@@ -22,7 +16,6 @@ export async function POST(req) {
             { status: 201 }
         );
     } catch (error) {
-        // En caso de error, devolver un código de estado 500 con el mensaje de error
         return NextResponse.json(
             { message: "Error creating product", error: error.message },
             { status: 500 }
@@ -36,8 +29,28 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
-    const id = req.nextUrl.searchParams.get("id");
-    await connectMongoDB();
-    await Product.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Product deleted." });
-} 
+    try {
+        const id = req.nextUrl.searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ message: "Product ID is required" }, { status: 400 });
+        }
+
+        await connectMongoDB();
+        const deletedProduct = await Product.findByIdAndDelete(id);
+
+        if (!deletedProduct) {
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(
+            { message: "Product deleted", product: deletedProduct },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error deleting product", error: error.message },
+            { status: 500 }
+        );
+    }
+}

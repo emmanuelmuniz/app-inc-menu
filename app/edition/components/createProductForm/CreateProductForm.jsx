@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { CreateProductService } from '@/app/edition/services/createProductService/CreateProductService'
 
-export default function NewProductForm({ categories }) {
+export default function CreateProductForm({ categories, onProductCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: '',
         EN: '',
@@ -17,7 +17,7 @@ export default function NewProductForm({ categories }) {
         PT: ''
     });
 
-    const [price, setPrice] = useState();
+    const [price, setPrice] = useState("");
     const [category, setCategory] = useState(null);
     const [active, setActive] = useState("true");
 
@@ -35,15 +35,12 @@ export default function NewProductForm({ categories }) {
         });
     };
 
-    const handleChange = (e) => {
-        // Obtén el valor del atributo data-category del select
+    const handleCategoryChange = (e) => {
         const selectedCategory = JSON.parse(e.target.value);
         setCategory(selectedCategory);
     };
 
     const sortedCategories = categories.sort((a, b) => {
-        console.log(categories)
-
         if (a.name_es < b.name_es) return -1;
         if (a.name_es > b.name_es) return 1;
         return 0;
@@ -69,21 +66,19 @@ export default function NewProductForm({ categories }) {
             }
         }
 
-        console.log(product)
-
         try {
             const result = await CreateProductService({ product });
-            // Maneja el resultado (si es necesario)
+            onProductCreated();
+            closeModal();
             console.log('Product creation result:', result);
         } catch (error) {
-            // Maneja el error (si ocurre)
             console.error('Failed to create product:', error);
         }
     }
 
     return (
         <>
-            <div className="newProductFormModal overflow-y-auto no-scrollbar">
+            <div className="newProductFormModal overflow-y-auto no-scrollbar px-3 py-1">
                 <form className="m-0 p-5 w-full max-w-lg" onSubmit={createProduct}>
                     {/* Name and Price Input  */}
                     <div className="flex flex-wrap -mx-2 mb-5">
@@ -199,13 +194,13 @@ export default function NewProductForm({ categories }) {
                                         className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         id="category-select"
                                         value={category ? JSON.stringify(category) : ''}
-                                        onChange={handleChange}
+                                        onChange={handleCategoryChange}
                                         required
                                     >
                                         <option value="" disabled>
                                             Seleccionar una categoría
                                         </option>
-                                        {categories.map((category) => (
+                                        {sortedCategories.map((category) => (
                                             <option
                                                 key={category._id}
                                                 value={JSON.stringify(category)}

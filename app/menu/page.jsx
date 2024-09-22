@@ -83,7 +83,7 @@ export default function DigitalMenu() {
                                                                 {product.name_es} -
                                                                 <span className="text-inc-light-blue"> ${product.price}</span>
                                                             </span>
-                                                            <p className='text-lg mt-3'>{product.description}</p>
+                                                            <p className='text-lg mt-3'>{product.description_es}</p>
                                                         </div>
                                                     ))}
                                             </TabPanel>
