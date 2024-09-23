@@ -79,10 +79,10 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
     return (
         <>
             <div className="newProductFormModal overflow-y-auto no-scrollbar px-3 py-1">
-                <form className="m-0 p-5 w-full max-w-lg" onSubmit={createProduct}>
+                <form className="p-5 w-full max-w-lg" onSubmit={createProduct}>
                     {/* Name and Price Input  */}
-                    <div className="flex flex-wrap -mx-2 mb-5">
-                        <div className="w-full md:w-8/12 px-2 md:mb-0 sm:mb-5">
+                    <div className="flex flex-wrap -mx-2">
+                        <div className="w-full md:w-8/12 px-2 mb-5">
                             <div className="">
                                 <Tabs className="principal-tabs w-full" defaultIndex={0}>
                                     <div className="flex place-content-between">
@@ -127,7 +127,7 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                                 </Tabs>
                             </div>
                         </div>
-                        <div className="w-full md:w-4/12 px-2">
+                        <div className="w-full md:w-4/12 px-2 md:mt-0 mb-5">
                             <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 Precio
                             </label>
@@ -216,7 +216,7 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                             </div>
                         </div>
                         <div className="w-full md:w-4/12 px-2 md:mb-0">
-                            <div className="w-full mb-3 md:mb-0">
+                            <div className="w-full mb-3">
                                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                     Estado
                                 </label>

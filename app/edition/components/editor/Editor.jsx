@@ -77,14 +77,14 @@ export default function Editor() {
     return (
         <>
             <div className="w-full bg-white h-full">
-                <div className="w-full bg-white flex place-content-between mb-2">
+                <div className="w-full bg-white flex flex-col md:flex-row place-content-between">
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
-                    <div className="font-semibold text-right text-white cursor-pointer flex">
+                    <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
                         <div onClick={onOpen}
-                            className="bg-inc-light-blue p-1 px-3 mt-2 ml mr-3 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
+                            className="bg-inc-light-blue p-1 px-3 mx-2 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
                             Nuevo producto
                         </div>
-                        <div className="bg-inc-light-blue p-1 px-3 mt-2 ml mr-3 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
+                        <div className="bg-inc-light-blue p-1 px-3 mx-2 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
                     </div>
                 </div>
 
@@ -94,9 +94,9 @@ export default function Editor() {
                     </div>
                 ) : (
 
-                    <div className="flex bg-ghost-white ">
-                        <div className="flex w-4/12 my-2">
-                            <Tabs className="flex principal-tabs w-full ml-4" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
+                    <div className="flex flex-col md:flex-row bg-ghost-white ">
+                        <div className="flex md:w-4/12 my-2 md:flex-row">
+                            <Tabs className="flex principal-tabs w-full ml-2" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                                 <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
@@ -125,7 +125,7 @@ export default function Editor() {
                             </Tabs>
                         </div>
                         <div className="bg-ghost-white w-8/12 my-2 mr-2 rounded-sm">
-                            <table className='w-full table-auto rounded-t-sm overflow-hidden mb-2'>
+                            <table className='w-full max-w-full table-auto rounded-t-sm overflow-hidden mb-2'>
                                 <thead className=''>
                                     <tr className="text-left bg-inc-light-blue">
                                         <th className="p-2 pl-4 text-white">Producto</th>
