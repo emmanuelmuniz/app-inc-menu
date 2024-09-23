@@ -11,18 +11,27 @@ import { GetSections } from '@/app/repositories/sections';
 import { GetProducts } from '@/app/repositories/products';
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
-import CreateProductForm from '@/app/edition/components/createProductForm/CreateProductForm';
-import DeleteProductForm from '@/app/edition/components/deleteProductForm/DeleteProductForm';
+import CreateProductForm from '@/app/edition/components/products/createProductForm/CreateProductForm';
+import DeleteProductForm from '@/app/edition/components/products/deleteProductForm/DeleteProductForm';
+import UpdateProductForm from '@/app/edition/components/products/updateProductForm/UpdateProductForm';
 
 export default function Editor() {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-    const [selectedSectionId, setSelectedSectionId] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const {
+        isOpen: isCreateProductFormOpen,
+        onOpen: onOpenCreateProductForm,
+        onOpenChange: onOpenChangeCreateProductForm } = useDisclosure();
+
+    const {
+        isOpen: isUpdateProductFormOpen,
+        onOpen: onOpenUpdateProductForm,
+        onOpenChange: onOpenChangeUpdateProductForm } = useDisclosure();
 
     useEffect(() => {
         const getSections = async () => {
@@ -34,7 +43,7 @@ export default function Editor() {
                             .then((response) => {
                                 setCategories(response.categories);
                                 setSelectedCategoryId(response.categories[0]._id);
-                                getProducts();
+                                loadProducts();
                             });
                     };
                     getCategories();
@@ -43,12 +52,11 @@ export default function Editor() {
         getSections();
     }, []);
 
-    const getProducts = async () => {
+    const loadProducts = async () => {
         await GetProducts()
             .then((response) => {
                 setProducts(response.products);
                 setLoading(false);
-                console.log(response.products)
             });
     }
 
@@ -57,7 +65,6 @@ export default function Editor() {
     }
 
     const handleSectionSelect = (sectionId) => {
-
         console.log(sectionId);
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
@@ -67,6 +74,10 @@ export default function Editor() {
     }
 
     const handleProductCreated = () => {
+        loadProducts();
+    }
+
+    const handleProductUpdated = () => {
         loadProducts();
     }
 
@@ -80,7 +91,7 @@ export default function Editor() {
                 <div className="w-full bg-white flex flex-col md:flex-row place-content-between">
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
                     <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
-                        <div onClick={onOpen}
+                        <div onClick={onOpenCreateProductForm}
                             className="bg-inc-light-blue p-1 px-3 mx-2 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
                             Nuevo producto
                         </div>
@@ -109,11 +120,11 @@ export default function Editor() {
                                     <div className="mt-2 mb-3 font-semibold">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
-                                            <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(categories[index]._id)}>
+                                            <Tabs className="w-full secondary-tabs" defaultIndex={0}>
                                                 <TabList className="text-md">
                                                     {categories.filter(category => category.section._id === section._id)
                                                         .map((sectionCategory) => (
-                                                            <Tab key={sectionCategory._id} className="w-full text-md font-semibold tab p-2 my-2 bg-ghost-white cursor-pointer rounded-sm transition">
+                                                            <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="w-full text-md font-semibold tab p-2 my-2 bg-ghost-white cursor-pointer rounded-sm transition">
                                                                 {sectionCategory.name_es}
                                                             </Tab>
                                                         ))}
@@ -139,14 +150,20 @@ export default function Editor() {
                                     {products
                                         .filter(product => product.category._id === selectedCategoryId)
                                         .map((product) => (
-                                            <tr key={product._id} className="text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
+                                            <tr onClick={() => setSelectedProduct(product)} key={product._id} className="text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
                                                 <td className="p-2 pl-4">{product.name_es}</td>
                                                 <td className="p-2 pl-4">{product.price}</td>
                                                 <td className="p-2 pl-4">{product.description_es}</td>
                                                 <td className="p-2 pl-4">Activo</td>
-                                                <td className="text-center place-content-center items-center p-2 pl-4 flex">
-                                                    <div className="cursor-pointer">Editar</div>
-                                                    <div className="mx-2">/</div>
+                                                <td className="h-full text-center place-content-center items-center p-2 pl-4 flex">
+                                                    <div
+                                                        className="cursor-pointer"
+                                                        onClick={onOpenUpdateProductForm}
+                                                    >
+                                                        Editar</div>
+                                                    <div className="mx-2">/
+
+                                                    </div>
                                                     <div className="cursor-pointer">
                                                         <DeleteProductForm
                                                             products={products}
@@ -164,8 +181,8 @@ export default function Editor() {
 
                 <div className="">
                     <Modal
-                        isOpen={isOpen}
-                        onOpenChange={onOpenChange}
+                        isOpen={isCreateProductFormOpen}
+                        onOpenChange={onOpenChangeCreateProductForm}
                         placement="top-center"
                         className=""
                     >
@@ -175,7 +192,25 @@ export default function Editor() {
                                     categories={categories}
                                     className="new-product-form"
                                     onProductCreated={handleProductCreated}
-                                    closeModal={() => onOpenChange(false)} />
+                                    closeModal={() => onOpenChangeCreateProductForm(false)} />
+                            </>
+                        </ModalContent>
+                    </Modal>
+
+                    <Modal
+                        isOpen={isUpdateProductFormOpen}
+                        onOpenChange={onOpenChangeUpdateProductForm}
+                        placement="top-center"
+                        className=""
+                    >
+                        <ModalContent className="modal-content">
+                            <>
+                                <UpdateProductForm
+                                    categories={categories}
+                                    className="new-product-form"
+                                    onProductUpdated={handleProductCreated}
+                                    product={selectedProduct}
+                                    closeModal={() => onOpenChangeUpdateProductForm(false)} />
                             </>
                         </ModalContent>
                     </Modal>
