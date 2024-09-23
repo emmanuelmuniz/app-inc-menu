@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { CreateProductService } from '@/app/edition/services/product/createProductService/CreateProductService'
+import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
 
 export default function CreateProductForm({ product, categories, onProductUpdated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
@@ -17,6 +17,7 @@ export default function CreateProductForm({ product, categories, onProductUpdate
         PT: product.description_pt
     });
 
+    const [id, setId] = useState(product._id);
     const [price, setPrice] = useState(product.price);
     const [category, setCategory] = useState(product.category);
     const [active, setActive] = useState(product.active);
@@ -27,10 +28,6 @@ export default function CreateProductForm({ product, categories, onProductUpdate
             [language]: e.target.value
         });
     };
-
-    useEffect(() => {
-        console.log(product.category)
-    }, [])
 
     const handleDescriptionInputChange = (e, language) => {
         setDescriptionInputs({
@@ -65,12 +62,12 @@ export default function CreateProductForm({ product, categories, onProductUpdate
         }
 
         try {
-            const result = await CreateProductService({ product });
+            const result = await UpdateProductService({ product, id });
             onProductUpdated();
             closeModal();
-            console.log('Product creation result:', result);
+            console.log('Product updating result:', result);
         } catch (error) {
-            console.error('Failed to create product:', error);
+            console.error('Failed to update product:', error);
         }
     }
 
@@ -250,7 +247,7 @@ export default function CreateProductForm({ product, categories, onProductUpdate
                         </div>
                     </div>
                     <div className="w-full text-center mt-7">
-                        <button type="submit" className="text-white text-sm font-semibold p-2 px-4 rounded-sm bg-inc-light-blue hover:bg-inc-light-blue-hover transition">Crear Producto</button>
+                        <button type="submit" className="text-white text-sm font-semibold p-2 px-4 rounded-sm bg-inc-light-blue hover:bg-inc-light-blue-hover transition">Guardar Producto</button>
                     </div>
                 </form>
             </div>

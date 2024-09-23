@@ -65,7 +65,6 @@ export default function Editor() {
     }
 
     const handleSectionSelect = (sectionId) => {
-        console.log(sectionId);
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
         if (filteredCategories.length > 0) {
@@ -208,7 +207,7 @@ export default function Editor() {
                                 <UpdateProductForm
                                     categories={categories}
                                     className="new-product-form"
-                                    onProductUpdated={handleProductCreated}
+                                    onProductUpdated={handleProductUpdated}
                                     product={selectedProduct}
                                     closeModal={() => onOpenChangeUpdateProductForm(false)} />
                             </>
