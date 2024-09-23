@@ -12,7 +12,7 @@ export default function DigitalMenu() {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(0);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,6 +24,7 @@ export default function DigitalMenu() {
                         await GetCategories()
                             .then((response) => {
                                 setCategories(response.categories);
+                                setSelectedCategoryId(response.categories[0]._id)
                                 const fetchProducts = async () => {
                                     await GetProducts()
                                         .then((response) => {
@@ -40,9 +41,19 @@ export default function DigitalMenu() {
         fetchSections();
     }, []);
 
-    const handleCategorySelect = (category) => {
-        setSelectedCategory(category);
-    };
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategoryId(categoryId);
+    }
+
+    const handleSectionSelect = (sectionId) => {
+
+        console.log(sectionId);
+        const filteredCategories = categories.filter(category => category.section._id === sectionId);
+
+        if (filteredCategories.length > 0) {
+            setSelectedCategoryId(filteredCategories[0]._id);
+        }
+    }
 
     return (
         <>
@@ -52,7 +63,7 @@ export default function DigitalMenu() {
                 </div>
             ) : (
                 <div className="pt-3 w-full min-h-[calc(100vh-5.5rem)]">
-                    <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(sections[index].categories[0]._id)}>
+                    <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                         <TabList className="flex flex-wrap text-xl text-black mt-2 w-full px-11 pb-3">
                             {sections.map((section) => (
                                 <Tab key={section._id} className="tab bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
@@ -63,9 +74,9 @@ export default function DigitalMenu() {
                         <div className="w-full">
                             {sections.map((section) => (
                                 <TabPanel key={section._id} className="w-full">
-                                    <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(section.categories[index]._id)}>
+                                    <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(categories[index]._id)}>
                                         <TabList className="flex flex-wrap px-11 pb-2">
-                                            {categories.filter(category => section.categories.map(category => category._id).includes(category._id))
+                                            {categories.filter(category => category.section._id === section._id)
                                                 .map((sectionCategory) => (
                                                     <Tab key={sectionCategory._id} className="tab bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                                         {sectionCategory.name_es}
@@ -76,7 +87,7 @@ export default function DigitalMenu() {
                                         <div className="px-11 text-black">
                                             <TabPanel className="">
                                                 {products
-                                                    .filter(product => product.category._id === selectedCategory)
+                                                    .filter(product => product.category._id === selectedCategoryId)
                                                     .map((product) => (
                                                         <div key={product._id} className="text-2xl border-b-1 border-silver py-5">
                                                             <span className="text-black mr-2">

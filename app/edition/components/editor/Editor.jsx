@@ -18,40 +18,52 @@ export default function Editor() {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+    const [selectedSectionId, setSelectedSectionId] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
-        const fetchSections = async () => {
+        const getSections = async () => {
             await GetSections()
                 .then((response) => {
                     setSections(response.sections);
-                    const fetchCategories = async () => {
+                    const getCategories = async () => {
                         await GetCategories()
                             .then((response) => {
                                 setCategories(response.categories);
-                                loadProducts();
+                                setSelectedCategoryId(response.categories[0]._id);
+                                getProducts();
                             });
                     };
-                    fetchCategories();
+                    getCategories();
                 });
         };
-        fetchSections();
+        getSections();
     }, []);
 
-    const loadProducts = async () => {
+    const getProducts = async () => {
         await GetProducts()
             .then((response) => {
                 setProducts(response.products);
                 setLoading(false);
+                console.log(response.products)
             });
     }
 
-    const handleCategorySelect = (category) => {
-        setSelectedCategory(category);
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategoryId(categoryId);
+    }
+
+    const handleSectionSelect = (sectionId) => {
+
+        console.log(sectionId);
+        const filteredCategories = categories.filter(category => category.section._id === sectionId);
+
+        if (filteredCategories.length > 0) {
+            setSelectedCategoryId(filteredCategories[0]._id);
+        }
     }
 
     const handleProductCreated = () => {
@@ -84,7 +96,7 @@ export default function Editor() {
 
                     <div className="flex bg-ghost-white ">
                         <div className="flex w-4/12 my-2">
-                            <Tabs className="flex principal-tabs w-full ml-4" defaultIndex={0} onSelect={(index) => handleCategorySelect(sections[index].categories[0]._id)}>
+                            <Tabs className="flex principal-tabs w-full ml-4" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                                 <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
@@ -97,9 +109,9 @@ export default function Editor() {
                                     <div className="mt-2 mb-3 font-semibold">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
-                                            <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(section.categories[index]._id)}>
+                                            <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(categories[index]._id)}>
                                                 <TabList className="text-md">
-                                                    {categories.filter(category => section.categories.map(category => category._id).includes(category._id))
+                                                    {categories.filter(category => category.section._id === section._id)
                                                         .map((sectionCategory) => (
                                                             <Tab key={sectionCategory._id} className="w-full text-md font-semibold tab p-2 my-2 bg-ghost-white cursor-pointer rounded-sm transition">
                                                                 {sectionCategory.name_es}
@@ -125,7 +137,7 @@ export default function Editor() {
                                 </thead>
                                 <tbody>
                                     {products
-                                        .filter(product => product.category._id === selectedCategory)
+                                        .filter(product => product.category._id === selectedCategoryId)
                                         .map((product) => (
                                             <tr key={product._id} className="text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
                                                 <td className="p-2 pl-4">{product.name_es}</td>
@@ -136,11 +148,11 @@ export default function Editor() {
                                                     <div className="cursor-pointer">Editar</div>
                                                     <div className="mx-2">/</div>
                                                     <div className="cursor-pointer">
-                                                        <DeleteProductForm 
-                                                        products={products} 
-                                                        product={product}
-                                                        onProductDeleted={handleProductDeleted} />
-                                                        </div>
+                                                        <DeleteProductForm
+                                                            products={products}
+                                                            product={product}
+                                                            onProductDeleted={handleProductDeleted} />
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}

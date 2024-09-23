@@ -7,28 +7,17 @@ const sectionSchema = new Schema({
     _id: String,
 });
 
-const productSchema = new Schema({
-    name_es: String,
-    name_en: String,
-    name_pt: String,
-    description: String,
-    price: Number,
-    _id: String,
-    sequence: Number,
-    publish: Boolean
-});
-
-
 const categorySchema = new Schema(
     {
         name_es: String,
         name_en: String,
         name_pt: String,
-        description: String,
+        description_es: String,
+        description_en: String,
+        description_pt: String,
         publish: Boolean,
         sequence: Number,
         lastUpdateUser: String,
-        products: [productSchema],
         section: sectionSchema
     },
     {
@@ -44,7 +33,6 @@ categorySchema.pre('save', async function (next) {
     }
     next();
 });
-
 
 const Category = mongoose.models.Category || mongoose.model("Category", categorySchema);
 

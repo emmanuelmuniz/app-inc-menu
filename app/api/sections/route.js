@@ -3,14 +3,16 @@ import connectMongoDB from "../../../libs/mongodb";
 import Section from "@/models/Section"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, description, categories, publish } = await req.json();
+    let { name_es, name_en, name_pt, description_es, description_en, description_pt, categories, publish } = await req.json();
 
     let section = {
         name_es: name_es,
         name_en: name_en,
         name_pt: name_pt,
         categories: categories,
-        description: description,
+        description_es: description_es,
+        description_en: description_en,
+        description_pt: description_pt,
         publish: publish
     }
 
@@ -23,7 +25,7 @@ export async function POST(req) {
 
 export async function GET(req) {
     await connectMongoDB();
-    const sections = await Section.find();
+    const sections = await Section.find().sort({ sequence: 1 });
     return NextResponse.json({ sections });
 }
 

@@ -24,7 +24,7 @@ export async function POST(req) {
 }
 export async function GET(req) {
     await connectMongoDB();
-    const products = await Product.find();
+    const products = await Product.find().sort({ sequence: 1 });
     return NextResponse.json({ products });
 }
 
