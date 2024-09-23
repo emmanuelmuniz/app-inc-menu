@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react';
 import { Modal, ModalContent } from "@nextui-org/modal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { GetCategories } from '@/app/repositories/categories';
-import { GetSections } from '@/app/repositories/sections';
-import { GetProducts } from '@/app/repositories/products';
+import { GetCategories } from '@/app/services/categories';
+import { GetSections } from '@/app/services/sections';
+import { GetProducts } from '@/app/services/products';
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
-import CreateProductForm from '@/app/edition/components/products/createProductForm/CreateProductForm';
-import DeleteProductForm from '@/app/edition/components/products/deleteProductForm/DeleteProductForm';
-import UpdateProductForm from '@/app/edition/components/products/updateProductForm/UpdateProductForm';
+import CreateProductForm from '@/app/edition/components/product/createProductForm/CreateProductForm';
+import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
+import UpdateProductForm from '@/app/edition/components/product/updateProductForm/UpdateProductForm';
 
 export default function Editor() {
     const [sections, setSections] = useState([]);

@@ -1,6 +1,6 @@
 import "./styles.css";
 
-import { DeleteProductService } from '@/app/edition/services/deleteProductService/DeleteProductService'
+import { DeleteProductService } from '@/app/edition/services/product/deleteProductService/DeleteProductService'
 
 
 export default function DeletProductForm({ product, products, onProductDeleted }) {

@@ -1,25 +1,25 @@
-// import "./styles.css";
+import "./styles.css";
 
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { CreateProductService } from '@/app/edition/services/createProductService/CreateProductService'
+import { CreateProductService } from '@/app/edition/services/product/createProductService/CreateProductService'
 
-export default function CreateProductForm({ product, categories, onProductUpdated, closeModal }) {
+export default function CreateProductForm({ categories, onProductCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
-        ES: product.name_es,
-        EN: product.name_en,
-        PT: product.name_pt
+        ES: '',
+        EN: '',
+        PT: ''
     });
 
     const [descriptionInputs, setDescriptionInputs] = useState({
-        ES: product.description_es,
-        EN: product.description_en,
-        PT: product.description_pt
+        ES: '',
+        EN: '',
+        PT: ''
     });
 
-    const [price, setPrice] = useState(product.price);
-    const [category, setCategory] = useState(product.category);
-    const [active, setActive] = useState(product.active);
+    const [price, setPrice] = useState("");
+    const [category, setCategory] = useState(null);
+    const [active, setActive] = useState("true");
 
     const handleNameInputChange = (e, language) => {
         setNameInputs({
@@ -27,10 +27,6 @@ export default function CreateProductForm({ product, categories, onProductUpdate
             [language]: e.target.value
         });
     };
-
-    useEffect(() => {
-        console.log(product.category)
-    }, [])
 
     const handleDescriptionInputChange = (e, language) => {
         setDescriptionInputs({
@@ -43,12 +39,6 @@ export default function CreateProductForm({ product, categories, onProductUpdate
         const selectedCategory = JSON.parse(e.target.value);
         setCategory(selectedCategory);
     };
-
-    const sortedCategories = categories.sort((a, b) => {
-        if (a.name_es < b.name_es) return -1;
-        if (a.name_es > b.name_es) return 1;
-        return 0;
-    });
 
     const createProduct = async (e) => {
         e.preventDefault();
@@ -72,7 +62,7 @@ export default function CreateProductForm({ product, categories, onProductUpdate
 
         try {
             const result = await CreateProductService({ product });
-            onProductUpdated();
+            onProductCreated();
             closeModal();
             console.log('Product creation result:', result);
         } catch (error) {
@@ -197,17 +187,18 @@ export default function CreateProductForm({ product, categories, onProductUpdate
                                     <select
                                         className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         id="category-select"
-                                        value={category?._id || ''} // Aquí usamos el _id de la categoría del producto
-                                        onChange={handleCategoryChange} // Evento para cambiar la categoría seleccionada
+                                        value={category ? JSON.stringify(category) : ''}
+                                        onChange={handleCategoryChange}
                                         required
                                     >
                                         <option value="" disabled>
                                             Seleccionar una categoría
                                         </option>
-
-                                        {/* Mapea las categorías para mostrarlas como opciones */}
                                         {categories.map((category) => (
-                                            <option key={category._id} value={category._id}>
+                                            <option
+                                                key={category._id}
+                                                value={JSON.stringify(category)}
+                                            >
                                                 {category.name_es}
                                             </option>
                                         ))}

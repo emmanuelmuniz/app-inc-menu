@@ -3,23 +3,33 @@ import connectMongoDB from "@/libs/mongodb";
 import Product from "@/models/Product"
 
 export async function PUT(req, { params }) {
-    let { id } = params;
-    let { name_es: name_es,
-        name_en: name_en,
-        name_pt: name_pt,
-        price: price,
-        description: description,
-        sequence: sequence,
-        category: category,
-        publish: publish,
-        lastUpdateUser: lastUpdateUser } = await req.json();
-        
-    await connectMongoDB();
-    await Product.findByIdAndUpdate(id, {
-        name_es, name_en, name_pt, price,
-        description, sequence, category, publish, lastUpdateUser
-    });
-    return NextResponse.json({ message: "Product edited." }, { status: 200 });
+    try {
+        let { id } = params;
+        let product = await req.json();
+
+        await connectMongoDB();
+        const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
+
+        if (!updatedProduct) {
+            return NextResponse.json(
+                { message: "Product not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            {
+                message: "Product updated successfully",
+                product: updatedProduct
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error updating product", error: error.message },
+            { status: 500 }
+        );
+    }
 }
 
 export async function GET(req, { params }) {

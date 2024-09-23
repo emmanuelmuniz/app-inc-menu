@@ -3,9 +3,9 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { useEffect, useState } from 'react';
 import './styles.css';
-import { GetSections } from '@/app/repositories/sections';
-import { GetCategories } from '@/app/repositories/categories';
-import { GetProducts } from '@/app/repositories/products';
+import { GetSections } from '@/app/services/sections';
+import { GetCategories } from '@/app/services/categories';
+import { GetProducts } from '@/app/services/products';
 import LoadingDisplay from '@/app/components/LoadingDisplay';
 
 export default function DigitalMenu() {
