@@ -60,10 +60,6 @@ export default function Editor() {
             });
     }
 
-    const handleCategorySelect = (categoryId) => {
-        setSelectedCategoryId(categoryId);
-    }
-
     const handleSectionSelect = (sectionId) => {
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
@@ -134,10 +130,10 @@ export default function Editor() {
                                 </div>
                             </Tabs>
                         </div>
-                        <div className="bg-ghost-white w-8/12 my-2 mr-2 rounded-sm">
-                            <table className='w-full max-w-full table-auto rounded-t-sm overflow-hidden mb-2'>
-                                <thead className=''>
-                                    <tr className="text-left bg-inc-light-blue">
+                        <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 rounded-sm md:ml-0 ml-2">
+                            <table className='w-full table-auto rounded-t-sm overflow-hidden mb-2'>
+                                <thead className='w-full'>
+                                    <tr className="text-left bg-inc-light-blue w-full">
                                         <th className="p-2 pl-4 text-white">Producto</th>
                                         <th className="p-2 pl-4 text-white">Precio</th>
                                         <th className="p-2 pl-4 text-white">Descripción</th>
@@ -149,25 +145,25 @@ export default function Editor() {
                                     {products
                                         .filter(product => product.category._id === selectedCategoryId)
                                         .map((product) => (
-                                            <tr onClick={() => setSelectedProduct(product)} key={product._id} className="text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
-                                                <td className="p-2 pl-4">{product.name_es}</td>
-                                                <td className="p-2 pl-4">{product.price}</td>
-                                                <td className="p-2 pl-4">{product.description_es}</td>
-                                                <td className="p-2 pl-4">Activo</td>
-                                                <td className="h-full text-center place-content-center items-center p-2 pl-4 flex">
-                                                    <div
-                                                        className="cursor-pointer"
-                                                        onClick={onOpenUpdateProductForm}
-                                                    >
-                                                        Editar</div>
-                                                    <div className="mx-2">/
-
-                                                    </div>
-                                                    <div className="cursor-pointer">
-                                                        <DeleteProductForm
-                                                            products={products}
-                                                            product={product}
-                                                            onProductDeleted={handleProductDeleted} />
+                                            <tr onClick={() => setSelectedProduct(product)} key={product._id} className="max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
+                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.name_es}</td>
+                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.price}</td>
+                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.description_es}</td>
+                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">Activo</td>
+                                                <td className="h-full p-2 pl-4 ">
+                                                    <div className="flex justify-center">
+                                                        <div
+                                                            className="cursor-pointer"
+                                                            onClick={onOpenUpdateProductForm}
+                                                        >
+                                                            Editar</div>
+                                                        <div className="mx-2">/</div>
+                                                        <div className="cursor-pointer">
+                                                            <DeleteProductForm
+                                                                products={products}
+                                                                product={product}
+                                                                onProductDeleted={handleProductDeleted} />
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -189,7 +185,7 @@ export default function Editor() {
                             <>
                                 <CreateProductForm
                                     categories={categories}
-                                    className="new-product-form"
+                                    className="create-product-form"
                                     onProductCreated={handleProductCreated}
                                     closeModal={() => onOpenChangeCreateProductForm(false)} />
                             </>
@@ -206,7 +202,7 @@ export default function Editor() {
                             <>
                                 <UpdateProductForm
                                     categories={categories}
-                                    className="new-product-form"
+                                    className="update-product-form"
                                     onProductUpdated={handleProductUpdated}
                                     product={selectedProduct}
                                     closeModal={() => onOpenChangeUpdateProductForm(false)} />
