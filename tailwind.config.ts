@@ -56,7 +56,7 @@ const config: Config = {
       'gray': "#DADADA",
       'gray-2': "#d8e9e9",
       'inc-green': '#D7E078',
-      'inc-green-hover': 'B0B56D',
+      'inc-green-hover': '#B0B56D',
       'inc-light-blue': '#70B7C7',
       'inc-light-blue-hover': '#74A7B6',
       'ghost-white': '#FEFEFE',

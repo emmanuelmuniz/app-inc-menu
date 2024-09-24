@@ -12,8 +12,7 @@ import { GetProducts } from '@/app/services/products';
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import CreateProductForm from '@/app/edition/components/product/createProductForm/CreateProductForm';
-import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
-import UpdateProductForm from '@/app/edition/components/product/updateProductForm/UpdateProductForm';
+import ProductView from '@/app/edition/components/product/productView/ProductView';
 
 export default function Editor() {
     const [sections, setSections] = useState([]);
@@ -29,9 +28,9 @@ export default function Editor() {
         onOpenChange: onOpenChangeCreateProductForm } = useDisclosure();
 
     const {
-        isOpen: isUpdateProductFormOpen,
-        onOpen: onOpenUpdateProductForm,
-        onOpenChange: onOpenChangeUpdateProductForm } = useDisclosure();
+        isOpen: isProductViewOpen,
+        onOpen: onOpenProductView,
+        onOpenChange: onOpenChangeProductView } = useDisclosure();
 
     useEffect(() => {
         const getSections = async () => {
@@ -87,10 +86,10 @@ export default function Editor() {
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
                     <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
                         <div onClick={onOpenCreateProductForm}
-                            className="bg-inc-light-blue p-1 px-3 mx-2 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
+                            className="bg-inc-light-blue p-1 px-3 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
                             Nuevo producto
                         </div>
-                        <div className="bg-inc-light-blue p-1 px-3 mx-2 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
+                        <div className="bg-inc-light-blue p-1 px-3 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
                     </div>
                 </div>
 
@@ -138,7 +137,6 @@ export default function Editor() {
                                         <th className="p-2 pl-4 text-white">Precio</th>
                                         <th className="p-2 pl-4 text-white">Descripción</th>
                                         <th className="p-2 pl-4 text-white">Estado</th>
-                                        <th className="p-2 pl-4 text-white text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,26 +144,10 @@ export default function Editor() {
                                         .filter(product => product.category._id === selectedCategoryId)
                                         .map((product) => (
                                             <tr onClick={() => setSelectedProduct(product)} key={product._id} className="max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
-                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.name_es}</td>
-                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.price}</td>
-                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">{product.description_es}</td>
-                                                <td onClick={onOpenUpdateProductForm} className="cursor-pointer p-2 pl-4">Activo</td>
-                                                <td className="h-full p-2 pl-4 ">
-                                                    <div className="flex justify-center">
-                                                        <div
-                                                            className="cursor-pointer"
-                                                            onClick={onOpenUpdateProductForm}
-                                                        >
-                                                            Editar</div>
-                                                        <div className="mx-2">/</div>
-                                                        <div className="cursor-pointer">
-                                                            <DeleteProductForm
-                                                                products={products}
-                                                                product={product}
-                                                                onProductDeleted={handleProductDeleted} />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.name_es}</td>
+                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.price}</td>
+                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.description_es}</td>
+                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">Activo</td>
                                             </tr>
                                         ))}
                                 </tbody>
@@ -179,7 +161,8 @@ export default function Editor() {
                         isOpen={isCreateProductFormOpen}
                         onOpenChange={onOpenChangeCreateProductForm}
                         placement="top-center"
-                        className=""
+                        className="w-full"
+                        size={"xl"}
                     >
                         <ModalContent className="modal-content">
                             <>
@@ -193,19 +176,21 @@ export default function Editor() {
                     </Modal>
 
                     <Modal
-                        isOpen={isUpdateProductFormOpen}
-                        onOpenChange={onOpenChangeUpdateProductForm}
+                        isOpen={isProductViewOpen}
+                        onOpenChange={onOpenChangeProductView}
                         placement="top-center"
                         className=""
+                        size={"xl"}
                     >
                         <ModalContent className="modal-content">
                             <>
-                                <UpdateProductForm
+                                <ProductView
                                     categories={categories}
-                                    className="update-product-form"
+                                    className="product-view"
                                     onProductUpdated={handleProductUpdated}
+                                    onProductDeleted={handleProductDeleted}
                                     product={selectedProduct}
-                                    closeModal={() => onOpenChangeUpdateProductForm(false)} />
+                                    closeModal={() => onOpenChangeProductView(false)} />
                             </>
                         </ModalContent>
                     </Modal>

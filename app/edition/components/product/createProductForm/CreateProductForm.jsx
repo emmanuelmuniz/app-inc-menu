@@ -73,7 +73,10 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
     return (
         <>
             <div className="newProductFormModal overflow-y-auto no-scrollbar px-3 py-1">
-                <form className="p-5 w-full max-w-lg" onSubmit={createProduct}>
+                <div className="m-2 pb-4 pt-2 border-b-1 border-gray">
+                    <span className='font-semibold text-md'>Nuevo producto</span>
+                </div>
+                <form className="p-5 w-full" onSubmit={createProduct}>
                     {/* Name and Price Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full md:w-8/12 px-2 mb-5">

@@ -1,10 +1,9 @@
-// import "./styles.css";
-
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
+import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
 
-export default function CreateProductForm({ product, categories, onProductUpdated, closeModal }) {
+export default function ProductView({ product, categories, onProductUpdated, onProductDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: product.name_es,
         EN: product.name_en,
@@ -37,8 +36,13 @@ export default function CreateProductForm({ product, categories, onProductUpdate
     };
 
     const handleCategoryChange = (e) => {
-        const selectedCategory = JSON.parse(e.target.value);
+        const selectedCategory = categories.find(category => category._id === e.target.value);
         setCategory(selectedCategory);
+    };
+
+    const handleProductDeleted = (e) => {
+        onProductDeleted();
+        closeModal();
     };
 
     const updateProduct = async (e) => {
@@ -73,8 +77,16 @@ export default function CreateProductForm({ product, categories, onProductUpdate
 
     return (
         <>
-            <div className="newProductFormModal overflow-y-auto no-scrollbar px-3 py-1">
-                <form className="p-5 w-full max-w-lg" onSubmit={updateProduct}>
+            <div className="w-full newProductFormModal overflow-y-auto no-scrollbar px-6 py-1">
+                <div className="flex mx-5 pb-2 px-0 pt-4 border-b-1 border-gray place-content-between">
+                    <div className='text-center content-center font-semibold'>{product.name_es}</div>
+                    <div className="">
+                        <DeleteProductForm
+                            product={product}
+                            onProductDeleted={handleProductDeleted} />
+                    </div>
+                </div>
+                <form className="p-4 w-full" onSubmit={updateProduct}>
                     {/* Name and Price Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full md:w-8/12 px-2 mb-5">
@@ -202,9 +214,6 @@ export default function CreateProductForm({ product, categories, onProductUpdate
                                             </option>
                                         ))}
                                     </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                                    </div>
                                 </div>
                             </div>
                         </div>
