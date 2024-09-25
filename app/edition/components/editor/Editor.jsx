@@ -2,7 +2,7 @@
 
 import "./styles.css";
 
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import { Modal, ModalContent } from "@nextui-org/modal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -13,6 +13,8 @@ import { GetProducts } from '@/app/services/products';
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import CreateProductForm from '@/app/edition/components/product/createProductForm/CreateProductForm';
 import ProductView from '@/app/edition/components/product/productView/ProductView';
+
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 export default function Editor() {
     const [sections, setSections] = useState([]);
@@ -56,6 +58,7 @@ export default function Editor() {
             .then((response) => {
                 setProducts(response.products);
                 setLoading(false);
+                console.log(response.products)
             });
     }
 
@@ -79,6 +82,53 @@ export default function Editor() {
         loadProducts();
     }
 
+    const reorder = (list, startId, endId) => {
+        const result = Array.from(list);
+
+        const startIndex = result.findIndex(product => product._id === startId);
+        const endIndex = result.findIndex(product => product._id === endId);
+
+        if (startIndex === -1 || endIndex === -1) {
+            console.error("No se encontraron los productos a reordenar");
+            return list;
+        }
+
+        const tempSequence = result[startIndex].sequence;
+        result[startIndex].sequence = result[endIndex].sequence;
+        result[endIndex].sequence = tempSequence;
+
+        console.log(result);
+
+        return result;
+    };
+
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+
+        const filteredProducts = products
+            .filter(product => product.category._id === selectedCategoryId);
+
+        const startId = filteredProducts[result.source.index]._id;
+        const endId = filteredProducts[result.destination.index]._id;
+
+        // Reordenar los productos filtrados
+        const reorderedFilteredProducts = reorder(filteredProducts, startId, endId);
+
+        // Actualizar los productos en la lista principal
+        const updatedProducts = products.map(product => {
+            const updatedProduct = reorderedFilteredProducts.find(p => p._id === product._id);
+            return updatedProduct ? updatedProduct : product;
+        });
+
+        // Ordenar los productos por su secuencia
+        setProducts(updatedProducts.sort((a, b) => a.sequence - b.sequence));
+
+        console.log(products);
+    };
+
+
     return (
         <>
             <div className="w-full bg-white h-full">
@@ -86,10 +136,10 @@ export default function Editor() {
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
                     <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
                         <div onClick={onOpenCreateProductForm}
-                            className="bg-inc-light-blue p-1 px-3 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
+                            className="bg-inc-light-blue p-1 px-3 mx-2 md:mx-1 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
                             Nuevo producto
                         </div>
-                        <div className="bg-inc-light-blue p-1 px-3 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
+                        <div className="bg-inc-light-blue p-1 px-3 mx-2 md:mx-1 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
                     </div>
                 </div>
 
@@ -139,18 +189,44 @@ export default function Editor() {
                                         <th className="p-2 pl-4 text-white">Estado</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {products
-                                        .filter(product => product.category._id === selectedCategoryId)
-                                        .map((product) => (
-                                            <tr onClick={() => setSelectedProduct(product)} key={product._id} className="max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none">
-                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.name_es}</td>
-                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.price}</td>
-                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">{product.description_es}</td>
-                                                <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">Activo</td>
-                                            </tr>
-                                        ))}
-                                </tbody>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <Droppable droppableId="products">
+                                        {(droppableProvided) => (
+                                            <tbody ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
+                                                {products
+                                                    .filter(product => product.category._id === selectedCategoryId)
+                                                    .map((product, index) => (
+                                                        <Draggable key={product._id} draggableId={product._id} index={index}>
+                                                            {(provided, snapshot) => (
+                                                                <tr
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    onClick={() => setSelectedProduct(product)}
+                                                                    className={`max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none ${snapshot.isDragging ? 'bg-gray-200' : ''
+                                                                        }`}
+                                                                >
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                        {product.name_es}
+                                                                    </td>
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                        {product.price}
+                                                                    </td>
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                        {product.description_es}
+                                                                    </td>
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                        Activo
+                                                                    </td>
+                                                                </tr>
+                                                            )}
+                                                        </Draggable>
+                                                    ))}
+                                                {droppableProvided.placeholder}
+                                            </tbody>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
                             </table>
                         </div>
                     </div>
