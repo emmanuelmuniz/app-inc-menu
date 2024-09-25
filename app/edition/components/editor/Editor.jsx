@@ -2,7 +2,7 @@
 
 import "./styles.css";
 
-import { startTransition, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, ModalContent } from "@nextui-org/modal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -13,10 +13,11 @@ import { GetProducts } from '@/app/services/products';
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import CreateProductForm from '@/app/edition/components/product/createProductForm/CreateProductForm';
 import ProductView from '@/app/edition/components/product/productView/ProductView';
-import { FaGripLines, FaGripVertical } from 'react-icons/fa';
-import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
 
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+
+import { UpdateProductsService } from '@/app/edition/services/product/updateProductsService/UpdateProductsService'
+
 
 export default function Editor() {
     const [sections, setSections] = useState([]);
@@ -60,7 +61,6 @@ export default function Editor() {
             .then((response) => {
                 setProducts(response.products);
                 setLoading(false);
-                console.log(response.products)
             });
     }
 
@@ -84,7 +84,7 @@ export default function Editor() {
         loadProducts();
     }
 
-    const reorder = (list, startId, endId) => {
+    const reorder = async (list, startId, endId) => {
         const result = Array.from(list);
 
         const startIndex = result.findIndex(product => product._id === startId);
@@ -95,36 +95,41 @@ export default function Editor() {
             return list;
         }
 
-        const tempSequence = result[startIndex].sequence;
-        result[startIndex].sequence = result[endIndex].sequence;
-        result[endIndex].sequence = tempSequence;
-
-        const startIndexProduct = result[startIndex];
-        const endIndexProduct = result[endIndex];
-
-        const startIndexProductId = startIndexProduct._id;
-        const endIndexProductId = endIndexProduct._id;
-
-        updateDraggedProducts(startIndexProduct, startIndexProductId,
-            endIndexProduct, endIndexProductId);
-
-        return result;
-    };
-
-    const updateDraggedProducts = async (startIndexProduct, startIndexProductId,
-        endIndexProduct, endIndexProductId) => {
-
-        try {
-            UpdateProductService({ product: startIndexProduct, id: startIndexProductId });
-            UpdateProductService({ product: endIndexProduct, id: endIndexProductId });
-            console.log('Product updating result');
-        } catch (error) {
-            console.error('Failed to update product:', error);
+        if (startIndex === endIndex) {
+            return result;
         }
 
-    }
+        const startProduct = result[startIndex];
+        const endProduct = result[endIndex];
 
-    const onDragEnd = (result) => {
+        const originalEndSequence = endProduct.sequence;
+
+        startProduct.sequence = originalEndSequence;
+
+        const updatedProducts = result.map(product => {
+            if (product.sequence >= originalEndSequence && product._id !== startId) {
+                return {
+                    ...product,
+                    sequence: product.sequence + 1,
+                };
+            }
+            return product;
+        });
+
+        const reorderedFilteredProducts = updatedProducts.map(product =>
+            product._id === startId ? { ...product, sequence: originalEndSequence } : product
+        ).sort((a, b) => a.sequence - b.sequence);
+
+        setProducts(reorderedFilteredProducts);
+
+        const productsToUpdate = updatedProducts.filter(p => p._id === startId || p.sequence !== originalEndSequence);
+
+        await updateDraggedProducts(productsToUpdate);
+
+        return reorderedFilteredProducts;
+    };
+
+    const onDragEnd = async (result) => {
         if (!result.destination) {
             return;
         }
@@ -135,17 +140,23 @@ export default function Editor() {
         const startId = filteredProducts[result.source.index]._id;
         const endId = filteredProducts[result.destination.index]._id;
 
-        // Reordenar los productos filtrados
-        const reorderedFilteredProducts = reorder(filteredProducts, startId, endId);
+        const reorderedFilteredProducts = await reorder(filteredProducts, startId, endId);
 
-        // Actualizar los productos en la lista principal
         const updatedProducts = products.map(product => {
             const updatedProduct = reorderedFilteredProducts.find(p => p._id === product._id);
             return updatedProduct ? updatedProduct : product;
         });
 
-        // Ordenar los productos por su secuencia
         setProducts(updatedProducts.sort((a, b) => a.sequence - b.sequence));
+    };
+
+    const updateDraggedProducts = async (productsToUpdate) => {
+        try {
+            await UpdateProductsService(productsToUpdate);
+            console.log('Products updating result');
+        } catch (error) {
+            console.error('Failed to update products:', error);
+        }
     };
 
 
@@ -224,8 +235,8 @@ export default function Editor() {
                                                                     {...provided.draggableProps}
                                                                     {...provided.dragHandleProps}
                                                                     onClick={() => setSelectedProduct(product)}
-                                                                    className={`max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none ${snapshot.isDragging ? 'bg-gray-200' : ''
-                                                                        }`}
+                                                                    className={`max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none ${snapshot.isDragging ? 'bg-gray-200 dragging' : ''}`}
+
                                                                 >
                                                                     <td>
                                                                         <div className="cursor-grab flex flex-col justify-between w-[25px] h-2 pl-3">

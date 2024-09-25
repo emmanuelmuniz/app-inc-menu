@@ -22,6 +22,29 @@ export async function POST(req) {
         );
     }
 }
+
+export async function PUT(req, response) {
+    try {
+        const products = await req.json();
+
+        await connectMongoDB();
+
+        const updatePromises = products.map(product =>
+            Product.updateOne(
+                { _id: product._id },
+                { $set: product }
+            )
+        );
+
+        await Promise.all(updatePromises);
+
+        return NextResponse.json({ message: "Products updated" }, { status: 200 });
+    } catch (error) {
+        console.error("Error updating products:", error);
+        return NextResponse.json({ error: "Failed to update products" }, { status: 500 });
+    }
+}
+
 export async function GET(req) {
     await connectMongoDB();
     const products = await Product.find().sort({ sequence: 1 });
