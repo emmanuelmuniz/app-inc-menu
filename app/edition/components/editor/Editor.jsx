@@ -13,6 +13,8 @@ import { GetProducts } from '@/app/services/products';
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import CreateProductForm from '@/app/edition/components/product/createProductForm/CreateProductForm';
 import ProductView from '@/app/edition/components/product/productView/ProductView';
+import { FaGripLines, FaGripVertical } from 'react-icons/fa';
+import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
 
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
@@ -97,10 +99,30 @@ export default function Editor() {
         result[startIndex].sequence = result[endIndex].sequence;
         result[endIndex].sequence = tempSequence;
 
-        console.log(result);
+        const startIndexProduct = result[startIndex];
+        const endIndexProduct = result[endIndex];
+
+        const startIndexProductId = startIndexProduct._id;
+        const endIndexProductId = endIndexProduct._id;
+
+        updateDraggedProducts(startIndexProduct, startIndexProductId,
+            endIndexProduct, endIndexProductId);
 
         return result;
     };
+
+    const updateDraggedProducts = async (startIndexProduct, startIndexProductId,
+        endIndexProduct, endIndexProductId) => {
+
+        try {
+            UpdateProductService({ product: startIndexProduct, id: startIndexProductId });
+            UpdateProductService({ product: endIndexProduct, id: endIndexProductId });
+            console.log('Product updating result');
+        } catch (error) {
+            console.error('Failed to update product:', error);
+        }
+
+    }
 
     const onDragEnd = (result) => {
         if (!result.destination) {
@@ -124,8 +146,6 @@ export default function Editor() {
 
         // Ordenar los productos por su secuencia
         setProducts(updatedProducts.sort((a, b) => a.sequence - b.sequence));
-
-        console.log(products);
     };
 
 
@@ -183,10 +203,11 @@ export default function Editor() {
                             <table className='w-full table-auto rounded-t-sm overflow-hidden mb-2'>
                                 <thead className='w-full'>
                                     <tr className="text-left bg-inc-light-blue w-full">
-                                        <th className="p-2 pl-4 text-white">Producto</th>
-                                        <th className="p-2 pl-4 text-white">Precio</th>
-                                        <th className="p-2 pl-4 text-white">Descripción</th>
-                                        <th className="p-2 pl-4 text-white">Estado</th>
+                                        <th></th>
+                                        <th className="p-2 pl-3 text-white">Producto</th>
+                                        <th className="p-2 pl-3 text-white">Precio</th>
+                                        <th className="p-2 pl-3 text-white">Descripción</th>
+                                        <th className="p-2 pl-3 text-white">Estado</th>
                                     </tr>
                                 </thead>
                                 <DragDropContext onDragEnd={onDragEnd}>
@@ -206,16 +227,22 @@ export default function Editor() {
                                                                     className={`max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none ${snapshot.isDragging ? 'bg-gray-200' : ''
                                                                         }`}
                                                                 >
-                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                    <td>
+                                                                        <div className="cursor-grab flex flex-col justify-between w-[25px] h-2 pl-3">
+                                                                            <div className="h-[2px] bg-black rounded"></div>
+                                                                            <div className="h-[2px] bg-black rounded"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-3">
                                                                         {product.name_es}
                                                                     </td>
-                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-3">
                                                                         {product.price}
                                                                     </td>
-                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-3">
                                                                         {product.description_es}
                                                                     </td>
-                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-4">
+                                                                    <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-3">
                                                                         Activo
                                                                     </td>
                                                                 </tr>
