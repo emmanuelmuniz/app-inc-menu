@@ -100,29 +100,48 @@ export default function Editor() {
         }
 
         const startProduct = result[startIndex];
-        const endProduct = result[endIndex];
+        const originalStartSequence = startProduct.sequence;
 
-        const originalEndSequence = endProduct.sequence;
+        // Almacenamos la secuencia original del producto de destino
+        const originalEndSequence = result[endIndex].sequence;
 
+        // Ajustamos el sequence del producto que está siendo movido
         startProduct.sequence = originalEndSequence;
 
+        // Actualizamos los productos en la lista que están entre el startIndex y el endIndex
         const updatedProducts = result.map(product => {
-            if (product.sequence >= originalEndSequence && product._id !== startId) {
-                return {
-                    ...product,
-                    sequence: product.sequence + 1,
-                };
+            // Si el producto está entre las posiciones de inicio y fin y no es el producto que estamos moviendo
+            if (startIndex < endIndex) {
+                // Si el producto está entre el índice de inicio y el índice de destino
+                if (product.sequence > originalStartSequence && product.sequence <= originalEndSequence) {
+                    return {
+                        ...product,
+                        sequence: product.sequence - 1, // Decrementamos el sequence
+                    };
+                }
+            } else {
+                // Si el producto está entre el índice de destino y el índice de inicio
+                if (product.sequence >= originalEndSequence && product.sequence < originalStartSequence) {
+                    return {
+                        ...product,
+                        sequence: product.sequence + 1, // Incrementamos el sequence
+                    };
+                }
             }
-            return product;
+            return product; // Retornamos el producto sin cambios
         });
 
+        // Actualizamos el producto movido en la lista
         const reorderedFilteredProducts = updatedProducts.map(product =>
             product._id === startId ? { ...product, sequence: originalEndSequence } : product
         ).sort((a, b) => a.sequence - b.sequence);
 
         setProducts(reorderedFilteredProducts);
 
-        const productsToUpdate = updatedProducts.filter(p => p._id === startId || p.sequence !== originalEndSequence);
+        // Preparamos los productos para la actualización
+        const productsToUpdate = updatedProducts.filter(p =>
+            p._id === startId || p.sequence !== originalStartSequence
+        );
 
         await updateDraggedProducts(productsToUpdate);
 
@@ -160,6 +179,7 @@ export default function Editor() {
     };
 
 
+
     return (
         <>
             <div className="w-full bg-white h-full">
@@ -167,10 +187,10 @@ export default function Editor() {
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
                     <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
                         <div onClick={onOpenCreateProductForm}
-                            className="bg-inc-light-blue p-1 px-3 mx-2 md:mx-1 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
+                            className="bg-inc-light-blue p-1 px-3 mx-2 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition">
                             Nuevo producto
                         </div>
-                        <div className="bg-inc-light-blue p-1 px-3 mx-2 md:mx-1 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div>
+                        {/* <div className="bg-inc-light-blue p-1 px-3 mx-2 md:mx-1 m-1 md:mr-2 rounded-sm text-md hover:bg-inc-light-blue-hover transition">Reordenar productos</div> */}
                     </div>
                 </div>
 
