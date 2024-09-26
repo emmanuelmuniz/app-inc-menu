@@ -95,47 +95,41 @@ export default function Editor() {
             return list;
         }
 
-        if (startIndex === endIndex) {
-            return result;
-        }
+        const startProduct = result[startIndex]; // Producto arrastrado (Producto 1)
+        const endProduct = result[endIndex];     // Producto destino (Producto 2)
 
-        const startProduct = result[startIndex];
         const originalStartSequence = startProduct.sequence;
-        const endProduct = result[endIndex];
         const originalEndSequence = endProduct.sequence;
 
+        // Caso 1: Se mueve hacia adelante en la lista (startIndex < endIndex)
         if (startIndex < endIndex) {
-            // Si el producto se mueve hacia adelante (más abajo en la lista)
             result.forEach(product => {
+                // Decrementar el sequence de los productos entre las posiciones originales de Producto 1 y Producto 2
                 if (product.sequence > originalStartSequence && product.sequence <= originalEndSequence) {
-                    product.sequence -= 1; // Decrementar secuencias para hacer espacio
+                    product.sequence -= 1; // Se decrementa para "hacer espacio" al Producto 1
                 }
             });
-        } else {
-            // Si el producto se mueve hacia atrás (más arriba en la lista)
+        }
+        // Caso 2: Se mueve hacia atrás en la lista (startIndex > endIndex)
+        else if (startIndex > endIndex) {
             result.forEach(product => {
+                // Incrementar el sequence de los productos entre la nueva posición de Producto 1 y su posición original
                 if (product.sequence >= originalEndSequence && product.sequence < originalStartSequence) {
-                    product.sequence += 1; // Incrementar secuencias para hacer espacio
+                    product.sequence += 1; // Se incrementa para "hacer espacio" al Producto 1
                 }
             });
         }
 
-        // Asignar la nueva secuencia al producto arrastrado
+        // Asignar el sequence del endProduct al startProduct
         startProduct.sequence = originalEndSequence;
 
-        // Ordenar los productos basados en la nueva secuencia
-        const reorderedFilteredProducts = result.sort((a, b) => a.sequence - b.sequence);
+        // Ordenar la lista por el nuevo sequence
+        const reorderedProducts = result.sort((a, b) => a.sequence - b.sequence);
 
-        // Actualizar la lista de productos en el estado
-        setProducts(reorderedFilteredProducts);
+        // Actualizar los productos reordenados en la base de datos
+        await updateDraggedProducts(reorderedProducts);
 
-        // Filtrar solo los productos que fueron modificados para la actualización en la base de datos
-        const productsToUpdate = result.filter(p => p.sequence !== originalStartSequence || p._id === startId);
-
-        // Enviar los productos actualizados al servidor
-        await updateDraggedProducts(productsToUpdate);
-
-        return reorderedFilteredProducts;
+        return reorderedProducts;
     };
 
     const onDragEnd = async (result) => {
@@ -143,7 +137,8 @@ export default function Editor() {
             return;
         }
 
-        const filteredProducts = products.filter(product => product.category._id === selectedCategoryId);
+        const filteredProducts = products
+            .filter(product => product.category._id === selectedCategoryId);
 
         const startId = filteredProducts[result.source.index]._id;
         const endId = filteredProducts[result.destination.index]._id;
@@ -157,13 +152,14 @@ export default function Editor() {
             return updatedProduct ? updatedProduct : product;
         });
 
+        // Ordenar los productos por su secuencia
         setProducts(updatedProducts.sort((a, b) => a.sequence - b.sequence));
     };
 
     const updateDraggedProducts = async (productsToUpdate) => {
         try {
             await UpdateProductsService(productsToUpdate);
-            console.log('Products updating result');
+            console.log('Products updated successfully');
         } catch (error) {
             console.error('Failed to update products:', error);
         }
