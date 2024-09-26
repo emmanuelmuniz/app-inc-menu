@@ -1,0 +1,50 @@
+.sections-container,
+.categories-container,
+.products-container .editor-container {
+    height: 70vh;
+}
+
+.tab:hover {
+    color: theme('colors.inc-light-blue');
+    border: none;
+}
+
+.principal-tabs .react-tabs__tab--selected {
+    background-color: theme('colors.inc-light-blue');
+    color: white;
+    border: none;
+}
+
+.modal-content {
+    margin: 0;
+    border-radius: theme('borderRadius.sm');
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: theme('borderRadius.sm');
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+tr {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+tr.dragging {
+    opacity: 0.5;
+    transform: scale(1.02);
+}

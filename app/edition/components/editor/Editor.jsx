@@ -112,12 +112,12 @@ export default function Editor() {
                                 <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
-                                        <Tab key={section._id} className="tab text-md font-semibold bg-ghost-white cursor-pointer p-2 my-2 rounded-sm transition">
+                                        <Tab key={section._id} className="tab text-md bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition">
                                             {section.name_es}
                                         </Tab>
                                     ))}
                                 </TabList>
-                                <div className=" text-md w-full rounded-sm bg-gray-2 px-2 mr-2">
+                                <div className=" text-md w-full rounded-sm bg-gray-2 px-2">
                                     <div className="mt-2 mb-3 font-semibold">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
@@ -125,7 +125,7 @@ export default function Editor() {
                                                 <TabList className="text-md">
                                                     {categories.filter(category => category.section._id === section._id)
                                                         .map((sectionCategory) => (
-                                                            <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="w-full text-md font-semibold tab p-2 my-2 bg-ghost-white cursor-pointer rounded-sm transition">
+                                                            <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="w-full text-md tab p-2 my-1 bg-ghost-white cursor-pointer rounded-sm transition">
                                                                 {sectionCategory.name_es}
                                                             </Tab>
                                                         ))}
@@ -135,6 +135,7 @@ export default function Editor() {
                                     ))}
                                 </div>
                             </Tabs>
+                            <div className="w-[2px] mx-2 bg-gray h-full"></div>
                         </div>
                         <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 rounded-sm md:ml-0 ml-2">
                             <table className='w-full table-auto rounded-t-sm overflow-hidden mb-2'>
@@ -166,8 +167,8 @@ export default function Editor() {
                                                                 >
                                                                     <td>
                                                                         <div className="cursor-grab flex flex-col justify-between w-[25px] h-2 pl-3">
-                                                                            <div className="h-[2px] bg-black rounded"></div>
-                                                                            <div className="h-[2px] bg-black rounded"></div>
+                                                                            <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                            <div className="h-[2px] bg-gray-3 rounded"></div>
                                                                         </div>
                                                                     </td>
                                                                     <td onClick={onOpenProductView} className="cursor-pointer p-2 pl-3">
