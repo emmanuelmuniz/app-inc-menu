@@ -21,6 +21,8 @@ export default function ProductView({ product, categories, onProductUpdated, onP
     const [category, setCategory] = useState(product.category);
     const [active, setActive] = useState(product.active);
 
+    const [loading, setLoading] = useState(false);
+
     const handleNameInputChange = (e, language) => {
         setNameInputs({
             ...nameInputs,
@@ -47,6 +49,7 @@ export default function ProductView({ product, categories, onProductUpdated, onP
 
     const updateProduct = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         let product = {
             name_es: nameInputs.ES,
@@ -66,12 +69,17 @@ export default function ProductView({ product, categories, onProductUpdated, onP
         }
 
         try {
-            const result = await UpdateProductService({ product, id });
-            onProductUpdated();
-            closeModal();
-            console.log('Product updating result:', result);
+            const result = await UpdateProductService({ product, id })
+                .then(() => {
+                    onProductUpdated();
+                    closeModal();
+                    console.log('Product updating result:', result);
+                    setLoading(false);
+                });
+
         } catch (error) {
             console.error('Failed to update product:', error);
+            setLoading(false);
         }
     }
 
@@ -256,7 +264,15 @@ export default function ProductView({ product, categories, onProductUpdated, onP
                         </div>
                     </div>
                     <div className="w-full text-center mt-7">
-                        <button type="submit" className="text-white text-sm font-semibold p-2 px-4 rounded-sm bg-inc-light-blue hover:bg-inc-light-blue-hover transition">Guardar Producto</button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`text-white text-sm font-semibold p-2 px-4 rounded-sm ${loading ? 'bg-inc-light-blue opacity-50 cursor-not-allowed' : 'bg-inc-light-blue hover:bg-inc-light-blue-hover'
+                                } transition`}
+                        >
+                            Guardar Producto
+                        </button>
+
                     </div>
                 </form>
             </div>

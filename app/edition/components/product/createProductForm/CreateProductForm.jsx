@@ -21,6 +21,8 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
     const [category, setCategory] = useState(null);
     const [active, setActive] = useState("true");
 
+    const [loading, setLoading] = useState(false);
+
     const handleNameInputChange = (e, language) => {
         setNameInputs({
             ...nameInputs,
@@ -42,6 +44,7 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
 
     const createProduct = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         let product = {
             name_es: nameInputs.ES,
@@ -61,12 +64,17 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
         }
 
         try {
-            const result = await CreateProductService({ product });
-            onProductCreated();
-            closeModal();
-            console.log('Product creation result:', result);
+            const result = await CreateProductService({ product }).then(() => {
+                setLoading(false);
+                onProductCreated();
+                closeModal();
+                console.log('Product creation result:', result);
+            });
+
+
         } catch (error) {
             console.error('Failed to create product:', error);
+            setLoading(false);
         }
     }
 
@@ -251,7 +259,14 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                         </div>
                     </div>
                     <div className="w-full text-center mt-7">
-                        <button type="submit" className="text-white text-sm font-semibold p-2 px-4 rounded-sm bg-inc-light-blue hover:bg-inc-light-blue-hover transition">Crear Producto</button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`text-white text-sm font-semibold p-2 px-4 rounded-sm ${loading ? 'bg-inc-light-blue opacity-50 cursor-not-allowed' : 'bg-inc-light-blue hover:bg-inc-light-blue-hover'
+                                } transition`}
+                        >
+                            Crear Producto
+                        </button>
                     </div>
                 </form>
             </div>
