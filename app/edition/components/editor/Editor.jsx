@@ -10,8 +10,8 @@ import useReorderProducts from '@/app/edition/hooks/useReorderProducts';
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Modal, ModalContent } from "@nextui-org/modal";
 
-import { GetCategories } from '@/app/services/categories';
 import { GetSections } from '@/app/services/sections';
+import { GetCategories } from '@/app/services/categories';
 import { GetProducts } from '@/app/services/products';
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
