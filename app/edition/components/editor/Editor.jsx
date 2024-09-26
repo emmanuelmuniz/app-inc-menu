@@ -101,48 +101,38 @@ export default function Editor() {
 
         const startProduct = result[startIndex];
         const originalStartSequence = startProduct.sequence;
+        const endProduct = result[endIndex];
+        const originalEndSequence = endProduct.sequence;
 
-        // Almacenamos la secuencia original del producto de destino
-        const originalEndSequence = result[endIndex].sequence;
+        if (startIndex < endIndex) {
+            // Si el producto se mueve hacia adelante (más abajo en la lista)
+            result.forEach(product => {
+                if (product.sequence > originalStartSequence && product.sequence <= originalEndSequence) {
+                    product.sequence -= 1; // Decrementar secuencias para hacer espacio
+                }
+            });
+        } else {
+            // Si el producto se mueve hacia atrás (más arriba en la lista)
+            result.forEach(product => {
+                if (product.sequence >= originalEndSequence && product.sequence < originalStartSequence) {
+                    product.sequence += 1; // Incrementar secuencias para hacer espacio
+                }
+            });
+        }
 
-        // Ajustamos el sequence del producto que está siendo movido
+        // Asignar la nueva secuencia al producto arrastrado
         startProduct.sequence = originalEndSequence;
 
-        // Actualizamos los productos en la lista que están entre el startIndex y el endIndex
-        const updatedProducts = result.map(product => {
-            // Si el producto está entre las posiciones de inicio y fin y no es el producto que estamos moviendo
-            if (startIndex < endIndex) {
-                // Si el producto está entre el índice de inicio y el índice de destino
-                if (product.sequence > originalStartSequence && product.sequence <= originalEndSequence) {
-                    return {
-                        ...product,
-                        sequence: product.sequence - 1, // Decrementamos el sequence
-                    };
-                }
-            } else {
-                // Si el producto está entre el índice de destino y el índice de inicio
-                if (product.sequence >= originalEndSequence && product.sequence < originalStartSequence) {
-                    return {
-                        ...product,
-                        sequence: product.sequence + 1, // Incrementamos el sequence
-                    };
-                }
-            }
-            return product; // Retornamos el producto sin cambios
-        });
+        // Ordenar los productos basados en la nueva secuencia
+        const reorderedFilteredProducts = result.sort((a, b) => a.sequence - b.sequence);
 
-        // Actualizamos el producto movido en la lista
-        const reorderedFilteredProducts = updatedProducts.map(product =>
-            product._id === startId ? { ...product, sequence: originalEndSequence } : product
-        ).sort((a, b) => a.sequence - b.sequence);
-
+        // Actualizar la lista de productos en el estado
         setProducts(reorderedFilteredProducts);
 
-        // Preparamos los productos para la actualización
-        const productsToUpdate = updatedProducts.filter(p =>
-            p._id === startId || p.sequence !== originalStartSequence
-        );
+        // Filtrar solo los productos que fueron modificados para la actualización en la base de datos
+        const productsToUpdate = result.filter(p => p.sequence !== originalStartSequence || p._id === startId);
 
+        // Enviar los productos actualizados al servidor
         await updateDraggedProducts(productsToUpdate);
 
         return reorderedFilteredProducts;
@@ -153,14 +143,15 @@ export default function Editor() {
             return;
         }
 
-        const filteredProducts = products
-            .filter(product => product.category._id === selectedCategoryId);
+        const filteredProducts = products.filter(product => product.category._id === selectedCategoryId);
 
         const startId = filteredProducts[result.source.index]._id;
         const endId = filteredProducts[result.destination.index]._id;
 
+        // Reordenar los productos filtrados
         const reorderedFilteredProducts = await reorder(filteredProducts, startId, endId);
 
+        // Actualizar los productos en la lista principal
         const updatedProducts = products.map(product => {
             const updatedProduct = reorderedFilteredProducts.find(p => p._id === product._id);
             return updatedProduct ? updatedProduct : product;
@@ -177,7 +168,6 @@ export default function Editor() {
             console.error('Failed to update products:', error);
         }
     };
-
 
 
     return (
