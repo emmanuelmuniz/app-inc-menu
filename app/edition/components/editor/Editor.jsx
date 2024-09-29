@@ -84,23 +84,26 @@ export default function Editor() {
     };
 
     const filteredProducts = () => {
+        console.log(selectedCategoryId, selectedSectionId);
+
         if (selectedCategoryId === "ALL") {
             if (selectedSectionId === "ALL") {
-                return products;
+                return products; // Retorna todos los productos si no hay filtros
             } else {
-                return products.filter(
-                    (product) =>
-                        product.category && // Verifica si el producto tiene una categoría
-                        product.category.section && // Verifica si la categoría tiene una sección
-                        product.category.section._id === selectedSectionId
-                );
+                return products.filter((product) => {
+                    // Encuentra la categoría del producto en el array de categorías
+                    const category = categories.find((cat) => cat._id === product.category._id);
+
+                    // Verifica si la categoría existe y si la sección de la categoría coincide con la sección seleccionada
+                    return category && category.section && category.section._id === selectedSectionId;
+                });
             }
         } else {
-            return products.filter(
-                (product) => product.category && product.category._id === selectedCategoryId
-            );
+            // Filtrar productos según la categoría seleccionada
+            return products.filter((product) => product.category._id === selectedCategoryId);
         }
     };
+
 
     const handleProductCreated = () => {
         loadProducts();
