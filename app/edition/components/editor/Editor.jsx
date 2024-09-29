@@ -43,7 +43,8 @@ export default function Editor() {
         const getSections = async () => {
             await GetSections()
                 .then((response) => {
-                    setSections(response.sections);
+                    const allSections = [{ _id: "ALL", name_es: "TODAS" }, ...response.sections];
+                    setSections(allSections);
                     const getCategories = async () => {
                         await GetCategories()
                             .then((response) => {
@@ -67,10 +68,18 @@ export default function Editor() {
     }
 
     const handleSectionSelect = (sectionId) => {
-        const filteredCategories = categories.filter(category => category.section._id === sectionId);
+        console.log(sectionId)
+
+        let filteredCategories = [];
+
+        if (sectionId === "ALL")
+            filteredCategories = categories.filter(category => category.section._id === sectionId);
+        else
+            filteredCategories = categories;
+
 
         if (filteredCategories.length > 0) {
-            setSelectedCategoryId(filteredCategories[0]._id);
+            setSelectedCategoryId(null);
         }
     }
 
@@ -123,7 +132,7 @@ export default function Editor() {
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
                                                 <TabList className="text-md">
-                                                    {categories.filter(category => category.section._id === section._id)
+                                                    {categories.filter(category => section._id === "ALL" || category.section._id === section._id)
                                                         .map((sectionCategory) => (
                                                             <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="w-full text-md tab p-2 my-1 bg-ghost-white cursor-pointer rounded-sm transition">
                                                                 {sectionCategory.name_es}
