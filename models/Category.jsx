@@ -15,7 +15,7 @@ const categorySchema = new Schema(
         description_es: String,
         description_en: String,
         description_pt: String,
-        publish: Boolean,
+        active: Boolean,
         sequence: Number,
         lastUpdateUser: String,
         section: sectionSchema

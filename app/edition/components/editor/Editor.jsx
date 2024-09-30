@@ -120,8 +120,8 @@ export default function Editor() {
                         <LoadingDisplay />
                     </div>
                 ) : (
-                    <div className="flex flex-col md:flex-row bg-white">
-                        <div className="flex md:w-4/12 my-2 md:flex-row">
+                    <div className="flex flex-col md:flex-row bg-white w-full">
+                        <div className="flex w-full md:w-4/12 my-2 md:flex-row">
                             <Tabs
                                 className="flex principal-tabs w-full ml-2"
                                 defaultIndex={0}
@@ -143,7 +143,7 @@ export default function Editor() {
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
-                                                <TabList className="text-md">
+                                                <TabList className="text-md w-full">
                                                     {filteredCategories().map((sectionCategory) => (
                                                         <Tab
                                                             key={sectionCategory._id}
@@ -164,7 +164,7 @@ export default function Editor() {
                         <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 p-2 rounded-sm md:ml-0 ml-2">
                             <div className="w-full flex md:flex-row place-content-between">
                                 <div className="w-full flex justify-start mb-2">
-                                    <div class="flex px-4 py-2 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
+                                    <div className="flex px-4 py-2 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
                                         <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." className="w-full outline-none bg-transparent text-sm" />
                                     </div>
                                 </div>
