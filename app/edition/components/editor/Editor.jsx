@@ -164,7 +164,7 @@ export default function Editor() {
                         <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 p-2 rounded-sm md:ml-0 ml-2">
                             <div className="w-full flex md:flex-row place-content-between">
                                 <div className="w-full flex justify-start mb-2">
-                                    <div className="flex px-4 py-2 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
+                                    <div className="flex px-4 py-2 bg-ghost-white rounded-sm border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
                                         <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." className="w-full outline-none bg-transparent text-sm" />
                                     </div>
                                 </div>

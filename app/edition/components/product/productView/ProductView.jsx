@@ -86,7 +86,7 @@ export default function ProductView({ product, categories, onProductUpdated, onP
     return (
         <>
             <div className="w-full newProductFormModal overflow-y-auto no-scrollbar px-6 py-1">
-                <div className="flex mx-5 pb-2 px-0 pt-4 border-b-1 border-gray place-content-between">
+                <div className="flex mx-2 pb-4 px-0 pt-4 border-b-1 border-gray place-content-between">
                     <div className='text-center content-center font-semibold'>{product.name_es}</div>
                     <div className="">
                         <DeleteProductForm
