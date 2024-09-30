@@ -102,8 +102,8 @@ export default function Editor() {
 
     return (
         <>
-            <div className="w-full bg-white h-full">
-                <div className="w-full bg-white flex flex-col md:flex-row place-content-between">
+            <div className="w-full bg-white min-h-[calc(100vh-5.3rem)]">
+                {/* <div className="w-full bg-white flex flex-col md:flex-row place-content-between">
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
                     <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
                         <div
@@ -113,21 +113,21 @@ export default function Editor() {
                             Nuevo producto
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {loading ? (
                     <div className="">
                         <LoadingDisplay />
                     </div>
                 ) : (
-                    <div className="flex flex-col md:flex-row bg-ghost-white">
+                    <div className="flex flex-col md:flex-row bg-white">
                         <div className="flex md:w-4/12 my-2 md:flex-row">
                             <Tabs
                                 className="flex principal-tabs w-full ml-2"
                                 defaultIndex={0}
                                 onSelect={(index) => handleSectionSelect(sections[index]._id)}
                             >
-                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2">
+                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 md:    min-h-[calc(100vh-7rem)]">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
                                         <Tab
@@ -161,11 +161,20 @@ export default function Editor() {
                             </Tabs>
                             <div className="w-[2px] mx-2 bg-gray h-full"></div>
                         </div>
-                        <div className=" bg-ghost-white md:w-8/12 mr-2 my-1 rounded-sm md:ml-0 ml-2">
-
-                            <div className="w-full flex justify-start mb-2">
-                                <div class=" flex px-4 py-3 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
-                                    <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." class="w-full outline-none bg-transparent text-sm" />
+                        <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 p-2 rounded-sm md:ml-0 ml-2">
+                            <div className="w-full flex flex-col md:flex-row place-content-between">
+                                <div className="w-full flex justify-start mb-2">
+                                    <div class="flex px-4 py-2 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
+                                        <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." className="w-full outline-none bg-transparent text-sm" />
+                                    </div>
+                                </div>
+                                <div className="font-semibold md:text-right text-white cursor-pointer ">
+                                    <div
+                                        onClick={onOpenCreateProductForm}
+                                        className="whitespace-nowrap bg-inc-light-blue py-2 px-3 m-1 mr-0 rounded-sm text-md hover:bg-inc-light-blue-hover transition"
+                                    >
+                                        Nuevo producto
+                                    </div>
                                 </div>
                             </div>
 
