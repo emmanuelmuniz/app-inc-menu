@@ -71,7 +71,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
 
     return (
         <>
-            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-6 py-1">
+            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-2 bg-white rounded-sm">
                 <div className="flex mx-2 pb-4 px-0 pt-4 border-b-1 border-gray place-content-between">
                     <div className='text-center content-center font-semibold'>{section.name_es}</div>
                     <div className="">
@@ -83,7 +83,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                 <form className="p-4 w-full" onSubmit={updateSection}>
                     {/* Name Input  */}
                     <div className="flex flex-wrap -mx-2">
-                        <div className="w-full px-2 mb-5">
+                        <div className="w-full px-2 mb-4">
                             <div className="">
                                 <Tabs className="principal-tabs w-full" defaultIndex={0}>
                                     <div className="flex place-content-between">
@@ -101,7 +101,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                         </div>
                                     </div>
                                     <TabPanel>
-                                        <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                                        <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 leading-tight focus:outline-none focus:bg-white"
                                             type="text"
                                             value={nameInputs.ES}
                                             onChange={(e) => handleNameInputChange(e, 'ES')}
@@ -110,7 +110,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                         />
                                     </TabPanel>
                                     <TabPanel>
-                                        <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                                        <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 leading-tight focus:outline-none focus:bg-white"
                                             type="text"
                                             value={nameInputs.EN}
                                             onChange={(e) => handleNameInputChange(e, 'EN')}
@@ -118,7 +118,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                         />
                                     </TabPanel>
                                     <TabPanel>
-                                        <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                                        <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 leading-tight focus:outline-none focus:bg-white"
                                             type="text"
                                             value={nameInputs.PT}
                                             onChange={(e) => handleNameInputChange(e, 'PT')}
@@ -130,7 +130,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                         </div>
                     </div>
                     {/* Description Input  */}
-                    <div className="w-full mb-5">
+                    <div className="w-full mb-3">
                         <Tabs className="principal-tabs w-full" defaultIndex={0}>
                             <div className="flex place-content-between">
                                 <div className="">
@@ -147,7 +147,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                 </div>
                             </div>
                             <TabPanel>
-                                <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     type="text"
                                     value={descriptionInputs.ES}
                                     onChange={(e) => handleDescriptionInputChange(e, 'ES')}
@@ -156,7 +156,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                 />
                             </TabPanel>
                             <TabPanel>
-                                <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     type="text"
                                     value={descriptionInputs.EN}
                                     onChange={(e) => handleDescriptionInputChange(e, 'EN')}
@@ -164,7 +164,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                 />
                             </TabPanel>
                             <TabPanel>
-                                <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                <input className="text-sm appearance-none block w-full bg-gray-200 border rounded p-2 py-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                                     type="text"
                                     value={descriptionInputs.PT}
                                     onChange={(e) => handleDescriptionInputChange(e, 'PT')}
@@ -174,15 +174,15 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                         </Tabs>
                     </div>
                     {/* Category and Published Input  */}
-                    <div className="flex flex-wrap -mx-2 mb-5">
+                    <div className="flex flex-wrap -mx-2 mb-4">
                         <div className="w-full px-2 md:mb-0">
-                            <div className="w-full mb-3">
+                            <div className="w-full">
                                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                     Estado
                                 </label>
                                 <div className="relative">
                                     <select
-                                        className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        className="text-sm block appearance-none w-full bg-gray-200 border p-2 py-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         id="grid-state"
                                         required
                                         onChange={(e) => setActive(e.target.value)}
@@ -196,8 +196,9 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                                         </option>
                                         <option key="inactive" value="false" className="text-sm">
                                             Inactivo
-                                        </option>                              </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        </option>
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
                                         <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                                     </div>
                                 </div>
@@ -205,7 +206,7 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                         </div>
                     </div>
                     <div className="">
-                        <div className="w-full mb-5">
+                        <div className="w-full mb-4">
                             <label className="block text-xs font-bold mb-2">
                                 Subir Imagen
                             </label>

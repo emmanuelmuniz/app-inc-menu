@@ -21,6 +21,8 @@ import ProductView from "@/app/edition/components/product/productView/ProductVie
 
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
+import { HiOutlineSearch } from 'react-icons/hi';
+
 export default function Editor() {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -103,18 +105,6 @@ export default function Editor() {
     return (
         <>
             <div className="w-full bg-white min-h-[calc(100vh-5.3rem)]">
-                {/* <div className="w-full bg-white flex flex-col md:flex-row place-content-between">
-                    <div className="p-1 mt-2 ml-3 text-md font-semibold">Productos</div>
-                    <div className="font-semibold md:text-right text-white cursor-pointer flex flex-col md:flex-row">
-                        <div
-                            onClick={onOpenCreateProductForm}
-                            className="bg-inc-light-blue p-1 px-3 mx-2 m-1 rounded-sm text-md hover:bg-inc-light-blue-hover transition"
-                        >
-                            Nuevo producto
-                        </div>
-                    </div>
-                </div> */}
-
                 {loading ? (
                     <div className="">
                         <LoadingDisplay />
@@ -164,10 +154,17 @@ export default function Editor() {
                         <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 p-2 rounded-sm md:ml-0 ml-2">
                             <div className="w-full flex md:flex-row place-content-between">
                                 <div className="w-full flex justify-start mb-2">
-                                    <div className="flex px-4 py-2 bg-ghost-white rounded-sm border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
-                                        <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." className="w-full outline-none bg-transparent text-sm" />
+                                    <div className="flex items-center px-4 py-2 bg-ghost-white rounded-sm border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
+                                        <HiOutlineSearch className="text-inc-light-blue w-6 h-6 text-gray-500 mr-3" />
+                                        <input
+                                            value={searchFilter}
+                                            onChange={(e) => setSearchFilter(e.target.value)}
+                                            placeholder="Buscar productos..."
+                                            className="w-full outline-none bg-transparent text-sm"
+                                        />
                                     </div>
                                 </div>
+
                                 <div className="font-semibold md:text-right text-white cursor-pointer py-2">
                                     <div
                                         onClick={onOpenCreateProductForm}
