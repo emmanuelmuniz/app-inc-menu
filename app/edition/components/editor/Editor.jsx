@@ -127,7 +127,7 @@ export default function Editor() {
                                 defaultIndex={0}
                                 onSelect={(index) => handleSectionSelect(sections[index]._id)}
                             >
-                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 md:    min-h-[calc(100vh-7rem)]">
+                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
                                         <Tab

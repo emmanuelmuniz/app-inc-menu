@@ -47,9 +47,9 @@ export default function Categories() {
     return (
         <>
             <div className="bg-white h-full w-full">
-                <div className="">
+                {/* <div className="">
                     <div className="p-1 mt-2 ml-3 text-md font-semibold">Categorías</div>
-                </div>
+                </div> */}
 
                 {loading ? (
                     <div className="">
@@ -57,10 +57,10 @@ export default function Categories() {
                     </div>
                 ) : (
 
-                    <div className="flex flex-col md:flex-row place-content-between bg-ghost-white h-full">
+                    <div className="flex flex-col md:flex-row place-content-between bg-white">
                         <div className="flex md:w-4/12 my-2 md:flex-row">
                             <Tabs className="flex principal-tabs w-full ml-2" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
-                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2">
+                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 min-h-[calc(100vh-6.3rem)]">
                                     <div className="mt-2 mb-3 font-semibold">Categorías</div>
                                     {sections.map((section) => (
                                         <Tab key={section._id} className="flex tab text-md bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition">
@@ -106,13 +106,15 @@ export default function Categories() {
                         <div className="flex flex-col md:flex-row md:w-8/12 p-2 pl-0 rounded-sm w-full">
                             <div className="md:w-1/2 w-full h-full flex">
                                 <div className="w-full bg-white p-2 rounded-sm">
-                                    <div className="border-b-1 pb-1 border-gray">Categoría:</div>
+                                    <div className="border-gray">Categoría:</div>
+                                    {/* <div className="border-b-1 pb-1 border-gray">Categoría:</div> */}
                                 </div>
                                 <div className="md:text-right w-[2px] mx-2 bg-gray h-full"></div>
                             </div>
                             <div className="md:w-1/2 w-full h-full flex">
                                 <div className="w-full bg-white p-2 rounded-sm">
-                                    <div className="border-b-1 pb-1 border-gray">Subcategoría:</div>
+                                    <div className="border-gray">Subcategoría:</div>
+                                    {/* <div className="border-b-1 pb-1 border-gray">Subcategoría:</div> */}
                                 </div>
                                 <div className="md:text-right w-[2px] mx-2 bg-gray h-full"></div>
                             </div>
