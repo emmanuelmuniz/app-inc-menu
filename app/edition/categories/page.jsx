@@ -66,8 +66,8 @@ export default function Categories() {
                                         <Tab key={section._id} className="flex tab text-md bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition">
                                             <div className="flex justify-center items-center w-[13px] h-6 mr-2 cursor-grab">
                                                 <div className="flex flex-col justify-center w-[13px] h-full">
-                                                    <div className="mb-1 h-[2px] bg-black rounded"></div>
-                                                    <div className="h-[2px] bg-black rounded"></div>
+                                                    <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
+                                                    <div className="h-[2px] bg-gray-3 rounded"></div>
                                                 </div>
                                             </div>
 
@@ -86,8 +86,8 @@ export default function Categories() {
                                                             <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="flex w-full text-md tab p-2 my-2 bg-ghost-white cursor-pointer rounded-sm transition">
                                                                 <div className="flex justify-center items-center w-[13px] h-6 mr-2 cursor-grab">
                                                                     <div className="flex flex-col justify-center w-[13px] h-full">
-                                                                        <div className="mb-1 h-[2px] bg-black rounded"></div>
-                                                                        <div className="h-[2px] bg-black rounded"></div>
+                                                                        <div className="mb-1 h-[2px] bg-gray-3 rounded"></div>
+                                                                        <div className="h-[2px] bg-gray-3 rounded"></div>
                                                                     </div>
                                                                 </div>
 

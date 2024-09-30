@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import { UpdateProductsService } from '@/app/edition/services/product/updateProductsService/UpdateProductsService';
 
-const useReorderProducts = (products, setProducts, selectedCategoryId) => {
+const useReorderProducts = (products, setProducts, filteredProducts, selectedCategoryId) => {
     const updateDraggedProducts = useCallback(async (productsToUpdate) => {
         try {
-            await UpdateProductsService(productsToUpdate); // Asegúrate de importar el servicio correctamente
+            await UpdateProductsService(productsToUpdate);
             console.log('Products updating result');
         } catch (error) {
             console.error('Failed to update products:', error);
@@ -23,8 +23,8 @@ const useReorderProducts = (products, setProducts, selectedCategoryId) => {
             return list;
         }
 
-        const startProduct = result[startIndex]; // Producto arrastrado (Producto 1)
-        const endProduct = result[endIndex];     // Producto destino (Producto 2)
+        const startProduct = result[startIndex];
+        const endProduct = result[endIndex]
 
         const originalStartSequence = startProduct.sequence;
         const originalEndSequence = endProduct.sequence;
@@ -64,8 +64,6 @@ const useReorderProducts = (products, setProducts, selectedCategoryId) => {
         if (!result.destination) {
             return;
         }
-
-        const filteredProducts = products.filter(product => product.category._id === selectedCategoryId);
 
         const startId = filteredProducts[result.source.index]._id;
         const endId = filteredProducts[result.destination.index]._id;

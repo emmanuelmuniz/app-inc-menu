@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import useReorderProducts from "@/app/edition/hooks/useReorderProducts";
+import useFilteredProducts from "@/app/edition/hooks/useFilteredProducts";
 
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Modal, ModalContent } from "@nextui-org/modal";
@@ -28,7 +29,11 @@ export default function Editor() {
     const [selectedSectionId, setSelectedSectionId] = useState("ALL");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { handleDragEnd } = useReorderProducts(products, setProducts, selectedCategoryId);
+
+    const [searchFilter, setSearchFilter] = useState("");
+
+    const filteredProducts = useFilteredProducts(products, categories, selectedCategoryId, selectedSectionId, searchFilter);
+    const { handleDragEnd } = useReorderProducts(products, setProducts, filteredProducts, selectedCategoryId);
 
     const {
         isOpen: isCreateProductFormOpen,
@@ -50,7 +55,7 @@ export default function Editor() {
                 const getCategories = async () => {
                     await GetCategories().then((response) => {
                         setCategories(response.categories);
-                        setSelectedCategoryId("ALL"); // Por defecto, seleccionar la categoría "TODAS"
+                        setSelectedCategoryId("ALL");
                         loadProducts();
                     });
                 };
@@ -69,7 +74,7 @@ export default function Editor() {
 
     const handleSectionSelect = (sectionId) => {
         setSelectedSectionId(sectionId);
-        setSelectedCategoryId("ALL"); // Resetear la categoría a "TODAS" al cambiar de sección
+        setSelectedCategoryId("ALL");
     };
 
     const filteredCategories = () => {
@@ -82,28 +87,6 @@ export default function Editor() {
             return [{ _id: "ALL", name_es: "TODAS" }, ...sectionCategories];
         }
     };
-
-    const filteredProducts = () => {
-        console.log(selectedCategoryId, selectedSectionId);
-
-        if (selectedCategoryId === "ALL") {
-            if (selectedSectionId === "ALL") {
-                return products; // Retorna todos los productos si no hay filtros
-            } else {
-                return products.filter((product) => {
-                    // Encuentra la categoría del producto en el array de categorías
-                    const category = categories.find((cat) => cat._id === product.category._id);
-
-                    // Verifica si la categoría existe y si la sección de la categoría coincide con la sección seleccionada
-                    return category && category.section && category.section._id === selectedSectionId;
-                });
-            }
-        } else {
-            // Filtrar productos según la categoría seleccionada
-            return products.filter((product) => product.category._id === selectedCategoryId);
-        }
-    };
-
 
     const handleProductCreated = () => {
         loadProducts();
@@ -137,7 +120,7 @@ export default function Editor() {
                         <LoadingDisplay />
                     </div>
                 ) : (
-                    <div className="flex flex-col md:flex-row bg-ghost-white ">
+                    <div className="flex flex-col md:flex-row bg-ghost-white">
                         <div className="flex md:w-4/12 my-2 md:flex-row">
                             <Tabs
                                 className="flex principal-tabs w-full ml-2"
@@ -155,7 +138,7 @@ export default function Editor() {
                                         </Tab>
                                     ))}
                                 </TabList>
-                                <div className=" text-md w-full rounded-sm bg-gray-2 px-2">
+                                <div className="text-md w-full rounded-sm bg-gray-2 px-2">
                                     <div className="mt-2 mb-3 font-semibold">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
@@ -178,7 +161,14 @@ export default function Editor() {
                             </Tabs>
                             <div className="w-[2px] mx-2 bg-gray h-full"></div>
                         </div>
-                        <div className=" bg-ghost-white md:w-8/12 mr-2 my-2 rounded-sm md:ml-0 ml-2">
+                        <div className=" bg-ghost-white md:w-8/12 mr-2 my-1 rounded-sm md:ml-0 ml-2">
+
+                            <div className="w-full flex justify-start mb-2">
+                                <div class=" flex px-4 py-3 rounded-md border-2 mt-1 border-inc-light-blue overflow-hidden max-w-md">
+                                    <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." class="w-full outline-none bg-transparent text-sm" />
+                                </div>
+                            </div>
+
                             <table className="w-full table-auto rounded-t-sm overflow-hidden mb-2">
                                 <thead className="w-full">
                                     <tr className="text-left bg-inc-light-blue w-full">
@@ -193,7 +183,7 @@ export default function Editor() {
                                     <Droppable droppableId="products">
                                         {(droppableProvided) => (
                                             <tbody ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
-                                                {filteredProducts().map((product, index) => (
+                                                {filteredProducts.map((product, index) => (
                                                     <Draggable key={product._id} draggableId={product._id} index={index}>
                                                         {(provided, snapshot) => (
                                                             <tr
