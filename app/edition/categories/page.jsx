@@ -59,15 +59,18 @@ export default function Categories() {
                 ) : (
 
                     <div className="flex flex-col md:flex-row place-content-between bg-white">
-                        <div className="flex md:w-6/12 my-2 md:flex-row">
-                            <Tabs className="flex principal-tabs  w-full ml-2" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
-                                <TabList className="rounded-lg overflow-hidden text-black px-2 mr-2 w-full bg-gray-2 min-h-[calc(100vh-6.3rem)]">
-                                    <div className="rounded-sm overflow-hidden">
+                        <div className="flex md:w-12/12 my-2 md:flex-row w-full">
+                            <Tabs className="flex flex-col md:flex-row principal-tabs w-full m-2" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
+                                <TabList className="flex-col md:flex-row mb-2 md:w-1/2 md:mb-0 rounded-sm overflow-hidden text-black p-2 mr-2 w-full bg-gray-2">
+                                    <div className="mb-2 font-semibold text-gray-3">Categorías</div>
+
+                                    <div className="rounded-sm overflow-hidden w-full">
                                         <div>
-                                            <div className="flex p-2 mt-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                            <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
                                                 <div className="w-1/12 ml-2"></div>
-                                                <div className="w-7/12 text-md">Categoría</div>
-                                                <div className="w-4/12 text-md">Estado</div>
+                                                <div className="w-3/12 text-md">Categoría</div>
+                                                <div className="w-6/12 text-md">Descripción</div>
+                                                <div className="w-2/12 text-md">Estado</div>
                                             </div>
                                         </div>
                                         <div>
@@ -81,10 +84,13 @@ export default function Categories() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="w-7/12 text-sm">
+                                                    <div className="w-3/12 text-sm">
                                                         {section.name_es}
                                                     </div>
-                                                    <div className="w-4/12 text-sm">
+                                                    <div className="w-6/12 text-sm">
+                                                        {section.description_es}
+                                                    </div>
+                                                    <div className="w-2/12 text-sm">
                                                         {section.active ? 'Activo' : 'Inactivo'}
                                                     </div>
                                                 </Tab>
@@ -92,18 +98,19 @@ export default function Categories() {
                                         </div>
                                     </div>
                                 </TabList>
-                                <div className="w-full rounded-sm bg-gray-2 px-2">
-                                    {/* <div className="mt-2 mb-3 font-semibold">Subcategorías</div> */}
+                                <div className="w-full rounded-sm bg-gray-2 md:w-1/2 px-2 p-2">
+                                    <div className="mb-2 font-semibold text-gray-3">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
                                                 <TabList className="">
-                                                    <div className="">
+                                                    <div className="rounded-sm overflow-hidden">
                                                         <div>
-                                                            <div className="flex p-2 mt-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                                            <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
                                                                 <div className="w-1/12 ml-2"></div>
-                                                                <div className="w-7/12 text-md">Subcategoría</div>
-                                                                <div className="w-4/12 text-md">Estado</div>
+                                                                <div className="w-3/12 text-md">Subcategoría</div>
+                                                                <div className="w-6/12 text-md">Descripción</div>
+                                                                <div className="w-2/12 text-md">Estado</div>
                                                             </div>
                                                         </div>
                                                         {categories.filter(category => category.section._id === section._id)
@@ -115,10 +122,13 @@ export default function Categories() {
                                                                             <div className="h-[2px] bg-gray-3 rounded"></div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="w-7/12 text-sm">
+                                                                    <div className="w-3/12 text-sm">
                                                                         {sectionCategory.name_es}
                                                                     </div>
-                                                                    <div className="w-4/12 text-sm">
+                                                                    <div className="w-6/12 text-sm">
+                                                                        {sectionCategory.description_es}
+                                                                    </div>
+                                                                    <div className="w-2/12 text-sm">
                                                                         {section.active ? 'Activo' : 'Inactivo'}
                                                                     </div>
                                                                 </Tab>
@@ -130,24 +140,7 @@ export default function Categories() {
                                     ))}
                                 </div>
                             </Tabs>
-                            <div className="w-[2px] mx-2 bg-gray h-full"></div>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row md:w-6/12 p-2 pl-0 rounded-sm w-full">
-                            <div className="md:w-1/2 w-full h-full flex">
-                                <div className="w-full bg-white p-2 rounded-sm">
-                                    <div className="border-gray">Categoría:</div>
-                                    {/* <div className="border-b-1 pb-1 border-gray">Categoría:</div> */}
-                                </div>
-                                <div className="md:text-right w-[2px] mx-2 bg-gray h-full"></div>
-                            </div>
-                            <div className="md:w-1/2 w-full h-full flex">
-                                <div className="w-full bg-white p-2 rounded-sm">
-                                    <div className="border-gray">Subcategoría:</div>
-                                    {/* <div className="border-b-1 pb-1 border-gray">Subcategoría:</div> */}
-                                </div>
-                                <div className="md:text-right w-[2px] mx-2 bg-gray h-full"></div>
-                            </div>
+                            {/* <div className="w-[2px] mx-2 bg-gray h-full"></div> */}
                         </div>
                     </div>
                 )}

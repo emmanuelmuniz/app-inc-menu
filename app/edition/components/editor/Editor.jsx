@@ -128,18 +128,18 @@ export default function Editor() {
                                 onSelect={(index) => handleSectionSelect(sections[index]._id)}
                             >
                                 <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
-                                    <div className="mt-2 mb-3 font-semibold">Categorías</div>
+                                    <div className="mt-2 mb-3 font-semibold text-gray-3">Categorías</div>
                                     {sections.map((section) => (
                                         <Tab
                                             key={section._id}
-                                            className="tab text-md bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition"
+                                            className="tab text-sm bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition"
                                         >
                                             {section.name_es}
                                         </Tab>
                                     ))}
                                 </TabList>
                                 <div className="text-md w-full rounded-sm bg-gray-2 px-2">
-                                    <div className="mt-2 mb-3 font-semibold">Subcategorías</div>
+                                    <div className="mt-2 mb-3 font-semibold text-gray-3">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
@@ -148,7 +148,7 @@ export default function Editor() {
                                                         <Tab
                                                             key={sectionCategory._id}
                                                             onClick={() => setSelectedCategoryId(sectionCategory._id)}
-                                                            className="w-full text-md tab p-2 my-1 bg-ghost-white cursor-pointer rounded-sm transition"
+                                                            className="w-full text-sm tab p-2 my-1 bg-ghost-white cursor-pointer rounded-sm transition"
                                                         >
                                                             {sectionCategory.name_es}
                                                         </Tab>
@@ -168,10 +168,10 @@ export default function Editor() {
                                         <input value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} placeholder="Buscar productos..." className="w-full outline-none bg-transparent text-sm" />
                                     </div>
                                 </div>
-                                <div className="font-semibold md:text-right text-white cursor-pointer ">
+                                <div className="font-semibold md:text-right text-white cursor-pointer py-2">
                                     <div
                                         onClick={onOpenCreateProductForm}
-                                        className="whitespace-nowrap bg-inc-light-blue py-2 px-3 m-1 mr-0 rounded-sm text-md hover:bg-inc-light-blue-hover transition"
+                                        className="flex items-center whitespace-nowrap h-full bg-inc-light-blue px-3 mr-0 rounded-sm text-sm hover:bg-inc-light-blue-hover transition"
                                     >
                                         Nuevo producto
                                     </div>
