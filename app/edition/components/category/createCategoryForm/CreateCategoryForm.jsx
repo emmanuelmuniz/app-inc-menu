@@ -1,10 +1,10 @@
-import "./styles.css";
+// import "./styles.css";
 
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { CreateProductService } from '@/app/edition/services/product/createProductService/CreateProductService'
 
-export default function CreateCategoryForm({ categories, onCategoryCreated, closeModal }) {
+export default function CreateCategoryForm({ sections, onCategoryCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: '',
         EN: '',
@@ -17,8 +17,7 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
         PT: ''
     });
 
-    const [price, setPrice] = useState("");
-    const [category, setCategory] = useState(null);
+    const [section, setSection] = useState(null);
     const [active, setActive] = useState("true");
 
     const [loading, setLoading] = useState(false);
@@ -37,12 +36,12 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
         });
     };
 
-    const handleCategoryChange = (e) => {
-        const selectedCategory = JSON.parse(e.target.value);
-        setCategory(selectedCategory);
+    const handleSectionChange = (e) => {
+        const selectedSection = JSON.parse(e.target.value);
+        setSection(selectedSection);
     };
 
-    const createProduct = async (e) => {
+    const createCategory = async (e) => {
         e.preventDefault();
         setLoading(true);
 
@@ -50,30 +49,29 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
             name_es: nameInputs.ES,
             name_en: nameInputs.EN,
             name_pt: nameInputs.PT,
-            price: price,
             description_es: descriptionInputs.ES,
             description_en: descriptionInputs.EN,
             description_pt: descriptionInputs.PT,
             active: active,
-            category: {
-                name_es: category.name_es,
-                name_en: category.name_en,
-                name_pt: category.name_pt,
-                _id: category._id
+            section: {
+                name_es: section.name_es,
+                name_en: section.name_en,
+                name_pt: section.name_pt,
+                _id: section._id
             }
         }
 
         try {
-            const result = await CreateProductService({ product }).then(() => {
+            const result = await CreateCategoryService({ category }).then(() => {
                 setLoading(false);
-                onProductCreated();
+                onCategoryCreated();
                 closeModal();
-                console.log('Product creation result:', result);
+                console.log('Category creation result:', result);
             });
 
 
         } catch (error) {
-            console.error('Failed to create product:', error);
+            console.error('Failed to create category:', error);
             setLoading(false);
         }
     }
@@ -82,18 +80,18 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
         <>
             <div className="newProductFormModal overflow-y-auto no-scrollbar px-3 py-1">
                 <div className="m-2 pb-4 pt-2 border-b-1 border-gray">
-                    <span className='font-semibold text-md'>Nuevo producto</span>
+                    <span className='font-semibold text-md'>Nueva subcategoría</span>
                 </div>
-                <form className="p-5 w-full" onSubmit={createProduct}>
-                    {/* Name and Price Input  */}
+                <form className="p-5 w-full" onSubmit={createCategory}>
+                    {/* Name Input  */}
                     <div className="flex flex-wrap -mx-2">
-                        <div className="w-full md:w-8/12 px-2 mb-5">
+                        <div className="w-full px-2 mb-5">
                             <div className="">
                                 <Tabs className="principal-tabs w-full" defaultIndex={0}>
                                     <div className="flex place-content-between">
                                         <div className="">
                                             <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                                Nombre del producto
+                                                Nombre de la subcategoría
                                             </label>
                                         </div>
                                         <div className="text-right">
@@ -132,16 +130,6 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
                                 </Tabs>
                             </div>
                         </div>
-                        <div className="w-full md:w-4/12 px-2 md:mt-0 mb-5">
-                            <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                Precio
-                            </label>
-                            <input className="text-sm appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-price" type="text" placeholder="Precio"
-                                value={price}
-                                required
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
-                        </div>
                     </div>
                     {/* Description Input  */}
                     <div className="w-full mb-5">
@@ -149,7 +137,7 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
                             <div className="flex place-content-between">
                                 <div className="">
                                     <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                        Descripción del producto
+                                        Descripción de la subcategoría
                                     </label>
                                 </div>
                                 <div className="text-right">
@@ -197,20 +185,20 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
                                 <div className="relative">
                                     <select
                                         className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        id="category-select"
-                                        value={category ? JSON.stringify(category) : ''}
-                                        onChange={handleCategoryChange}
+                                        id="section-select"
+                                        value={section ? JSON.stringify(section) : ''}
+                                        onChange={handleSectionChange}
                                         required
                                     >
                                         <option value="" disabled>
                                             Seleccionar una categoría
                                         </option>
-                                        {categories.map((category) => (
+                                        {sections.map((section) => (
                                             <option
-                                                key={category._id}
-                                                value={JSON.stringify(category)}
+                                                key={section._id}
+                                                value={JSON.stringify(section)}
                                             >
-                                                {category.name_es}
+                                                {section.name_es}
                                             </option>
                                         ))}
                                     </select>
@@ -265,7 +253,7 @@ export default function CreateCategoryForm({ categories, onCategoryCreated, clos
                             className={`text-white text-sm font-semibold p-2 px-4 rounded-sm ${loading ? 'bg-inc-light-blue opacity-50 cursor-not-allowed' : 'bg-inc-light-blue hover:bg-inc-light-blue-hover'
                                 } transition`}
                         >
-                            Crear Producto
+                            Crear Subcategoría
                         </button>
                     </div>
                 </form>

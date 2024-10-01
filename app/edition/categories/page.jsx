@@ -17,6 +17,9 @@ import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import SectionView from '@/app/edition/components/section/sectionView/SectionView';
 import CategoryView from '@/app/edition/components/category/categoryView/CategoryView';
 
+// import CreateSectionForm from '@/app/edition/components/section/createSectionForm/CreateSectionForm';
+import CreateCategoryForm from '@/app/edition/components/category/createCategoryForm/CreateCategoryForm';
+
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 export default function Categories() {
@@ -37,6 +40,18 @@ export default function Categories() {
         isOpen: isCategoryViewOpen,
         onOpen: onOpenCategoryView,
         onOpenChange: onOpenChangeCategoryView,
+    } = useDisclosure();
+
+    const {
+        isOpen: isCreateSectionFormOpen,
+        onOpen: onOpenCreateSectionForm,
+        onOpenChange: onOpenChangeCreateSectionForm,
+    } = useDisclosure();
+
+    const {
+        isOpen: isCreateCategoryFormOpen,
+        onOpen: onOpenCreateCategoryForm,
+        onOpenChange: onOpenChangeCreateCategoryForm,
     } = useDisclosure();
 
     useEffect(() => {
@@ -73,6 +88,7 @@ export default function Categories() {
     const handleSectionDeleted = () => {
 
     }
+
     const handleCategoryUpdated = () => {
 
     }
@@ -152,7 +168,8 @@ export default function Categories() {
                                         <div className="">Subcategorías</div>
                                         <div className="text-right text-white flex items-center whitespace-nowrap 
                                         h-full bg-inc-light-blue px-3 py-2 cursor-pointer mr-0 rounded-sm text-sm hover:bg-inc-light-blue-hover 
-                                        transition">
+                                        transition"
+                                            onClick={onOpenCreateCategoryForm}>
                                             Nueva Subcategoría
                                         </div>
                                     </div>
@@ -243,6 +260,39 @@ export default function Categories() {
                                 onProductDeleted={handleCategoryDeleted}
                                 category={selectedCategory}
                                 closeModal={() => onOpenChangeCategoryView(false)} />
+                        </>
+                    </ModalContent>
+                </Modal>
+                <Modal
+                    isOpen={isCreateSectionFormOpen}
+                    onOpenChange={onOpenChangeCreateSectionForm}
+                    placement="top-center"
+                    className=""
+                    size={"xl"}
+                >
+                    <ModalContent className="modal-content">
+                        <>
+                            <CategoryView
+                                className="create-section-form"
+                                onSectionCreated={handleSectionCreated}
+                                closeModal={() => onOpenChangeCreateSectionForm(false)} />
+                        </>
+                    </ModalContent>
+                </Modal>
+                <Modal
+                    isOpen={isCreateCategoryFormOpen}
+                    onOpenChange={onOpenChangeCreateCategoryForm}
+                    placement="top-center"
+                    className=""
+                    size={"xl"}
+                >
+                    <ModalContent className="modal-content">
+                        <>
+                            <CreateCategoryForm
+                                sections={sections}
+                                className="create-category-form"
+                                onCategoryCreated={handleCategoryCreated}
+                                closeModal={() => onOpenChangeCreateCategoryForm(false)} />
                         </>
                     </ModalContent>
                 </Modal>
