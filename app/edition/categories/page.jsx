@@ -15,6 +15,7 @@ import { GetCategories } from '@/app/services/categories';
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 
 import SectionView from '@/app/edition/components/section/sectionView/SectionView';
+import CategoryView from '@/app/edition/components/category/categoryView/CategoryView';
 
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
@@ -24,6 +25,7 @@ export default function Categories() {
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     const {
         isOpen: isSectionViewOpen,
@@ -69,6 +71,13 @@ export default function Categories() {
     }
 
     const handleSectionDeleted = () => {
+
+    }
+    const handleCategoryUpdated = () => {
+
+    }
+
+    const handleCategoryDeleted = () => {
 
     }
 
@@ -163,7 +172,9 @@ export default function Categories() {
                                                         </div>
                                                         {categories.filter(category => category.section._id === section._id)
                                                             .map((sectionCategory) => (
-                                                                <Tab key={sectionCategory._id} onClick={() => setSelectedCategoryId(sectionCategory._id)} className="flex w-full tab px-2 py-2 bg-ghost-white cursor-pointer transition">
+                                                                <Tab key={sectionCategory._id}
+                                                                    onClick={() => setSelectedCategory(sectionCategory)}
+                                                                    className="flex w-full tab px-2 py-2 bg-ghost-white cursor-pointer transition">
                                                                     <div className="flex w-1/12 justify-center items-center h-6 mr-2 cursor-grab">
                                                                         <div className="flex flex-col justify-center w-[13px] h-full">
                                                                             <div className="mb-1 h-[2px] bg-gray-3 rounded"></div>
@@ -180,7 +191,7 @@ export default function Categories() {
                                                                         {section.active ? 'Activo' : 'Inactivo'}
                                                                     </div>
                                                                     <div className="w-1/12 text-sm flex items-center justify-content-center"
-                                                                        onClick={() => onOpenSectionView()}>
+                                                                        onClick={() => onOpenCategoryView()}>
                                                                         <HiOutlinePencilAlt className="w-5 h-5" />
                                                                     </div>
                                                                 </Tab>
@@ -213,6 +224,25 @@ export default function Categories() {
                                 onProductDeleted={handleSectionDeleted}
                                 section={selectedSection}
                                 closeModal={() => onOpenChangeSectionView(false)} />
+                        </>
+                    </ModalContent>
+                </Modal>
+                <Modal
+                    isOpen={isCategoryViewOpen}
+                    onOpenChange={onOpenChangeCategoryView}
+                    placement="top-center"
+                    className=""
+                    size={"xl"}
+                >
+                    <ModalContent className="modal-content">
+                        <>
+                            <CategoryView
+                                categories={categories}
+                                className="category-view"
+                                onProductUpdated={handleCategoryUpdated}
+                                onProductDeleted={handleCategoryDeleted}
+                                category={selectedCategory}
+                                closeModal={() => onOpenChangeCategoryView(false)} />
                         </>
                     </ModalContent>
                 </Modal>
