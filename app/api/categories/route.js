@@ -3,24 +3,25 @@ import connectMongoDB from "../../../libs/mongodb";
 import Category from "@/models/Category"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, description_es, description_en, description_pt, publish, section } = await req.json();
+    try {
+        let category = await req.json();
+        await connectMongoDB();
+        const createdCategory = await Category.create(category);
 
-    let category = {
-        name_es: name_es,
-        name_en: name_en,
-        name_pt: name_pt,
-        description_es: description_es,
-        description_en: description_en,
-        description_pt: description_pt,
-        publish: publish,
-        section: section
+        return NextResponse.json(
+            {
+                message: "Category created successfully",
+                product: createdCategory
+            },
+            { status: 201 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error creating category", error: error.message },
+            { status: 500 }
+        );
     }
-
-    await connectMongoDB();
-    await Category.create(category);
-    return NextResponse.json({ message: "Category created" }, { status: 201 });
 }
-
 export async function GET(req) {
     await connectMongoDB();
     const categories = await Category.find().sort({ sequence: 1 });

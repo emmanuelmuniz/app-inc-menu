@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { CreateCategoryService } from '@/app/edition/services/category/createCategoryService/CreateCategoryService'
+import { CreateSectionService } from '@/app/edition/services/section/createSectionService/CreateSectionService'
 
-export default function CreateCategoryForm({ sections, onCategoryCreated, closeModal }) {
+export default function CreateSectionForm({ onSectionCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: '',
         EN: '',
@@ -17,7 +17,6 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
         PT: ''
     });
 
-    const [section, setSection] = useState(null);
     const [active, setActive] = useState("true");
 
     const [loading, setLoading] = useState(false);
@@ -36,53 +35,42 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
         });
     };
 
-    const handleSectionChange = (e) => {
-        const selectedSection = JSON.parse(e.target.value);
-        setSection(selectedSection);
-    };
-
-    const createCategory = async (e) => {
+    const createSection = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        let category = {
+        let section = {
             name_es: nameInputs.ES,
             name_en: nameInputs.EN,
             name_pt: nameInputs.PT,
             description_es: descriptionInputs.ES,
             description_en: descriptionInputs.EN,
             description_pt: descriptionInputs.PT,
-            active: active,
-            section: {
-                name_es: section.name_es,
-                name_en: section.name_en,
-                name_pt: section.name_pt,
-                _id: section._id
-            }
+            active: active
         }
 
         try {
-            const result = await CreateCategoryService({ category }).then(() => {
+            const result = await CreateSectionService({ section }).then(() => {
                 setLoading(false);
-                onCategoryCreated();
+                onSectionCreated();
                 closeModal();
-                console.log('Category creation result:', result);
+                console.log('Section creation result:', result);
             });
 
 
         } catch (error) {
-            console.error('Failed to create category:', error);
+            console.error('Failed to create section:', error);
             setLoading(false);
         }
     }
 
     return (
         <>
-            <div className="newCategoryFormModal overflow-y-auto no-scrollbar px-3 py-1">
+            <div className="newSectionFormModal overflow-y-auto no-scrollbar px-3 py-1">
                 <div className="m-2 pb-4 pt-2 border-b-1 border-gray">
-                    <span className='font-semibold text-md'>Nueva subcategoría</span>
+                    <span className='font-semibold text-md'>Nueva categoría</span>
                 </div>
-                <form className="p-5 w-full" onSubmit={createCategory}>
+                <form className="p-5 w-full" onSubmit={createSection}>
                     {/* Name Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full px-2 mb-5">
@@ -91,7 +79,7 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
                                     <div className="flex place-content-between">
                                         <div className="">
                                             <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                                Nombre de la subcategoría
+                                                Nombre de la categoría
                                             </label>
                                         </div>
                                         <div className="text-right">
@@ -137,7 +125,7 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
                             <div className="flex place-content-between">
                                 <div className="">
                                     <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                        Descripción de la subcategoría
+                                        Descripción de la categoría
                                     </label>
                                 </div>
                                 <div className="text-right">
@@ -154,7 +142,6 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
                                     value={descriptionInputs.ES}
                                     onChange={(e) => handleDescriptionInputChange(e, 'ES')}
                                     placeholder="Descripción en español"
-                                    required
                                 />
                             </TabPanel>
                             <TabPanel>
@@ -175,40 +162,9 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
                             </TabPanel>
                         </Tabs>
                     </div>
-                    {/* Category and Published Input  */}
+                    {/* Active Input  */}
                     <div className="flex flex-wrap -mx-2 mb-5">
-                        <div className="w-full md:w-8/12 px-2 md:mb-0">
-                            <div className="w-full mb-3 md:mb-0 sm:mb-5">
-                                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                    Categoría
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        id="section-select"
-                                        value={section ? JSON.stringify(section) : ''}
-                                        onChange={handleSectionChange}
-                                        required
-                                    >
-                                        <option value="" disabled>
-                                            Seleccionar una categoría
-                                        </option>
-                                        {sections.map((section) => (
-                                            <option
-                                                key={section._id}
-                                                value={JSON.stringify(section)}
-                                            >
-                                                {section.name_es}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-full md:w-4/12 px-2 md:mb-0">
+                        <div className="w-full px-2 md:mb-0">
                             <div className="w-full mb-3">
                                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                     Estado
@@ -253,7 +209,7 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
                             className={`text-white text-sm font-semibold p-2 px-4 rounded-sm ${loading ? 'bg-inc-light-blue opacity-50 cursor-not-allowed' : 'bg-inc-light-blue hover:bg-inc-light-blue-hover'
                                 } transition`}
                         >
-                            Crear Subcategoría
+                            Crear Categoría
                         </button>
                     </div>
                 </form>

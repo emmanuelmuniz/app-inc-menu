@@ -3,23 +3,33 @@ import connectMongoDB from "@/libs/mongodb";
 import Category from "@/models/Category"
 
 export async function PUT(req, { params }) {
-    let { id } = params;
-    let { name_es: name_es,
-        name_en: name_en,
-        name_pt: name_pt,
-        description: description,
-        sequence: sequence,
-        publish: publish,
-        section: section,
-        products: products,
-        lastUpdateUser: lastUpdateUser } = await req.json();
+    try {
+        let { id } = params;
+        let category = await req.json();
 
-    await connectMongoDB();
-    await Category.findByIdAndUpdate(id, {
-        name_es, name_en, name_pt, sequence, section,
-        description, publish, products, lastUpdateUser
-    });
-    return NextResponse.json({ message: "Category edited." }, { status: 200 });
+        await connectMongoDB();
+        const updatedCategory = await Category.findByIdAndUpdate(id, category, { new: true });
+
+        if (!updatedCategory) {
+            return NextResponse.json(
+                { message: "Category not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            {
+                message: "Category updated successfully",
+                section: updatedCategory
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error updating category", error: error.message },
+            { status: 500 }
+        );
+    }
 }
 export async function GET(req, { params }) {
     const { id } = params;

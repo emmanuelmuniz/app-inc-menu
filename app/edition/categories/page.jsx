@@ -17,7 +17,7 @@ import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 import SectionView from '@/app/edition/components/section/sectionView/SectionView';
 import CategoryView from '@/app/edition/components/category/categoryView/CategoryView';
 
-// import CreateSectionForm from '@/app/edition/components/section/createSectionForm/CreateSectionForm';
+import CreateSectionForm from '@/app/edition/components/section/createSectionForm/CreateSectionForm';
 import CreateCategoryForm from '@/app/edition/components/category/createCategoryForm/CreateCategoryForm';
 
 import { HiOutlinePencilAlt } from "react-icons/hi";
@@ -81,11 +81,19 @@ export default function Categories() {
         }
     }
 
+    const handleSectionCreated = () => {
+
+    }
+
     const handleSectionUpdated = () => {
 
     }
 
     const handleSectionDeleted = () => {
+
+    }
+
+    const handleCategoryCreated = () => {
 
     }
 
@@ -118,7 +126,8 @@ export default function Categories() {
                                         <div className="">Categorías</div>
                                         <div className="text-right text-white flex items-center whitespace-nowrap 
                                         h-full bg-inc-light-blue px-3 py-2 cursor-pointer mr-0 rounded-sm text-sm hover:bg-inc-light-blue-hover 
-                                        transition">
+                                        transition"
+                                            onClick={onOpenCreateSectionForm}>
                                             Nueva Categoría
                                         </div>
                                     </div>
@@ -272,7 +281,7 @@ export default function Categories() {
                 >
                     <ModalContent className="modal-content">
                         <>
-                            <CategoryView
+                            <CreateSectionForm
                                 className="create-section-form"
                                 onSectionCreated={handleSectionCreated}
                                 closeModal={() => onOpenChangeCreateSectionForm(false)} />

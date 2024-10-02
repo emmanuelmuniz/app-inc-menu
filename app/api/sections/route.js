@@ -3,24 +3,24 @@ import connectMongoDB from "../../../libs/mongodb";
 import Section from "@/models/Section"
 
 export async function POST(req) {
-    let { name_es, name_en, name_pt, description_es, description_en, description_pt, categories, publish } = await req.json();
+    try {
+        let section = await req.json();
+        await connectMongoDB();
+        const createdSection = await Section.create(section);
 
-    let section = {
-        name_es: name_es,
-        name_en: name_en,
-        name_pt: name_pt,
-        categories: categories,
-        description_es: description_es,
-        description_en: description_en,
-        description_pt: description_pt,
-        publish: publish
+        return NextResponse.json(
+            {
+                message: "Section created successfully",
+                product: createdSection
+            },
+            { status: 201 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error creating section", error: error.message },
+            { status: 500 }
+        );
     }
-
-    console.log(section)
-
-    await connectMongoDB();
-    await Section.create(section);
-    return NextResponse.json({ message: "Section created" }, { status: 201 });
 }
 
 export async function GET(req) {
