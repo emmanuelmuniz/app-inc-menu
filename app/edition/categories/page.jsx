@@ -256,6 +256,7 @@ export default function Categories() {
                                 className="section-view"
                                 onSectionUpdated={handleSectionUpdate}
                                 onSectionDeleted={handleSectionUpdate}
+                                categories={categories}
                                 section={selectedSection}
                                 closeModal={() => onOpenChangeSectionView(false)} />
                         </>

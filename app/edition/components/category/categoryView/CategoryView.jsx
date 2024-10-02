@@ -81,7 +81,7 @@ export default function CategoryView({ category, products, categories, onCategor
                             onCategoryDeleted={handleCategoryDeleted} />
                     </div>
                 </div>
-                <form className="p-4 w-full" onSubmit={updateCategory}>
+                <form className="p-4 px-2 w-full" onSubmit={updateCategory}>
                     {/* Name Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full px-2 mb-5">

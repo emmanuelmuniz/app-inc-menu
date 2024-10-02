@@ -50,14 +50,12 @@ export default function CreateSectionForm({ onSectionCreated, closeModal }) {
         }
 
         try {
-            const result = await CreateSectionService({ section }).then(() => {
+            const result = await CreateSectionService({ section }).then((result) => {
                 setLoading(false);
                 onSectionCreated();
                 closeModal();
                 console.log('Section creation result:', result);
             });
-
-
         } catch (error) {
             console.error('Failed to create section:', error);
             setLoading(false);

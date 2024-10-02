@@ -85,7 +85,7 @@ export default function ProductView({ product, categories, onProductUpdated, onP
 
     return (
         <>
-            <div className="w-full newProductFormModal overflow-y-auto no-scrollbar px-6 py-1">
+            <div className="w-full newProductFormModal overflow-y-auto no-scrollbar px-8 py-1">
                 <div className="flex mx-2 pb-4 px-0 pt-4 border-b-1 border-gray place-content-between">
                     <div className='text-center content-center font-semibold'>{product.name_es}</div>
                     <div className="">
@@ -94,7 +94,7 @@ export default function ProductView({ product, categories, onProductUpdated, onP
                             onProductDeleted={handleProductDeleted} />
                     </div>
                 </div>
-                <form className="p-4 w-full" onSubmit={updateProduct}>
+                <form className="p-4 px-2 w-full" onSubmit={updateProduct}>
                     {/* Name and Price Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full md:w-8/12 px-2 mb-5">

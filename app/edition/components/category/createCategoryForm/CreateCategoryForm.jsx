@@ -62,14 +62,12 @@ export default function CreateCategoryForm({ sections, onCategoryCreated, closeM
         }
 
         try {
-            const result = await CreateCategoryService({ category }).then(() => {
+            const result = await CreateCategoryService({ category }).then((result) => {
                 setLoading(false);
                 onCategoryCreated();
                 closeModal();
                 console.log('Category creation result:', result);
             });
-
-
         } catch (error) {
             console.error('Failed to create category:', error);
             setLoading(false);

@@ -29,8 +29,28 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
-    const id = req.nextUrl.searchParams.get("id");
-    await connectMongoDB();
-    await Category.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Category deleted." });
-} 
+    try {
+        const id = req.nextUrl.searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ message: "Category ID is required" }, { status: 400 });
+        }
+
+        await connectMongoDB();
+        const deletedCategory = await Category.findByIdAndDelete(id);
+
+        if (!deletedCategory) {
+            return NextResponse.json({ message: "Category not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(
+            { message: "Category deleted", category: deletedCategory },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error deleting category", error: error.message },
+            { status: 500 }
+        );
+    }
+}

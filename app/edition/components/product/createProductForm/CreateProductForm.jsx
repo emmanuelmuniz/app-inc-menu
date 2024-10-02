@@ -64,14 +64,12 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
         }
 
         try {
-            const result = await CreateProductService({ product }).then(() => {
+            const result = await CreateProductService({ product }).then((result) => {
                 setLoading(false);
                 onProductCreated();
                 closeModal();
                 console.log('Product creation result:', result);
             });
-
-
         } catch (error) {
             console.error('Failed to create product:', error);
             setLoading(false);

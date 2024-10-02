@@ -30,8 +30,28 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
-    const id = req.nextUrl.searchParams.get("id");
-    await connectMongoDB();
-    await Section.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Section deleted." });
-} 
+    try {
+        const id = req.nextUrl.searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ message: "Section ID is required" }, { status: 400 });
+        }
+
+        await connectMongoDB();
+        const deletedSection = await Section.findByIdAndDelete(id);
+
+        if (!deletedSection) {
+            return NextResponse.json({ message: "Section not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(
+            { message: "Section deleted", section: deletedSection },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Error deleting section", error: error.message },
+            { status: 500 }
+        );
+    }
+}

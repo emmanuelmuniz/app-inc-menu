@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
-import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
+import { UpdateSectionService } from '@/app/edition/services/section/updateSectionService/UpdateSectionService'
+import DeleteSectionForm from '@/app/edition/components/section/deleteSectionForm/DeleteSectionForm';
 
-export default function SectionView({ section, onSectionUpdated, onSectionDeleted, closeModal }) {
+export default function SectionView({ section, categories, onSectionUpdated, onSectionDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: section.name_es,
         EN: section.name_en,
@@ -71,16 +71,17 @@ export default function SectionView({ section, onSectionUpdated, onSectionDelete
 
     return (
         <>
-            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-2 bg-white rounded-sm">
+            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-8 bg-white rounded-sm">
                 <div className="flex mx-2 pb-4 px-0 pt-4 border-b-1 border-gray place-content-between">
                     <div className='text-center content-center font-semibold'>{section.name_es}</div>
                     <div className="">
-                        {/* <DeleteSectionForm
+                        <DeleteSectionForm
                             section={section}
-                            onSectionDeleted={handleSectionDeleted} /> */}
+                            categories={categories}
+                            onSectionDeleted={handleSectionDeleted} />
                     </div>
                 </div>
-                <form className="p-4 w-full" onSubmit={updateSection}>
+                <form className="p-4 px-2 w-full" onSubmit={updateSection}>
                     {/* Name Input  */}
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full px-2 mb-4">
