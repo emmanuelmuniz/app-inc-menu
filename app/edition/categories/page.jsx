@@ -73,6 +73,18 @@ export default function Categories() {
         getSections();
     }, []);
 
+    const loadSections = async () => {
+        await GetSections().then((response) => {
+            setSections(response.sections);
+        });
+    };
+
+    const loadCategories = async () => {
+        await GetCategories().then((response) => {
+            setCategories(response.categories);
+        });
+    };
+
     const handleSectionSelect = (sectionId) => {
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
@@ -81,28 +93,12 @@ export default function Categories() {
         }
     }
 
-    const handleSectionCreated = () => {
-
+    const handleSectionUpdate = () => {
+        loadSections();
     }
 
-    const handleSectionUpdated = () => {
-
-    }
-
-    const handleSectionDeleted = () => {
-
-    }
-
-    const handleCategoryCreated = () => {
-
-    }
-
-    const handleCategoryUpdated = () => {
-
-    }
-
-    const handleCategoryDeleted = () => {
-
+    const handleCategoryUpdate = () => {
+        loadCategories();
     }
 
     return (
@@ -134,7 +130,7 @@ export default function Categories() {
 
                                     <div className="rounded-sm overflow-hidden w-full">
                                         <div>
-                                            <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                            <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm rounded-b-sm">
                                                 <div className="w-1/12 ml-2"></div>
                                                 <div className="w-3/12 text-md">Categoría</div>
                                                 <div className="w-5/12 text-md">Descripción</div>
@@ -142,30 +138,32 @@ export default function Categories() {
                                                 <div className="w-1/12 text-md"></div>
                                             </div>
                                         </div>
-                                        <div>
+                                        <div className="rounded-sm overflow-hidden">
                                             {sections.map((section) => (
-                                                <Tab key={section._id} className="flex tab text-sm px-2 py-2 odd:bg-silver even:bg-white cursor-pointer transition"
+                                                <Tab key={section._id} className="flex tab text-sm focus:outline-none odd:bg-gray-4 even:bg-white cursor-pointer transition"
                                                     onClick={() => setSelectedSection(section)}>
-                                                    <div className="w-1/12 ml-2">
-                                                        <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
-                                                            <div className="flex flex-col justify-center w-[13px] h-full">
-                                                                <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
-                                                                <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                    <div className="flex w-full px-2 py-2 border-gray-2 border-b-1 border-l-1 border-r-1">
+                                                        <div className="w-1/12 ml-2">
+                                                            <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
+                                                                <div className="flex flex-col justify-center w-[13px] h-full">
+                                                                    <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
+                                                                    <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="w-3/12 text-sm flex items-center">
-                                                        {section.name_es}
-                                                    </div>
-                                                    <div className="w-5/12 text-sm flex items-center">
-                                                        {section.description_es}
-                                                    </div>
-                                                    <div className="w-2/12 text-sm flex items-center">
-                                                        {section.active ? 'Activo' : 'Inactivo'}
-                                                    </div>
-                                                    <div className="w-1/12 text-sm flex items-center justify-content-center"
-                                                        onClick={() => onOpenSectionView()}>
-                                                        <HiOutlinePencilAlt className="w-5 h-5" />
+                                                        <div className="w-3/12 text-sm flex items-center">
+                                                            {section.name_es}
+                                                        </div>
+                                                        <div className="w-5/12 text-sm flex items-center">
+                                                            {section.description_es}
+                                                        </div>
+                                                        <div className="w-2/12 text-sm flex items-center">
+                                                            {section.active ? 'Activo' : 'Inactivo'}
+                                                        </div>
+                                                        <div className="w-1/12 text-sm flex items-center justify-content-center"
+                                                            onClick={() => onOpenSectionView()}>
+                                                            <HiOutlinePencilAlt className="w-5 h-5" />
+                                                        </div>
                                                     </div>
                                                 </Tab>
                                             ))}
@@ -188,7 +186,7 @@ export default function Categories() {
                                                 <TabList className="">
                                                     <div className="rounded-sm overflow-hidden">
                                                         <div>
-                                                            <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                                            <div className="flex p-2 bg-white border-b-2 border-gray">
                                                                 <div className="w-1/12 ml-2"></div>
                                                                 <div className="w-3/12 text-md">Subcategoría</div>
                                                                 <div className="w-5/12 text-md">Descripción</div>
@@ -200,25 +198,27 @@ export default function Categories() {
                                                             .map((sectionCategory) => (
                                                                 <Tab key={sectionCategory._id}
                                                                     onClick={() => setSelectedCategory(sectionCategory)}
-                                                                    className="flex w-full tab px-2 py-2 bg-ghost-white cursor-pointer transition">
-                                                                    <div className="flex w-1/12 justify-center items-center h-6 mr-2 cursor-grab">
-                                                                        <div className="flex flex-col justify-center w-[13px] h-full">
-                                                                            <div className="mb-1 h-[2px] bg-gray-3 rounded"></div>
-                                                                            <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                    className="flex w-full tab bg-ghost-white cursor-pointer transition odd:bg-gray-4 even:bg-white">
+                                                                    <div className="flex w-full px-2 py-2 border-gray-2 border-b-1 border-l-1 border-r-1">
+                                                                        <div className="flex w-1/12 justify-center items-center h-6 mr-2 cursor-grab">
+                                                                            <div className="flex flex-col justify-center w-[13px] h-full">
+                                                                                <div className="mb-1 h-[2px] bg-gray-3 rounded"></div>
+                                                                                <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="w-3/12 text-sm flex items-center">
-                                                                        {sectionCategory.name_es}
-                                                                    </div>
-                                                                    <div className="w-5/12 text-sm flex items-center">
-                                                                        {sectionCategory.description_es}
-                                                                    </div>
-                                                                    <div className="w-2/12 text-sm flex items-center">
-                                                                        {section.active ? 'Activo' : 'Inactivo'}
-                                                                    </div>
-                                                                    <div className="w-1/12 text-sm flex items-center justify-content-center"
-                                                                        onClick={() => onOpenCategoryView()}>
-                                                                        <HiOutlinePencilAlt className="w-5 h-5" />
+                                                                        <div className="w-3/12 text-sm flex items-center">
+                                                                            {sectionCategory.name_es}
+                                                                        </div>
+                                                                        <div className="w-5/12 text-sm flex items-center">
+                                                                            {sectionCategory.description_es}
+                                                                        </div>
+                                                                        <div className="w-2/12 text-sm flex items-center">
+                                                                            {section.active ? 'Activo' : 'Inactivo'}
+                                                                        </div>
+                                                                        <div className="w-1/12 text-sm flex items-center justify-content-center"
+                                                                            onClick={() => onOpenCategoryView()}>
+                                                                            <HiOutlinePencilAlt className="w-5 h-5" />
+                                                                        </div>
                                                                     </div>
                                                                 </Tab>
                                                             ))}
@@ -244,10 +244,9 @@ export default function Categories() {
                     <ModalContent className="modal-content">
                         <>
                             <SectionView
-                                categories={categories}
                                 className="section-view"
-                                onProductUpdated={handleSectionUpdated}
-                                onProductDeleted={handleSectionDeleted}
+                                onSectionUpdated={handleSectionUpdate}
+                                onSectionDeleted={handleSectionUpdate}
                                 section={selectedSection}
                                 closeModal={() => onOpenChangeSectionView(false)} />
                         </>
@@ -265,8 +264,8 @@ export default function Categories() {
                             <CategoryView
                                 categories={categories}
                                 className="category-view"
-                                onProductUpdated={handleCategoryUpdated}
-                                onProductDeleted={handleCategoryDeleted}
+                                onCategoryUpdated={handleCategoryUpdate}
+                                onCategoryDeleted={handleCategoryUpdate}
                                 category={selectedCategory}
                                 closeModal={() => onOpenChangeCategoryView(false)} />
                         </>
@@ -283,7 +282,7 @@ export default function Categories() {
                         <>
                             <CreateSectionForm
                                 className="create-section-form"
-                                onSectionCreated={handleSectionCreated}
+                                onSectionCreated={handleSectionUpdate}
                                 closeModal={() => onOpenChangeCreateSectionForm(false)} />
                         </>
                     </ModalContent>
@@ -300,7 +299,7 @@ export default function Categories() {
                             <CreateCategoryForm
                                 sections={sections}
                                 className="create-category-form"
-                                onCategoryCreated={handleCategoryCreated}
+                                onCategoryCreated={handleCategoryUpdate}
                                 closeModal={() => onOpenChangeCreateCategoryForm(false)} />
                         </>
                     </ModalContent>

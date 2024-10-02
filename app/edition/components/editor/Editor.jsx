@@ -117,30 +117,34 @@ export default function Editor() {
                                 defaultIndex={0}
                                 onSelect={(index) => handleSectionSelect(sections[index]._id)}
                             >
-                                <TabList className="text-md text-black px-2 mr-2 rounded-sm w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
+                                <TabList className="text-md text-black px-2 mr-2 rounded-sm overflow-hidden w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
                                     <div className="mt-2 mb-3 font-semibold text-gray-3">Categorías</div>
-                                    {sections.map((section) => (
-                                        <Tab
-                                            key={section._id}
-                                            className="tab text-sm bg-ghost-white cursor-pointer p-2 my-1 rounded-sm transition"
-                                        >
-                                            {section.name_es}
-                                        </Tab>
-                                    ))}
+                                    <div className="rounded-sm overflow-hidden">
+                                        {sections.map((section) => (
+                                            <Tab
+                                                key={section._id}
+                                                className="tab text-sm bg-white cursor-pointer transition focus:outline-none"
+                                            >
+                                                <div className="p-2">{section.name_es}</div>
+                                                <div className="w-full border-b-1 border-gray-2 bg-gray-2"></div>
+                                            </Tab>
+                                        ))}
+                                    </div>
                                 </TabList>
                                 <div className="text-md w-full rounded-sm bg-gray-2 px-2">
                                     <div className="mt-2 mb-3 font-semibold text-gray-3">Subcategorías</div>
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
-                                                <TabList className="text-md w-full">
+                                                <TabList className="text-md w-full rounded-sm overflow-hidden">
                                                     {filteredCategories().map((sectionCategory) => (
                                                         <Tab
                                                             key={sectionCategory._id}
                                                             onClick={() => setSelectedCategoryId(sectionCategory._id)}
-                                                            className="w-full text-sm tab p-2 my-1 bg-ghost-white cursor-pointer rounded-sm transition"
+                                                            className="w-full text-sm tab bg-white cursor-pointer transition focus:outline-none"
                                                         >
-                                                            {sectionCategory.name_es}
+                                                            <div className="p-2">{sectionCategory.name_es}</div>
+                                                            <div className="w-full border-b-1 border-gray-2 bg-gray-2"></div>
                                                         </Tab>
                                                     ))}
                                                 </TabList>
@@ -159,7 +163,7 @@ export default function Editor() {
                                         <input
                                             value={searchFilter}
                                             onChange={(e) => setSearchFilter(e.target.value)}
-                                            placeholder="Buscar productos..."
+                                            placeholder="Buscar productos"
                                             className="w-full outline-none bg-transparent text-sm"
                                         />
                                     </div>
@@ -175,7 +179,7 @@ export default function Editor() {
                                 </div>
                             </div>
 
-                            <table className="w-full table-auto rounded-t-sm overflow-hidden mb-2">
+                            <table className="w-full table-auto rounded-t-sm rounded-b-sm overflow-hidden mb-2">
                                 <thead className="w-full">
                                     <tr className="text-left bg-inc-light-blue w-full">
                                         <th></th>
@@ -197,7 +201,7 @@ export default function Editor() {
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
                                                                 onClick={() => setSelectedProduct(product)}
-                                                                className={`max-h-12 text-sm p-2 pl-4 hover:text-inc-light-blue transition odd:bg-silver even:bg-white rounded-none ${snapshot.isDragging ? "bg-gray-200 dragging" : ""
+                                                                className={`max-h-12 text-sm p-2 border-1 border-gray-2 pl-4 hover:text-inc-light-blue transition odd:bg-gray-4 even:bg-white rounded-none ${snapshot.isDragging ? "bg-gray-200 dragging" : ""
                                                                     }`}
                                                             >
                                                                 <td>

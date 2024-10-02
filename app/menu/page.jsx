@@ -66,7 +66,7 @@ export default function DigitalMenu() {
                     <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                         <TabList className="flex flex-wrap text-xl text-black mt-2 w-full px-11 pb-3">
                             {sections.map((section) => (
-                                <Tab key={section._id} className="tab bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
+                                <Tab key={section._id} className="tab bg-ghost-white focus:outline-none cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                     {section.name_es}
                                 </Tab>
                             ))}
@@ -78,7 +78,7 @@ export default function DigitalMenu() {
                                         <TabList className="flex flex-wrap px-11 pb-2">
                                             {categories.filter(category => category.section._id === section._id)
                                                 .map((sectionCategory) => (
-                                                    <Tab key={sectionCategory._id} className="tab bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
+                                                    <Tab key={sectionCategory._id} className="tab focus:outline-none bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                                         {sectionCategory.name_es}
                                                     </Tab>
                                                 ))}

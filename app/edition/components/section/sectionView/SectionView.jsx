@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
 import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
 
-export default function SectionView({ section, categories, onSectionUpdated, onSectionDeleted, closeModal }) {
+export default function SectionView({ section, onSectionUpdated, onSectionDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: section.name_es,
         EN: section.name_en,
