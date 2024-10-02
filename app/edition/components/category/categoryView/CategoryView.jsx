@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
-import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
+import { UpdateCategoryService } from '@/app/edition/services/category/updateCategoryService/UpdateCategoryService'
+import DeleteCategoryForm from '@/app/edition/components/category/deleteCategoryForm/DeleteCategoryForm';
 
-export default function CategoryView({ category, categories, onCategoryUpdated, onCategoryDeleted, closeModal }) {
+export default function CategoryView({ category, products, categories, onCategoryUpdated, onCategoryDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: category.name_es,
         EN: category.name_en,
@@ -36,7 +36,7 @@ export default function CategoryView({ category, categories, onCategoryUpdated, 
     };
 
     const handleCategoryDeleted = (e) => {
-        onSectionDeleted();
+        onCategoryDeleted();
         closeModal();
     };
 
@@ -57,7 +57,7 @@ export default function CategoryView({ category, categories, onCategoryUpdated, 
         try {
             const result = await UpdateCategoryService({ category, id })
                 .then(() => {
-                    onCategortUpdated();
+                    onCategoryUpdated();
                     closeModal();
                     console.log('Category updating result:', result);
                     setLoading(false);
@@ -71,13 +71,14 @@ export default function CategoryView({ category, categories, onCategoryUpdated, 
 
     return (
         <>
-            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-6 py-1">
+            <div className="w-full newSectionFormModal overflow-y-auto no-scrollbar px-8 py-1">
                 <div className="flex mx-2 pb-4 px-0 pt-4 border-b-1 border-gray place-content-between">
                     <div className='text-center content-center font-semibold'>{category.name_es}</div>
                     <div className="">
-                        {/* <DeleteCategoryForm
-                            section={section}
-                            onSectionDeleted={handleSectionDeleted} /> */}
+                        <DeleteCategoryForm
+                            category={category}
+                            products={products}
+                            onCategoryDeleted={handleCategoryDeleted} />
                     </div>
                 </div>
                 <form className="p-4 w-full" onSubmit={updateCategory}>

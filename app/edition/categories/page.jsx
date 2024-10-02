@@ -11,6 +11,7 @@ import { Modal, ModalContent } from "@nextui-org/modal";
 
 import { GetSections } from '@/app/services/sections';
 import { GetCategories } from '@/app/services/categories';
+import { GetProducts } from '@/app/services/products';
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 
@@ -29,6 +30,7 @@ export default function Categories() {
     const [loading, setLoading] = useState(true);
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [products, setProducts] = useState(null);
 
     const {
         isOpen: isSectionViewOpen,
@@ -64,7 +66,7 @@ export default function Categories() {
                             .then((response) => {
                                 setCategories(response.categories);
                                 setSelectedCategoryId(response.categories[0]._id);
-                                setLoading(false);
+                                loadProducts();
                             });
                     };
                     getCategories();
@@ -72,6 +74,13 @@ export default function Categories() {
         };
         getSections();
     }, []);
+
+    const loadProducts = async () => {
+        await GetProducts().then((response) => {
+            setProducts(response.products);
+            setLoading(false);
+        });
+    };
 
     const loadSections = async () => {
         await GetSections().then((response) => {
@@ -263,6 +272,7 @@ export default function Categories() {
                         <>
                             <CategoryView
                                 categories={categories}
+                                products={products}
                                 className="category-view"
                                 onCategoryUpdated={handleCategoryUpdate}
                                 onCategoryDeleted={handleCategoryUpdate}
