@@ -23,6 +23,28 @@ export async function POST(req) {
     }
 }
 
+export async function PUT(req, response) {
+    try {
+        const sections = await req.json();
+
+        await connectMongoDB();
+
+        const updatePromises = sections.map(section =>
+            Section.updateOne(
+                { _id: section._id },
+                { $set: section }
+            )
+        );
+
+        await Promise.all(updatePromises);
+
+        return NextResponse.json({ message: "Sections updated" }, { status: 200 });
+    } catch (error) {
+        console.error("Error updating sections:", error);
+        return NextResponse.json({ error: "Failed to update sections" }, { status: 500 });
+    }
+}
+
 export async function GET(req) {
     await connectMongoDB();
     const sections = await Section.find().sort({ sequence: 1 });
