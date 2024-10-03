@@ -22,12 +22,12 @@ import CreateCategoryForm from '@/app/edition/components/category/createCategory
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 export default function Categories() {
-    const { sections, categories, selectedCategoryId, setSelectedCategoryId,
-        loadCategories, loadSections, loading } = useLoadData({ setProducts });
-
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [products, setProducts] = useState(null);
+
+    const { sections, categories, selectedCategoryId, setSelectedCategoryId,
+        loadCategories, loadSections, loading } = useLoadData({ setProducts });
 
     const {
         isOpen: isSectionViewOpen,
