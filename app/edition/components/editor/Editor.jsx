@@ -2,18 +2,15 @@
 
 import "./styles.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
+import useLoadData from "@/app/edition/hooks/useLoadData";
 import useReorderProducts from "@/app/edition/hooks/useReorderProducts";
 import useFilteredProducts from "@/app/edition/hooks/useFilteredProducts";
 
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Modal, ModalContent } from "@nextui-org/modal";
-
-import { GetSections } from "@/app/services/sections";
-import { GetCategories } from "@/app/services/categories";
-import { GetProducts } from "@/app/services/products";
 
 import LoadingDisplay from "@/app/edition/components/loading/LoadingDisplay";
 import CreateProductForm from "@/app/edition/components/product/createProductForm/CreateProductForm";
@@ -24,13 +21,12 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { HiOutlineSearch } from 'react-icons/hi';
 
 export default function Editor() {
-    const [sections, setSections] = useState([]);
-    const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+    const { sections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loading } = useLoadData({ setProducts });
+
     const [selectedSectionId, setSelectedSectionId] = useState("ALL");
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     const [searchFilter, setSearchFilter] = useState("");
 
@@ -49,31 +45,6 @@ export default function Editor() {
         onOpenChange: onOpenChangeProductView,
     } = useDisclosure();
 
-    useEffect(() => {
-        const getSections = async () => {
-            await GetSections().then((response) => {
-                const allSections = [{ _id: "ALL", name_es: "TODAS" }, ...response.sections];
-                setSections(allSections);
-                const getCategories = async () => {
-                    await GetCategories().then((response) => {
-                        setCategories(response.categories);
-                        setSelectedCategoryId("ALL");
-                        loadProducts();
-                    });
-                };
-                getCategories();
-            });
-        };
-        getSections();
-    }, []);
-
-    const loadProducts = async () => {
-        await GetProducts().then((response) => {
-            setProducts(response.products);
-            setLoading(false);
-        });
-    };
-
     const handleSectionSelect = (sectionId) => {
         setSelectedSectionId(sectionId);
         setSelectedCategoryId("ALL");
@@ -90,15 +61,7 @@ export default function Editor() {
         }
     };
 
-    const handleProductCreated = () => {
-        loadProducts();
-    };
-
-    const handleProductUpdated = () => {
-        loadProducts();
-    };
-
-    const handleProductDeleted = () => {
+    const handleProductUpdate = () => {
         loadProducts();
     };
 
@@ -249,7 +212,7 @@ export default function Editor() {
                                 <CreateProductForm
                                     categories={categories}
                                     className="create-product-form"
-                                    onProductCreated={handleProductCreated}
+                                    onProductCreated={handleProductUpdate}
                                     closeModal={() => onOpenChangeCreateProductForm(false)} />
                             </>
                         </ModalContent>
@@ -267,8 +230,8 @@ export default function Editor() {
                                 <ProductView
                                     categories={categories}
                                     className="product-view"
-                                    onProductUpdated={handleProductUpdated}
-                                    onProductDeleted={handleProductDeleted}
+                                    onProductUpdated={handleProductUpdate}
+                                    onProductDeleted={handleProductUpdate}
                                     product={selectedProduct}
                                     closeModal={() => onOpenChangeProductView(false)} />
                             </>

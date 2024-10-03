@@ -2,16 +2,14 @@
 
 import "./styles.css";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Modal, ModalContent } from "@nextui-org/modal";
 
-import { GetSections } from '@/app/services/sections';
-import { GetCategories } from '@/app/services/categories';
-import { GetProducts } from '@/app/services/products';
+import useLoadData from "@/app/edition/hooks/useLoadData";
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 
@@ -24,10 +22,9 @@ import CreateCategoryForm from '@/app/edition/components/category/createCategory
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 export default function Categories() {
-    const [sections, setSections] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { sections, categories, selectedCategoryId, setSelectedCategoryId,
+        loadCategories, loadSections, loading } = useLoadData({ setProducts });
+
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [products, setProducts] = useState(null);
@@ -56,44 +53,6 @@ export default function Categories() {
         onOpenChange: onOpenChangeCreateCategoryForm,
     } = useDisclosure();
 
-    useEffect(() => {
-        const getSections = async () => {
-            await GetSections()
-                .then((response) => {
-                    setSections(response.sections);
-                    const getCategories = async () => {
-                        await GetCategories()
-                            .then((response) => {
-                                setCategories(response.categories);
-                                setSelectedCategoryId(response.categories[0]._id);
-                                loadProducts();
-                            });
-                    };
-                    getCategories();
-                });
-        };
-        getSections();
-    }, []);
-
-    const loadProducts = async () => {
-        await GetProducts().then((response) => {
-            setProducts(response.products);
-            setLoading(false);
-        });
-    };
-
-    const loadSections = async () => {
-        await GetSections().then((response) => {
-            setSections(response.sections);
-        });
-    };
-
-    const loadCategories = async () => {
-        await GetCategories().then((response) => {
-            setCategories(response.categories);
-        });
-    };
-
     const handleSectionSelect = (sectionId) => {
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
@@ -113,10 +72,6 @@ export default function Categories() {
     return (
         <>
             <div className="bg-white h-full w-full md:min-h-[calc(100vh-5.3rem)]">
-                {/* <div className="">
-                    <div className="p-1 mt-2 ml-3 text-md font-semibold">Categorías</div>
-                </div> */}
-
                 {loading ? (
                     <div className="">
                         <LoadingDisplay></LoadingDisplay>
@@ -238,7 +193,6 @@ export default function Categories() {
                                     ))}
                                 </div>
                             </Tabs>
-                            {/* <div className="w-[2px] mx-2 bg-gray h-full"></div> */}
                         </div>
                     </div>
                 )}
