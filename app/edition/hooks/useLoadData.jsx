@@ -48,7 +48,7 @@ const useLoadData = ({ setProducts }) => {
         });
     };
 
-    return { sections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loadCategories, loadSections, loading };
+    return { sections, setSections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loadCategories, loadSections, loading };
 };
 
 export default useLoadData;

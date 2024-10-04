@@ -10,6 +10,7 @@ import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Modal, ModalContent } from "@nextui-org/modal";
 
 import useLoadData from "@/app/edition/hooks/useLoadData";
+import useReorderSections from "@/app/edition/hooks/useReorderSections";
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 
@@ -19,15 +20,19 @@ import CategoryView from '@/app/edition/components/category/categoryView/Categor
 import CreateSectionForm from '@/app/edition/components/section/createSectionForm/CreateSectionForm';
 import CreateCategoryForm from '@/app/edition/components/category/createCategoryForm/CreateCategoryForm';
 
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 export default function Categories() {
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]);
 
-    const { sections, categories, selectedCategoryId, setSelectedCategoryId,
-        loadCategories, loadSections, loading } = useLoadData({ setProducts });
+    const { categories, sections, setSections, loadCategories, loadSections, loading }
+        = useLoadData({ setProducts });
+
+    const { handleDragEnd } = useReorderSections(sections, setSections);
 
     const {
         isOpen: isSectionViewOpen,
@@ -102,36 +107,52 @@ export default function Categories() {
                                                 <div className="w-1/12 text-md"></div>
                                             </div>
                                         </div>
-                                        <div className="rounded-sm overflow-hidden">
-                                            {sections.map((section) => (
-                                                <Tab key={section._id} className="flex tab text-sm focus:outline-none odd:bg-gray-4 even:bg-white cursor-pointer transition"
-                                                    onClick={() => setSelectedSection(section)}>
-                                                    <div className="flex w-full px-2 py-2 border-gray-2 border-b-1 border-l-1 border-r-1">
-                                                        <div className="w-1/12 ml-2">
-                                                            <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
-                                                                <div className="flex flex-col justify-center w-[13px] h-full">
-                                                                    <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
-                                                                    <div className="h-[2px] bg-gray-3 rounded"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="w-3/12 text-sm flex items-center">
-                                                            {section.name_es}
-                                                        </div>
-                                                        <div className="w-5/12 text-sm flex items-center">
-                                                            {section.description_es}
-                                                        </div>
-                                                        <div className="w-2/12 text-sm flex items-center">
-                                                            {section.active ? 'Activo' : 'Inactivo'}
-                                                        </div>
-                                                        <div className="w-1/12 text-sm flex items-center justify-content-center"
-                                                            onClick={() => onOpenSectionView()}>
-                                                            <HiOutlinePencilAlt className="w-5 h-5" />
-                                                        </div>
+                                        <DragDropContext onDragEnd={handleDragEnd}>
+                                            <Droppable droppableId="sections">
+                                                {(droppableProvided) => (
+                                                    <div className="rounded-sm overflow-hidden">
+                                                        {sections.map((section, index) => (
+                                                            <Draggable key={section._id} draggableId={section._id} index={index}>
+                                                                {(provided, snapshot) => (
+                                                                    <Tab
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        key={section._id}
+                                                                        className={`flex tab text-sm focus:outline-none odd:bg-gray-4 even:bg-white cursor-pointer transition ${snapshot.isDragging ? "bg-gray-200 dragging" : ""}`}
+                                                                        onClick={() => setSelectedSection(section)}>
+                                                                        <div className="flex w-full px-2 py-2 border-gray-2 border-b-1 border-l-1 border-r-1">
+                                                                            <div className="w-1/12 ml-2">
+                                                                                <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
+                                                                                    <div className="flex flex-col justify-center w-[13px] h-full">
+                                                                                        <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
+                                                                                        <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="w-3/12 text-sm flex items-center">
+                                                                                {section.name_es}
+                                                                            </div>
+                                                                            <div className="w-5/12 text-sm flex items-center">
+                                                                                {section.description_es}
+                                                                            </div>
+                                                                            <div className="w-2/12 text-sm flex items-center">
+                                                                                {section.active ? 'Activo' : 'Inactivo'}
+                                                                            </div>
+                                                                            <div className="w-1/12 text-sm flex items-center justify-content-center"
+                                                                                onClick={() => onOpenSectionView()}>
+                                                                                <HiOutlinePencilAlt className="w-5 h-5" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </Tab>
+                                                                )}
+                                                            </Draggable>
+                                                        ))}
+                                                        {droppableProvided.placeholder}
                                                     </div>
-                                                </Tab>
-                                            ))}
-                                        </div>
+                                                )}
+                                            </Droppable>
+                                        </DragDropContext>
                                     </div>
                                 </TabList>
                                 <div className="w-full rounded-sm bg-gray-2 md:w-1/2 px-2 p-2">
