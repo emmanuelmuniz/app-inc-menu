@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { UpdateSectionsService } from '@/app/edition/services/section/updateSectionsService/UpdateSectionsService';
 
-const useReorderProducts = (sections, setSections) => {
+const useReorderSections = (sections, setSections) => {
     const updateDraggedSections = useCallback(async (sectionsToUpdate) => {
         try {
             await UpdateSectionsService(sectionsToUpdate);
@@ -70,4 +70,4 @@ const useReorderProducts = (sections, setSections) => {
 };
 
 
-export default useReorderProducts;
+export default useReorderSections;

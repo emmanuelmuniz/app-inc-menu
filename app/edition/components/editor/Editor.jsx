@@ -23,7 +23,8 @@ import { HiOutlineSearch } from 'react-icons/hi';
 export default function Editor() {
     const [products, setProducts] = useState([]);
 
-    const { sections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loading } = useLoadData({ setProducts });
+    const { sections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loading }
+        = useLoadData(setProducts);
 
     const [selectedSectionId, setSelectedSectionId] = useState("ALL");
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -80,7 +81,7 @@ export default function Editor() {
                                 defaultIndex={0}
                                 onSelect={(index) => handleSectionSelect(sections[index]._id)}
                             >
-                                <TabList className="text-md text-black px-2 mr-2 rounded-sm overflow-hidden w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
+                                <TabList className="text-md text-black px-2 pb-2 mr-2 rounded-sm overflow-hidden w-full bg-gray-2 md:min-h-[calc(100vh-7rem)]">
                                     <div className="mt-2 mb-3 font-semibold text-gray-3">Categorías</div>
                                     <div className="rounded-sm overflow-hidden">
                                         {sections.map((section) => (

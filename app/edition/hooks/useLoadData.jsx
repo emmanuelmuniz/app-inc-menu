@@ -4,7 +4,7 @@ import { GetSections } from "@/app/services/sections";
 import { GetCategories } from "@/app/services/categories";
 import { GetProducts } from "@/app/services/products";
 
-const useLoadData = ({ setProducts }) => {
+const useLoadData = (setProducts, component, setSelectedSection) => {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
@@ -13,8 +13,13 @@ const useLoadData = ({ setProducts }) => {
     useEffect(() => {
         const getSections = async () => {
             await GetSections().then((response) => {
-                const allSections = [{ _id: "ALL", name_es: "TODAS" }, ...response.sections];
-                setSections(allSections);
+                if (component !== "categories") {
+                    const allSections = [{ _id: "ALL", name_es: "TODAS" }, ...response.sections];
+                    setSections(allSections);
+                } else {
+                    setSections(response.sections);
+                    setSelectedSection(response.sections[0]);
+                }
 
                 const getCategories = async () => {
                     await GetCategories().then((response) => {
