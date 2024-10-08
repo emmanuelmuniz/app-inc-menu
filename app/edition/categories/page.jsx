@@ -27,10 +27,12 @@ export default function Categories() {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [products, setProducts] = useState([]);
 
+    const [isReordering, setIsReordering] = useState(false);
+
     const { categories, sections, setSections, loadCategories, loadSections, loading }
         = useLoadData(setProducts, "categories", setSelectedSection);
 
-    const { handleDragEnd } = useReorderSections(sections, setSections);
+    const { handleDragEnd } = useReorderSections(sections, setSections, setIsReordering);
 
     const {
         isOpen: isSectionViewOpen,
@@ -68,6 +70,11 @@ export default function Categories() {
         return selectedSection._id;
     };
 
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+        setIsClicked(!isClicked); // Cambiar el estado al hacer clic
+    };
 
 
     return (
@@ -84,7 +91,7 @@ export default function Categories() {
                                 <div className="flex justify-between items-center mb-2">
                                     <h2 className="font-semibold text-gray-3">Categorías</h2>
                                     <button
-                                        className="bg-inc-light-blue text-white px-3 py-2 rounded-sm hover:bg-inc-light-blue-hover"
+                                        className="bg-inc-light-blue text-white px-3 py-2 rounded-sm hover:bg-inc-light-blue-hover text-sm"
                                         onClick={onOpenCreateSectionForm}
                                     >
                                         Nueva Categoría
@@ -94,7 +101,7 @@ export default function Categories() {
                                     <Droppable droppableId="sections">
                                         {(droppableProvided) => (
                                             <div className="bg-white rounded-sm overflow-hidden" ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
-                                                <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                                <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm text-sm">
                                                     <div className="w-1/12 ml-2"></div>
                                                     <div className="w-3/12 text-md">Categoría</div>
                                                     <div className="w-5/12 text-md">Descripción</div>
@@ -108,8 +115,9 @@ export default function Categories() {
                                                                 ref={provided.innerRef}
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
-                                                                className={`flex tab text-sm focus:outline-none odd:bg-gray-4 even:bg-white focus:bg-inc-light-blue cursor-pointer transition 
-                                                                    ${selectedSection._id == section._id ? 'bg-inc-light-blue' : ''}`}
+                                                                className={`flex tab text-sm focus:outline-none cursor-pointer transition 
+                                                                    ${selectedSection._id == section._id ? 'bg-inc-light-blue hover:text-white focus:hover:text-white text-white' : 'even:bg-white odd:bg-gray-4 hover:text-inc-light-blue'}
+                                                                    ${isReordering ? 'cursor-wait' : ''}`}
                                                                 onClick={() => {
                                                                     setSelectedSection(section);
                                                                     setSelectedCategory(null);
@@ -146,7 +154,7 @@ export default function Categories() {
                                 <div className="flex justify-between items-center mb-2">
                                     <h2 className="font-semibold text-gray-3">Subcategorías</h2>
                                     <button
-                                        className="bg-inc-light-blue text-white px-3 py-2 rounded-sm hover:bg-inc-light-blue-hover"
+                                        className="bg-inc-light-blue text-white px-3 py-2 rounded-sm hover:bg-inc-light-blue-hover text-sm"
                                         onClick={onOpenCreateCategoryForm}
                                     >
                                         Nueva Subcategoría
@@ -154,7 +162,7 @@ export default function Categories() {
                                 </div>
                                 <div className="rounded-sm overflow-hidden">
                                     <div className="">
-                                        <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm">
+                                        <div className="flex p-2 bg-white border-b-2 border-gray rounded-t-sm text-sm">
                                             <div className="w-1/12 ml-2"></div>
                                             <div className="w-3/12 text-md">Categoría</div>
                                             <div className="w-5/12 text-md">Descripción</div>
@@ -167,7 +175,7 @@ export default function Categories() {
                                             {categories.filter(category => category.section._id === selectedSection._id).map((category) => (
                                                 <div
                                                     key={category._id}
-                                                    className="flex justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"
+                                                    className="flex text-sm justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"
                                                     onClick={() => setSelectedCategory(category)}
                                                 >
                                                     <div className="w-1/12 ml-2">

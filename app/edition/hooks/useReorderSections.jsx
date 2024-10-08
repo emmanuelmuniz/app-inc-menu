@@ -1,11 +1,14 @@
 import { useCallback } from 'react';
+import { useState } from 'react';
 
 import { UpdateSectionsService } from '@/app/edition/services/section/updateSectionsService/UpdateSectionsService';
 
-const useReorderSections = (sections, setSections) => {
+const useReorderSections = (sections, setSections, setIsReordering) => {
     const updateDraggedSections = useCallback(async (sectionsToUpdate) => {
         try {
-            await UpdateSectionsService(sectionsToUpdate);
+            await UpdateSectionsService(sectionsToUpdate).then(() => {
+                setIsReordering(false);
+            });
             console.log('Sections updating result');
         } catch (error) {
             console.error('Failed to update sections:', error);
@@ -57,6 +60,8 @@ const useReorderSections = (sections, setSections) => {
         if (!result.destination) {
             return;
         }
+
+        setIsReordering(true);
 
         const startId = sections[result.source.index]._id;
         const endId = sections[result.destination.index]._id;
