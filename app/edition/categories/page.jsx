@@ -120,10 +120,10 @@ export default function Categories() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="w-3/12 p-2 cursor-pointer">{section.name_es}</div>
-                                                                <div className="w-5/12 p-2 cursor-pointer">{section.description_es}</div>
-                                                                <div className="w-2/12 p-2 cursor-pointer">{section.active ? 'Activo' : 'Inactivo'}</div>
-                                                                <div className="w-1/12 p-2 cursor-pointer">
+                                                                <div className="w-3/12 p-2 cursor-pointer flex items-center">{section.name_es}</div>
+                                                                <div className="w-5/12 p-2 cursor-pointer flex items-center">{section.description_es}</div>
+                                                                <div className="w-2/12 p-2 cursor-pointer flex items-center">{section.active ? 'Activo' : 'Inactivo'}</div>
+                                                                <div className="w-1/12 p-2 cursor-pointer flex items-center">
                                                                     <button onClick={onOpenSectionView}>
                                                                         <HiOutlinePencilAlt className="w-5 h-5" />
                                                                     </button>
@@ -175,10 +175,10 @@ export default function Categories() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="w-3/12">{category.name_es}</div>
-                                                    <div className="w-5/12">{category.description_es}</div>
-                                                    <div className="w-2/12">{category.active ? 'Activo' : 'Inactivo'}</div>
-                                                    <div className="w-1/12">
+                                                    <div className="w-3/12 flex items-center">{category.name_es}</div>
+                                                    <div className="w-5/12 flex items-center">{category.description_es}</div>
+                                                    <div className="w-2/12 flex items-center">{category.active ? 'Activo' : 'Inactivo'}</div>
+                                                    <div className="w-1/12 flex items-center">
                                                         <button onClick={onOpenCategoryView}>
                                                             <HiOutlinePencilAlt className="w-5 h-5" />
                                                         </button>
