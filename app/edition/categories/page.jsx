@@ -30,7 +30,7 @@ export default function Categories() {
     const [isReordering, setIsReordering] = useState(false);
 
     const { categories, sections, setSections, loadCategories, loadSections, loading }
-        = useLoadData(setProducts, "categories", setSelectedSection);
+        = useLoadData(setProducts, "CATEGORIES", setSelectedSection);
 
     const { handleDragEnd } = useReorderSections(sections, setSections, setIsReordering);
 
@@ -65,17 +65,6 @@ export default function Categories() {
     const handleCategoryUpdate = () => {
         loadCategories();
     }
-
-    const getSelectedSectionId = () => {
-        return selectedSection._id;
-    };
-
-    const [isClicked, setIsClicked] = useState(false);
-
-    const handleClick = () => {
-        setIsClicked(!isClicked); // Cambiar el estado al hacer clic
-    };
-
 
     return (
         <>

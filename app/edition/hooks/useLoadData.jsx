@@ -13,7 +13,7 @@ const useLoadData = (setProducts, component, setSelectedSection) => {
     useEffect(() => {
         const getSections = async () => {
             await GetSections().then((response) => {
-                if (component !== "categories") {
+                if (component !== "CATEGORIES" && component !== "MENU") {
                     const allSections = [{ _id: "ALL", name_es: "TODAS" }, ...response.sections];
                     setSections(allSections);
                 } else {

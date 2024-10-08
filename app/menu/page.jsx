@@ -41,13 +41,7 @@ export default function DigitalMenu() {
         fetchSections();
     }, []);
 
-    const handleCategorySelect = (categoryId) => {
-        setSelectedCategoryId(categoryId);
-    }
-
     const handleSectionSelect = (sectionId) => {
-
-        console.log(sectionId);
         const filteredCategories = categories.filter(category => category.section._id === sectionId);
 
         if (filteredCategories.length > 0) {
@@ -74,30 +68,30 @@ export default function DigitalMenu() {
                         <div className="w-full">
                             {sections.map((section) => (
                                 <TabPanel key={section._id} className="w-full">
-                                    <Tabs className="w-full secondary-tabs" defaultIndex={0} onSelect={(index) => handleCategorySelect(categories[index]._id)}>
+                                    <Tabs className="w-full secondary-tabs" defaultIndex={0}>
                                         <TabList className="flex flex-wrap px-11 pb-2">
                                             {categories.filter(category => category.section._id === section._id)
                                                 .map((sectionCategory) => (
-                                                    <Tab key={sectionCategory._id} className="tab focus:outline-none bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
+                                                    <Tab key={sectionCategory._id}
+                                                        onClick={() => setSelectedCategoryId(sectionCategory._id)}
+                                                        className="tab focus:outline-none bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                                         {sectionCategory.name_es}
                                                     </Tab>
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
                                         <div className="px-11 text-black">
-                                            <TabPanel className="">
-                                                {products
-                                                    .filter(product => product.category._id === selectedCategoryId)
-                                                    .map((product) => (
-                                                        <div key={product._id} className="text-2xl border-b-1 border-silver py-5">
-                                                            <span className="text-black mr-2">
-                                                                {product.name_es} -
-                                                                <span className="text-inc-light-blue"> ${product.price}</span>
-                                                            </span>
-                                                            <p className='text-lg mt-3'>{product.description_es}</p>
-                                                        </div>
-                                                    ))}
-                                            </TabPanel>
+                                            {products
+                                                .filter(product => product.category._id === selectedCategoryId)
+                                                .map((product) => (
+                                                    <div key={product._id} className="text-2xl border-b-1 border-silver py-5">
+                                                        <span className="text-black mr-2">
+                                                            {product.name_es} -
+                                                            <span className="text-inc-light-blue"> ${product.price}</span>
+                                                        </span>
+                                                        <p className='text-lg mt-3'>{product.description_es}</p>
+                                                    </div>
+                                                ))}
                                         </div>
                                     </Tabs>
                                 </TabPanel>
