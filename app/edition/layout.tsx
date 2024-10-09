@@ -11,10 +11,10 @@ export default function RootLayout({
 }>) {
     return (
         <section className={"bg-ghost-white p-0" + inter.className}>
-            <div className={"bg-white sm:min-h-[calc(100vh-2.5rem)] sm:max-h-[calc(100vh-2.5rem)]" +
+            <div className={"bg-ghost-white sm:min-h-[calc(100vh-2.5rem)] sm:max-h-[calc(100vh-2.5rem)]" +
                 "rounded shadow-lg h-full w-full sm:rounded sm:shadow-lgh-full overflow-y-auto no-scrollbar relative" + inter.className}>
                 <div className={"bg-ghost-white p-0" + inter.className}>
-                    <Navbar></Navbar>
+                    {/* <Navbar></Navbar> */}
                 </div>
                 <div className={"h-full max-h-full bg-ghost-white p-0" + inter.className}>
                     {children}
