@@ -4,7 +4,6 @@ export default function LoadingDisplay() {
 
     return (
         <div className="
-        bg-white
         min-w-full
         mt-48
         grid

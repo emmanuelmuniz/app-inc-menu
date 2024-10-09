@@ -100,7 +100,7 @@ export default function Editor() {
                                     {sections.map((section) => (
                                         <TabPanel key={section._id} className="w-full">
                                             <Tabs className="w-full secondary-tabs" defaultIndex={0}>
-                                                <TabList className="text-md w-full rounded-sm overflow-hidden">
+                                                <TabList className="text-md w-full rounded-sm overflow-hidden mb-2">
                                                     {filteredCategories().map((sectionCategory) => (
                                                         <Tab
                                                             key={sectionCategory._id}

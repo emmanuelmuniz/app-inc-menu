@@ -4,6 +4,7 @@ import "./styles.css";
 import { signIn } from "next-auth/react";
 
 import { useState } from "react";
+import MoonLoader from "react-spinners/MoonLoader";
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
@@ -14,16 +15,22 @@ export default function Login() {
         e.preventDefault();
 
         try {
+            setLoading(true);
+
             const res = await signIn("credentials", {
                 email, password, redirect: false,
             });
 
-            if (res.ok) {
-                alert("sesion iniciada!")
+            if (!res.ok) {
+                alert("Credenciales incorrectas");
+                setLoading(false);
+            } else {
+                setLoading(false);
             }
 
             if (res.error) {
                 setError("Credenciales incorrectas");
+                alert("Credenciales incorrectas")
                 return;
             }
 
@@ -34,9 +41,10 @@ export default function Login() {
 
     return (
         <>
-            <div className="mt-36 mx-auto bg-white h-60 w-full md:w-80 p-8">
+
+            <div className="mt-36 mx-auto bg-ghost-white w-full md:w-80 p-8">
                 <div className="">
-                    <form action="">
+                    <form action="" onSubmit={handleSubmit}>
                         <div className="my-2">
                             <input className="text-sm appearance-none block w-full border border-gray-3 rounded-sm py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                                 type="text"
@@ -58,7 +66,6 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={loading}
-                            onClick={handleSubmit}
                             className={`text-white my-2 w-full text-sm font-semibold p-4 py-3 rounded-sm ${loading ? 'bg-inc-light-blue opacity-50 cursor-not-allowed' : 'bg-inc-light-blue hover:bg-inc-light-blue-hover'
                                 } transition`}
                         >
@@ -66,6 +73,14 @@ export default function Login() {
                         </button>
                     </form>
                 </div>
+                {loading &&
+                    <div className="items-center w-full flex flex-col justify-center mt-2">
+                        <div className="flex">
+                            <div className="mr-2">Cargando</div>
+                            <MoonLoader size={20} />
+                        </div>
+                    </div>
+                }
             </div>
         </>
     )
