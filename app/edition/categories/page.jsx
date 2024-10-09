@@ -9,6 +9,8 @@ import { Modal, ModalContent } from "@nextui-org/modal";
 
 import useLoadData from "@/app/edition/hooks/useLoadData";
 import useReorderSections from "@/app/edition/hooks/useReorderSections";
+import useReorderCategories from "@/app/edition/hooks/useReorderCategories";
+import useFilteredCategories from "@/app/edition/hooks/useFilteredCategories";
 
 import LoadingDisplay from '@/app/edition/components/loading/LoadingDisplay';
 
@@ -29,10 +31,13 @@ export default function Categories() {
 
     const [isReordering, setIsReordering] = useState(false);
 
-    const { categories, sections, setSections, loadCategories, loadSections, loading }
+    const { categories, sections, setCategories, setSections, loadCategories, loadSections, loading }
         = useLoadData(setProducts, "CATEGORIES", setSelectedSection);
 
+    const filteredCategories = useFilteredCategories(categories, selectedSection);
+
     const { handleDragEnd } = useReorderSections(sections, setSections, setIsReordering);
+    const { handleDragEndCategories } = useReorderCategories(categories, setCategories, filteredCategories, selectedSection);
 
     const {
         isOpen: isSectionViewOpen,
@@ -104,6 +109,7 @@ export default function Categories() {
                                                                 ref={provided.innerRef}
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
+                                                                key={section._id}
                                                                 className={`flex tab text-sm focus:outline-none cursor-pointer transition 
                                                                     ${selectedSection._id == section._id ? 'bg-inc-light-blue hover:text-white focus:hover:text-white text-white' : 'even:bg-white odd:bg-gray-4 hover:text-inc-light-blue'}
                                                                     ${isReordering ? 'cursor-wait' : ''}`}
@@ -160,32 +166,45 @@ export default function Categories() {
                                         </div>
                                     </div>
                                     {selectedSection && (
-                                        <div className="cursor-pointer">
-                                            {categories.filter(category => category.section._id === selectedSection._id).map((category) => (
-                                                <div
-                                                    key={category._id}
-                                                    className="flex text-sm justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"
-                                                    onClick={() => setSelectedCategory(category)}
-                                                >
-                                                    <div className="w-1/12 ml-2">
-                                                        <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
-                                                            <div className="flex flex-col justify-center w-[13px] h-full">
-                                                                <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
-                                                                <div className="h-[2px] bg-gray-3 rounded"></div>
-                                                            </div>
-                                                        </div>
+                                        <DragDropContext onDragEnd={handleDragEndCategories}>
+                                            <Droppable droppableId="categories">
+                                                {(droppableProvided) => (
+                                                    <div ref={droppableProvided.innerRef} {...droppableProvided.droppableProps} className="cursor-pointer" >
+                                                        {filteredCategories.map((category, index) => (
+                                                            <Draggable key={category._id} draggableId={category._id} index={index}>
+                                                                {(provided, snapshot) => (
+                                                                    <div
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        key={category._id}
+                                                                        className="flex text-sm justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"
+                                                                        onClick={() => setSelectedCategory(category)}
+                                                                    >
+                                                                        <div className="w-1/12 ml-2">
+                                                                            <div className="flex justify-center items-center w-[13px] h-6 cursor-grab">
+                                                                                <div className="flex flex-col justify-center w-[13px] h-full">
+                                                                                    <div className="mb-1 h-[2px] bg-gray-3 rounded-"></div>
+                                                                                    <div className="h-[2px] bg-gray-3 rounded"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="w-3/12 flex items-center">{category.name_es}</div>
+                                                                        <div className="w-5/12 flex items-center">{category.description_es}</div>
+                                                                        <div className="w-2/12 flex items-center">{category.active ? 'Activo' : 'Inactivo'}</div>
+                                                                        <div className="w-1/12 flex items-center">
+                                                                            <button onClick={onOpenCategoryView}>
+                                                                                <HiOutlinePencilAlt className="w-5 h-5" />
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </Draggable>
+                                                        ))}
                                                     </div>
-                                                    <div className="w-3/12 flex items-center">{category.name_es}</div>
-                                                    <div className="w-5/12 flex items-center">{category.description_es}</div>
-                                                    <div className="w-2/12 flex items-center">{category.active ? 'Activo' : 'Inactivo'}</div>
-                                                    <div className="w-1/12 flex items-center">
-                                                        <button onClick={onOpenCategoryView}>
-                                                            <HiOutlinePencilAlt className="w-5 h-5" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                                )}
+                                            </Droppable>
+                                        </DragDropContext>
                                     )}
                                 </div>
                             </div>

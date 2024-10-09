@@ -22,6 +22,30 @@ export async function POST(req) {
         );
     }
 }
+
+export async function PUT(req, response) {
+    try {
+        const categories = await req.json();
+
+        await connectMongoDB();
+
+        const updatePromises = categories.map(category =>
+            Category.updateOne(
+                { _id: category._id },
+                { $set: category }
+            )
+        );
+
+        await Promise.all(updatePromises);
+
+        return NextResponse.json({ message: "Category updated" }, { status: 200 });
+    } catch (error) {
+        console.error("Error updating categories:", error);
+        return NextResponse.json({ error: "Failed to update categories" }, { status: 500 });
+    }
+}
+
+
 export async function GET(req) {
     await connectMongoDB();
     const categories = await Category.find().sort({ sequence: 1 });

@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { Tulpen_One } from "next/font/google";
 
 const categorySchema = new Schema({
     name_es: String,

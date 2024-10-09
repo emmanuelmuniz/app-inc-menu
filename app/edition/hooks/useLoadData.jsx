@@ -53,7 +53,7 @@ const useLoadData = (setProducts, component, setSelectedSection) => {
         });
     };
 
-    return { sections, setSections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loadCategories, loadSections, loading };
+    return { sections, setCategories, setSections, categories, selectedCategoryId, setSelectedCategoryId, loadProducts, loadCategories, loadSections, loading };
 };
 
 export default useLoadData;

@@ -1,88 +1,77 @@
 import { useCallback } from 'react';
 
-import { UpdateProductsService } from '@/app/edition/services/product/updateProductsService/UpdateProductsService';
+import { UpdateCategoriesService } from '@/app/edition/services/category/updateCategoriesService/UpdateCategoriesService';
 
-const useReorderProducts = (products, setProducts, filteredProducts, selectedCategoryId) => {
-    const updateDraggedProducts = useCallback(async (productsToUpdate) => {
+const useReorderCategories = (categories, setCategories, filteredCategories) => {
+    const updateDraggedCategories = useCallback(async (categoriesToUpdate) => {
         try {
-            await UpdateProductsService(productsToUpdate);
-            console.log('Products updating result');
+            await UpdateCategoriesService(categoriesToUpdate);
+            console.log('Categories updating result');
         } catch (error) {
-            console.error('Failed to update products:', error);
+            console.error('Failed to update categories:', error);
         }
     }, []);
 
     const reorder = useCallback(async (list, startId, endId) => {
         const result = Array.from(list);
 
-        const startIndex = result.findIndex(product => product._id === startId);
-        const endIndex = result.findIndex(product => product._id === endId);
+        const startIndex = result.findIndex(category => category._id === startId);
+        const endIndex = result.findIndex(category => category._id === endId);
 
         if (startIndex === -1 || endIndex === -1) {
-            console.error("No se encontraron los productos a reordenar");
+            console.error("No se encontraron las categorías a reordenar");
             return list;
         }
 
-        const startProduct = result[startIndex];
-        const endProduct = result[endIndex]
+        const startCategory = result[startIndex];
+        const endCategory = result[endIndex]
 
-        const originalStartSequence = startProduct.sequence;
-        const originalEndSequence = endProduct.sequence;
+        const originalStartSequence = startCategory.sequence;
+        const originalEndSequence = endCategory.sequence;
 
-        // Caso 1: Se mueve hacia adelante en la lista (startIndex < endIndex)
         if (startIndex < endIndex) {
-            result.forEach(product => {
-                // Decrementar el sequence de los productos entre las posiciones originales de Producto 1 y Producto 2
-                if (product.sequence > originalStartSequence && product.sequence <= originalEndSequence) {
-                    product.sequence -= 1; // Se decrementa para "hacer espacio" al Producto 1
+            result.forEach(category => {
+                if (category.sequence > originalStartSequence && category.sequence <= originalEndSequence) {
+                    category.sequence -= 1;
                 }
             });
         }
-        // Caso 2: Se mueve hacia atrás en la lista (startIndex > endIndex)
         else if (startIndex > endIndex) {
-            result.forEach(product => {
-                // Incrementar el sequence de los productos entre la nueva posición de Producto 1 y su posición original
-                if (product.sequence >= originalEndSequence && product.sequence < originalStartSequence) {
-                    product.sequence += 1; // Se incrementa para "hacer espacio" al Producto 1
+            result.forEach(category => {
+                if (category.sequence >= originalEndSequence && category.sequence < originalStartSequence) {
+                    category.sequence += 1;
                 }
             });
         }
 
-        // Asignar el sequence del endProduct al startProduct
-        startProduct.sequence = originalEndSequence;
+        startCategory.sequence = originalEndSequence;
 
-        // Ordenar la lista por el nuevo sequence
-        const reorderedProducts = result.sort((a, b) => a.sequence - b.sequence);
+        const reorderedCategories = result.sort((a, b) => a.sequence - b.sequence);
 
-        // Actualizar los productos reordenados en la base de datos
-        await updateDraggedProducts(reorderedProducts);
+        await updateDraggedCategories(reorderedCategories);
 
-        return reorderedProducts;
-    }, [updateDraggedProducts]);
+        return reorderedCategories;
+    }, [updateDraggedCategories]);
 
-    const handleDragEnd = useCallback(async (result) => {
+    const handleDragEndCategories = useCallback(async (result) => {
         if (!result.destination) {
             return;
         }
 
-        const startId = filteredProducts[result.source.index]._id;
-        const endId = filteredProducts[result.destination.index]._id;
+        const startId = filteredCategories[result.source.index]._id;
+        const endId = filteredCategories[result.destination.index]._id;
 
-        // Reordenar los productos filtrados
-        const reorderedFilteredProducts = await reorder(filteredProducts, startId, endId);
+        const reorderedFilteredCategories = await reorder(filteredCategories, startId, endId);
 
-        // Actualizar los productos en la lista principal
-        const updatedProducts = products.map(product => {
-            const updatedProduct = reorderedFilteredProducts.find(p => p._id === product._id);
-            return updatedProduct ? updatedProduct : product;
+        const updatedCategories = categories.map(category => {
+            const updatedCategory = reorderedFilteredCategories.find(c => c._id === category._id);
+            return updatedCategory ? updatedCategory : category;
         });
 
-        // Ordenar los productos por su secuencia
-        setProducts(updatedProducts.sort((a, b) => a.sequence - b.sequence));
-    }, [products, reorder, selectedCategoryId, setProducts]);
+        setCategories(updatedCategories.sort((a, b) => a.sequence - b.sequence));
+    }, [categories, reorder, setCategories]);
 
-    return { handleDragEnd };
+    return { handleDragEndCategories };
 };
 
-
-export default useReorderProducts;
+export default useReorderCategories;
