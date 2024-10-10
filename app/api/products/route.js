@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "../../../libs/mongodb";
 import Product from "@/models/Product"
+import { getToken } from "next-auth/jwt"
 
 export async function POST(req) {
     const token = await getToken({ req });

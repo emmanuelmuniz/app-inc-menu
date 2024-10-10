@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "@/libs/mongodb";
 import Category from "@/models/Category"
+import { getToken } from "next-auth/jwt"
 
 export async function PUT(req, { params }) {
     const token = await getToken({ req });
