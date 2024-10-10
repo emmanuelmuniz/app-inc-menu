@@ -3,45 +3,57 @@ import connectMongoDB from "../../../libs/mongodb";
 import Section from "@/models/Section"
 
 export async function POST(req) {
-    try {
-        let section = await req.json();
-        await connectMongoDB();
-        const createdSection = await Section.create(section);
+    const token = await getToken({ req });
 
-        return NextResponse.json(
-            {
-                message: "Section created successfully",
-                product: createdSection
-            },
-            { status: 201 }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            { message: "Error creating section", error: error.message },
-            { status: 500 }
-        );
+    if (token) {
+        try {
+            let section = await req.json();
+            await connectMongoDB();
+            const createdSection = await Section.create(section);
+
+            return NextResponse.json(
+                {
+                    message: "Section created successfully",
+                    product: createdSection
+                },
+                { status: 201 }
+            );
+        } catch (error) {
+            return NextResponse.json(
+                { message: "Error creating section", error: error.message },
+                { status: 500 }
+            );
+        }
+    } else {
+        return NextResponse.json({ message: "Not Authotized" }, { status: 401 });
     }
 }
 
 export async function PUT(req, response) {
-    try {
-        const sections = await req.json();
+    const token = await getToken({ req });
 
-        await connectMongoDB();
+    if (token) {
+        try {
+            const sections = await req.json();
 
-        const updatePromises = sections.map(section =>
-            Section.updateOne(
-                { _id: section._id },
-                { $set: section }
-            )
-        );
+            await connectMongoDB();
 
-        await Promise.all(updatePromises);
+            const updatePromises = sections.map(section =>
+                Section.updateOne(
+                    { _id: section._id },
+                    { $set: section }
+                )
+            );
 
-        return NextResponse.json({ message: "Sections updated" }, { status: 200 });
-    } catch (error) {
-        console.error("Error updating sections:", error);
-        return NextResponse.json({ error: "Failed to update sections" }, { status: 500 });
+            await Promise.all(updatePromises);
+
+            return NextResponse.json({ message: "Sections updated" }, { status: 200 });
+        } catch (error) {
+            console.error("Error updating sections:", error);
+            return NextResponse.json({ error: "Failed to update sections" }, { status: 500 });
+        }
+    } else {
+        return NextResponse.json({ message: "Not Authotized" }, { status: 401 });
     }
 }
 
@@ -52,28 +64,34 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
-    try {
-        const id = req.nextUrl.searchParams.get("id");
+    const token = await getToken({ req });
 
-        if (!id) {
-            return NextResponse.json({ message: "Section ID is required" }, { status: 400 });
+    if (token) {
+        try {
+            const id = req.nextUrl.searchParams.get("id");
+
+            if (!id) {
+                return NextResponse.json({ message: "Section ID is required" }, { status: 400 });
+            }
+
+            await connectMongoDB();
+            const deletedSection = await Section.findByIdAndDelete(id);
+
+            if (!deletedSection) {
+                return NextResponse.json({ message: "Section not found" }, { status: 404 });
+            }
+
+            return NextResponse.json(
+                { message: "Section deleted", section: deletedSection },
+                { status: 200 }
+            );
+        } catch (error) {
+            return NextResponse.json(
+                { message: "Error deleting section", error: error.message },
+                { status: 500 }
+            );
         }
-
-        await connectMongoDB();
-        const deletedSection = await Section.findByIdAndDelete(id);
-
-        if (!deletedSection) {
-            return NextResponse.json({ message: "Section not found" }, { status: 404 });
-        }
-
-        return NextResponse.json(
-            { message: "Section deleted", section: deletedSection },
-            { status: 200 }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            { message: "Error deleting section", error: error.message },
-            { status: 500 }
-        );
+    } else {
+        return NextResponse.json({ message: "Not Authotized" }, { status: 401 });
     }
 }

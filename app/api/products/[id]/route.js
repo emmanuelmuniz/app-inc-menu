@@ -3,38 +3,50 @@ import connectMongoDB from "@/libs/mongodb";
 import Product from "@/models/Product"
 
 export async function PUT(req, { params }) {
-    try {
-        let { id } = params;
-        let product = await req.json();
+    const token = await getToken({ req });
 
-        await connectMongoDB();
-        const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
+    if (token) {
+        try {
+            let { id } = params;
+            let product = await req.json();
 
-        if (!updatedProduct) {
+            await connectMongoDB();
+            const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
+
+            if (!updatedProduct) {
+                return NextResponse.json(
+                    { message: "Product not found" },
+                    { status: 404 }
+                );
+            }
+
             return NextResponse.json(
-                { message: "Product not found" },
-                { status: 404 }
+                {
+                    message: "Product updated successfully",
+                    product: updatedProduct
+                },
+                { status: 200 }
+            );
+        } catch (error) {
+            return NextResponse.json(
+                { message: "Error updating product", error: error.message },
+                { status: 500 }
             );
         }
-
-        return NextResponse.json(
-            {
-                message: "Product updated successfully",
-                product: updatedProduct
-            },
-            { status: 200 }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            { message: "Error updating product", error: error.message },
-            { status: 500 }
-        );
+    } else {
+        return NextResponse.json({ message: "Not Authotized" }, { status: 401 });
     }
 }
 
 export async function GET(req, { params }) {
-    const { id } = params;
-    await connectMongoDB();
-    const product = await Product.findOne({ _id: id });
-    return NextResponse.json({ product }, { status: 200 });
+    const token = await getToken({ req });
+
+    if (token) {
+        const { id } = params;
+        await connectMongoDB();
+        const product = await Product.findOne({ _id: id });
+        return NextResponse.json({ product }, { status: 200 });
+    } else {
+        return NextResponse.json({ message: "Not Authotized" }, { status: 401 });
+    }
 }
