@@ -2,6 +2,8 @@
 
 import "./styles.css";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 import { useState } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
@@ -10,6 +12,8 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,6 +30,7 @@ export default function Login() {
                 setLoading(false);
             } else {
                 setLoading(false);
+                router.push("/edition");
             }
 
             if (res.error) {

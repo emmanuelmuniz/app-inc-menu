@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 export default function Navbar() {
     const { data: session } = useSession();
-    const pathname = usePathname();
+    const pathname = usePathname("edition");
     const [activePath, setActivePath] = useState('/');
 
     useEffect(() => {

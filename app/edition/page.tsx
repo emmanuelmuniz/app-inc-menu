@@ -1,7 +1,6 @@
 "use client"
 
 import Editor from "@/app/edition/components/editor/Editor";
-import Login from "@/app/edition/components/auth/login/Login";
 import { useSession } from "next-auth/react";
 
 export default function Edition() {
@@ -14,7 +13,7 @@ export default function Edition() {
 
     return (
         <div className="h-full bg-white">
-            {session ? <Editor /> : <Login />}
+            <Editor />
         </div>
     );
 }
