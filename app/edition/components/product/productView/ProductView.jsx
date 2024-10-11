@@ -1,7 +1,40 @@
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UpdateProductService } from '@/app/edition/services/product/updateProductService/UpdateProductService'
+
 import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
+import { uploadImage, deleteImage } from "@/app/edition/services/image/ImageService";
+
+const handleImageUpdate = async (newImage, product) => {
+    try {
+        // Verifica si hay una nueva imagen.
+        if (newImage) {
+            // Si hay una nueva imagen y el producto tiene una imagen existente, elimina la imagen anterior.
+            if (product.image?.storageRef) {
+                await deleteImage(product.image.storageRef);
+            }
+
+            // Sube la nueva imagen.
+            const uploadResult = await uploadImage(newImage, "product");
+
+            // Retorna la URL y el storagePath de la nueva imagen.
+            return {
+                imageUrl: uploadResult.imageUrl,
+                storagePath: uploadResult.storageRef,
+            };
+        } else {
+            // Si no hay una nueva imagen, devuelve la URL y el storagePath actuales del producto.
+            return {
+                imageUrl: product.image?.url || "",
+                storagePath: product.image?.storageRef || "",
+            };
+        }
+    } catch (error) {
+        console.error("Error handling image update:", error);
+        throw error; // Lanza el error para manejarlo en el try-catch donde se llame la función.
+    }
+};
+
 
 export default function ProductView({ product, categories, onProductUpdated, onProductDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
@@ -20,6 +53,7 @@ export default function ProductView({ product, categories, onProductUpdated, onP
     const [price, setPrice] = useState(product.price);
     const [category, setCategory] = useState(product.category);
     const [active, setActive] = useState(product.active);
+    const [newImage, setNewImage] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
@@ -51,6 +85,8 @@ export default function ProductView({ product, categories, onProductUpdated, onP
         e.preventDefault();
         setLoading(true);
 
+        const { imageUrl, storageRef } = await handleImageUpdate();
+
         let product = {
             name_es: nameInputs.ES,
             name_en: nameInputs.EN,
@@ -60,6 +96,10 @@ export default function ProductView({ product, categories, onProductUpdated, onP
             description_en: descriptionInputs.EN,
             description_pt: descriptionInputs.PT,
             active: active,
+            image: {
+                url: imageUrl,
+                storageRef: storageRef
+            },
             category: {
                 name_es: category.name_es,
                 name_en: category.name_en,
@@ -69,11 +109,11 @@ export default function ProductView({ product, categories, onProductUpdated, onP
         }
 
         try {
-            const result = await UpdateProductService({ product, id })
+            await UpdateProductService({ product, id })
                 .then(() => {
                     onProductUpdated();
                     closeModal();
-                    console.log('Product updating result:', result);
+                    console.log('Product updating result:', product);
                     setLoading(false);
                 });
 
@@ -82,6 +122,32 @@ export default function ProductView({ product, categories, onProductUpdated, onP
             setLoading(false);
         }
     }
+
+
+    const handleImageUpdate = async () => {
+        try {
+            if (newImage) {
+                if (product.image?.storageRef) {
+                    await deleteImage(product.image.storageRef);
+                }
+
+                const uploadResult = await uploadImage(newImage, "product");
+
+                return {
+                    imageUrl: uploadResult.imageUrl,
+                    storageRef: uploadResult.storageRef,
+                };
+            } else {
+                return {
+                    imageUrl: product.image?.url || "",
+                    storageRef: product.image?.storageRef || "",
+                };
+            }
+        } catch (error) {
+            console.error("Error handling image update:", error);
+            throw error;
+        }
+    };
 
     return (
         <>
@@ -254,19 +320,34 @@ export default function ProductView({ product, categories, onProductUpdated, onP
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex justify-between">
                         <div className={`mb-5 ${product.image && product.image.url ? "w-8/12" : "w-full"}`}>
                             <label className="block text-xs font-bold mb-2">
                                 Subir Imagen
                             </label>
-                            <input type="file" className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer" />
+                            <input
+                                type="file"
+                                className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        setNewImage(file);
+                                    }
+                                }}
+                            />
                         </div>
                         {product.image && product.image.url && (
-                            <div className="w-4/12">
-                                <label className="block text-xs font-bold mb-2">
-                                    Imagen actual
-                                </label>
-                                <img src={product.image.url} alt={product.name_es} />
+                            <div className="w-4/12 flex justify-end flex-row">
+                                <div className="">
+                                    <div className="">
+                                        <label className="block text-xs font-bold mb-2">
+                                            Imagen actual
+                                        </label>
+                                    </div>
+                                    <div className="h-28">
+                                        <img className='rounded-sm h-full' src={product.image.url} alt={product.name_es} />
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

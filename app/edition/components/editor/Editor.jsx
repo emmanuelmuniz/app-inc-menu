@@ -206,7 +206,8 @@ export default function Editor() {
                         onOpenChange={onOpenChangeCreateProductForm}
                         placement="top-center"
                         className="w-full"
-                        size={"xl"}
+                        size={"3xl"}
+                        scrollBehavior="inside"
                     >
                         <ModalContent className="modal-content">
                             <>
@@ -224,7 +225,8 @@ export default function Editor() {
                         onOpenChange={onOpenChangeProductView}
                         placement="top-center"
                         className="h-max-80"
-                        size={"2xl"}
+                        size={"3xl"}
+                        scrollBehavior="inside"
                     >
                         <ModalContent className="modal-content h-max-80">
                             <>

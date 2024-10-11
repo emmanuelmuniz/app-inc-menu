@@ -213,7 +213,7 @@ export default function Categories() {
                 )}
 
                 {/* Modals for viewing and creating sections and categories */}
-                <Modal isOpen={isSectionViewOpen} onOpenChange={onOpenChangeSectionView} size={"xl"} className="rounded-sm">
+                <Modal isOpen={isSectionViewOpen} onOpenChange={onOpenChangeSectionView} size={"3xl"} className="rounded-sm">
                     <ModalContent>
                         <SectionView
                             onSectionUpdated={handleSectionUpdate}
@@ -225,7 +225,7 @@ export default function Categories() {
                     </ModalContent>
                 </Modal>
 
-                <Modal isOpen={isCategoryViewOpen} onOpenChange={onOpenChangeCategoryView} size={"xl"} className="rounded-sm">
+                <Modal isOpen={isCategoryViewOpen} onOpenChange={onOpenChangeCategoryView} size={"3xl"} className="rounded-sm">
                     <ModalContent>
                         <CategoryView
                             categories={categories}
@@ -238,7 +238,7 @@ export default function Categories() {
                     </ModalContent>
                 </Modal>
 
-                <Modal isOpen={isCreateSectionFormOpen} onOpenChange={onOpenChangeCreateSectionForm} size={"xl"} className="rounded-sm">
+                <Modal isOpen={isCreateSectionFormOpen} onOpenChange={onOpenChangeCreateSectionForm} size={"3xl"} className="rounded-sm">
                     <ModalContent>
                         <CreateSectionForm
                             onSectionCreated={handleSectionUpdate}
@@ -247,7 +247,7 @@ export default function Categories() {
                     </ModalContent>
                 </Modal>
 
-                <Modal isOpen={isCreateCategoryFormOpen} onOpenChange={onOpenChangeCreateCategoryForm} size={"xl"} className="rounded-sm">
+                <Modal isOpen={isCreateCategoryFormOpen} onOpenChange={onOpenChangeCreateCategoryForm} size={"3xl"} className="rounded-sm">
                     <ModalContent>
                         <CreateCategoryForm
                             sections={sections}

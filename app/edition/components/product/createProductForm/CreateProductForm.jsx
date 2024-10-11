@@ -52,19 +52,16 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
         let storageRef = "";
 
         try {
-            let imageUrl = null;
-            let storagePath = null; // Renombrado para mayor claridad
+            let imageUrl = "";
+            let storagePath = "";
 
-            // Subir la imagen si se seleccionó
             if (image) {
                 const uploadResult = await uploadImage(image, "product");
 
-                // Verifica que uploadResult contenga la información adecuada
                 imageUrl = uploadResult.imageUrl;
-                storagePath = uploadResult.storageRef; // Esto debe ser el fullPath del archivo
+                storagePath = uploadResult.storageRef;
             }
 
-            // Construir el objeto del producto
             let product = {
                 name_es: nameInputs.ES,
                 name_en: nameInputs.EN,
