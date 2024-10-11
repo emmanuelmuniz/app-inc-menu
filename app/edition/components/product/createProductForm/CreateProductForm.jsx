@@ -48,17 +48,23 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
         e.preventDefault();
         setLoading(true);
 
-
         let imageUrl = "";
         let storageRef = "";
 
         try {
+            let imageUrl = null;
+            let storagePath = null; // Renombrado para mayor claridad
+
+            // Subir la imagen si se seleccionó
             if (image) {
                 const uploadResult = await uploadImage(image, "product");
+
+                // Verifica que uploadResult contenga la información adecuada
                 imageUrl = uploadResult.imageUrl;
-                storageRef = uploadResult.storageRef;
+                storagePath = uploadResult.storageRef; // Esto debe ser el fullPath del archivo
             }
 
+            // Construir el objeto del producto
             let product = {
                 name_es: nameInputs.ES,
                 name_en: nameInputs.EN,
@@ -68,26 +74,31 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                 description_en: descriptionInputs.EN,
                 description_pt: descriptionInputs.PT,
                 active: active,
-                image: imageUrl,
+                image: {
+                    url: imageUrl,
+                    storageRef: storagePath // Asegúrate de que aquí se esté asignando correctamente
+                },
                 category: {
                     name_es: category.name_es,
                     name_en: category.name_en,
                     name_pt: category.name_pt,
                     _id: category._id
                 }
-            }
+            };
 
-            const result = await CreateProductService({ product }).then((result) => {
-                setLoading(false);
-                onProductCreated();
-                closeModal();
-                console.log('Product creation result:', result);
-            });
+            // Crear el producto
+            const result = await CreateProductService({ product });
+
+            setLoading(false);
+            onProductCreated();
+            closeModal();
+            console.log('Product creation result:', result);
         } catch (error) {
             console.error('Failed to create product:', error);
 
-            if (storageRef) {
-                await deleteImage(storageRef);
+            // Si hubo un error y hay una imagen subida, eliminarla
+            if (storagePath) {
+                await deleteImage(storagePath); // Asegúrate de que deleteImage acepte el fullPath
             }
 
             setLoading(false);

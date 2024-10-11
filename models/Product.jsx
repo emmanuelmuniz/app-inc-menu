@@ -7,6 +7,11 @@ const categorySchema = new Schema({
     _id: String
 });
 
+const imageSchema = new Schema({
+    url: String,
+    storageRef: String
+});
+
 const productSchema = new Schema(
     {
         name_es: {
@@ -41,9 +46,7 @@ const productSchema = new Schema(
             type: Boolean,
             required: true
         },
-        image: {
-            type: String
-        },
+        image: imageSchema,
         category: categorySchema,
         lastUpdateUser: {
             type: String

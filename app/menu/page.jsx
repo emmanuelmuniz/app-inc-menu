@@ -90,6 +90,9 @@ export default function DigitalMenu() {
                                                             <span className="text-inc-light-blue"> ${product.price}</span>
                                                         </span>
                                                         <p className='text-lg mt-3'>{product.description_es}</p>
+                                                        {product.image && product.image.url && (
+                                                            <img src={product.image.url} alt={product.name_es} />
+                                                        )}
                                                     </div>
                                                 ))}
                                         </div>

@@ -223,10 +223,10 @@ export default function Editor() {
                         isOpen={isProductViewOpen}
                         onOpenChange={onOpenChangeProductView}
                         placement="top-center"
-                        className=""
-                        size={"xl"}
+                        className="h-max-80"
+                        size={"2xl"}
                     >
-                        <ModalContent className="modal-content">
+                        <ModalContent className="modal-content h-max-80">
                             <>
                                 <ProductView
                                     categories={categories}

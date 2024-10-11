@@ -1,21 +1,26 @@
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from "@/libs/firebase";
 
-export const uploadImage = async (file, entityType) => {
-    if (!file) throw new Error("No image file provided");
-    if (!["product", "section", "category"].includes(entityType)) {
-        throw new Error("Invalid entity type provided. Must be 'product', 'section', or 'category'.");
-    }
-
+export const uploadImage = async (image, type) => {
     try {
-        const storageRef = ref(storage, `${entityType}s/${file.name}`);
-        await uploadBytes(storageRef, file);
+        // Define el filePath con base en el tipo y un nombre único
+        const filePath = `${type}s/${Date.now()}_${image.name}`;
+        const fileRef = ref(storage, filePath);
 
-        // Obtener la URL de la imagen cargada
-        const imageUrl = await getDownloadURL(storageRef);
-        return { imageUrl, storageRef };
+        // Sube la imagen
+        await uploadBytes(fileRef, image);
+
+        // Obtén la URL de descarga
+        const downloadURL = await getDownloadURL(fileRef);
+
+        // Retorna la URL y el fullPath de la referencia del archivo
+        return {
+            imageUrl: downloadURL,
+            storageRef: fileRef.fullPath // Esto guarda solo la ruta del archivo
+        };
     } catch (error) {
-        throw new Error("Failed to upload image: " + error.message);
+        console.error("Error uploading image:", error);
+        throw error; // Lanza el error para que se maneje en el try-catch donde se llame la función
     }
 };
 

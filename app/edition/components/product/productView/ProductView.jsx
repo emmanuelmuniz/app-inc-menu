@@ -254,14 +254,21 @@ export default function ProductView({ product, categories, onProductUpdated, onP
                             </div>
                         </div>
                     </div>
-                    <div className="">
-                        <div className="w-full mb-5">
+                    <div className="flex gap-2">
+                        <div className={`mb-5 ${product.image && product.image.url ? "w-8/12" : "w-full"}`}>
                             <label className="block text-xs font-bold mb-2">
                                 Subir Imagen
                             </label>
                             <input type="file" className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer" />
-
                         </div>
+                        {product.image && product.image.url && (
+                            <div className="w-4/12">
+                                <label className="block text-xs font-bold mb-2">
+                                    Imagen actual
+                                </label>
+                                <img src={product.image.url} alt={product.name_es} />
+                            </div>
+                        )}
                     </div>
                     <div className="w-full text-center mt-7">
                         <button
