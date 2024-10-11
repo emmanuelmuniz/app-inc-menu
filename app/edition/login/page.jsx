@@ -3,9 +3,9 @@
 import "./styles.css";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-
 import { useState } from "react";
+
+import LoadingDisplay from "@/app/edition/components/loading/LoadingDisplay";
 import MoonLoader from "react-spinners/MoonLoader";
 
 export default function Login() {
@@ -48,7 +48,7 @@ export default function Login() {
 
     return (
         <>
-            {!loged &&
+            {!loged ? (
                 <div className="mt-36 mx-auto bg-ghost-white w-full md:w-80 p-8">
                     <div className="">
                         <form action="" onSubmit={handleSubmit}>
@@ -89,6 +89,11 @@ export default function Login() {
                         </div>
                     }
                 </div>
+            ) : (
+                <div className="">
+                    <LoadingDisplay />
+                </div>
+            )
             }
         </>
     )

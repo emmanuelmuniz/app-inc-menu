@@ -3,6 +3,7 @@ import "./styles.css";
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { CreateProductService } from '@/app/edition/services/product/createProductService/CreateProductService'
+import { uploadImage, deleteImage } from "@/app/edition/services/image/ImageService";
 
 export default function CreateProductForm({ categories, onProductCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
@@ -20,6 +21,7 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState(null);
     const [active, setActive] = useState("true");
+    const [image, setImage] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
@@ -46,24 +48,35 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
         e.preventDefault();
         setLoading(true);
 
-        let product = {
-            name_es: nameInputs.ES,
-            name_en: nameInputs.EN,
-            name_pt: nameInputs.PT,
-            price: price,
-            description_es: descriptionInputs.ES,
-            description_en: descriptionInputs.EN,
-            description_pt: descriptionInputs.PT,
-            active: active,
-            category: {
-                name_es: category.name_es,
-                name_en: category.name_en,
-                name_pt: category.name_pt,
-                _id: category._id
-            }
-        }
+
+        let imageUrl = "";
+        let storageRef = "";
 
         try {
+            if (image) {
+                const uploadResult = await uploadImage(image, "product");
+                imageUrl = uploadResult.imageUrl;
+                storageRef = uploadResult.storageRef;
+            }
+
+            let product = {
+                name_es: nameInputs.ES,
+                name_en: nameInputs.EN,
+                name_pt: nameInputs.PT,
+                price: price,
+                description_es: descriptionInputs.ES,
+                description_en: descriptionInputs.EN,
+                description_pt: descriptionInputs.PT,
+                active: active,
+                image: imageUrl,
+                category: {
+                    name_es: category.name_es,
+                    name_en: category.name_en,
+                    name_pt: category.name_pt,
+                    _id: category._id
+                }
+            }
+
             const result = await CreateProductService({ product }).then((result) => {
                 setLoading(false);
                 onProductCreated();
@@ -72,6 +85,11 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
             });
         } catch (error) {
             console.error('Failed to create product:', error);
+
+            if (storageRef) {
+                await deleteImage(storageRef);
+            }
+
             setLoading(false);
         }
     }
@@ -252,8 +270,16 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                             <label className="block text-xs font-bold mb-2">
                                 Subir Imagen
                             </label>
-                            <input type="file" className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer" />
-
+                            <input
+                                type="file"
+                                className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        setImage(file);
+                                    }
+                                }}
+                            />
                         </div>
                     </div>
                     <div className="w-full text-center mt-7">

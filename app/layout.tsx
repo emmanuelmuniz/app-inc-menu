@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from '@next/font/local'
 import "./globals.css";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/app/components/navbar/Navbar";
 
 const gratelos = localFont({
   src: [

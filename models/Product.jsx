@@ -41,8 +41,8 @@ const productSchema = new Schema(
             type: Boolean,
             required: true
         },
-        sequence: {
-            type: Number
+        image: {
+            type: String
         },
         category: categorySchema,
         lastUpdateUser: {

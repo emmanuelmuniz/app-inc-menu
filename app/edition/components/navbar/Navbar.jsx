@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import logoImage from '@/public/icons/Logo_INC-03.svg'
 import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import logoImage from '@/public/icons/Logo_INC-03.svg'
 
 export default function Navbar() {
     const { data: session } = useSession();
@@ -18,7 +19,7 @@ export default function Navbar() {
     return (
         <>
             {session && (
-                <div className="pt-3 px-4 border-inc-green bg-ghost-white  font-semibold text-lg">
+                <div className="flex items-center justify-between pt-3 px-4 border-inc-green bg-ghost-white  font-semibold text-lg">
                     <ul className="flex gap-6">
                         <div className="">
                             <img src={logoImage.src} alt="Icono de Instagram" className="h-8 mr-2 ml-1 mt-1 text-sm" />
@@ -34,6 +35,11 @@ export default function Navbar() {
                             Categorías
                         </Link>
                     </ul>
+                    <div className="">
+                        <div className='p-1 cursor-pointer px-4 rounded-sm text-white text-sm bg-inc-light-blue' onClick={() => signOut()}>
+                            Salir
+                        </div>
+                    </div>
                 </div >
             )}
         </>
