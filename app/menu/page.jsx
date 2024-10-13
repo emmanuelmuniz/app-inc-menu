@@ -14,17 +14,19 @@ export default function DigitalMenu() {
     const [products, setProducts] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [imageLoading, setImageLoading] = useState(true);
 
     useEffect(() => {
         const fetchSections = async () => {
             await GetSections()
                 .then((response) => {
                     setSections(response.sections);
+                    let selectedSection = response.sections[0];
                     const fetchCategories = async () => {
                         await GetCategories()
                             .then((response) => {
                                 setCategories(response.categories);
-                                setSelectedCategoryId(response.categories[0]._id)
+                                handleFirstCategorySelected(response.categories, selectedSection);
                                 const fetchProducts = async () => {
                                     await GetProducts()
                                         .then((response) => {
@@ -47,6 +49,13 @@ export default function DigitalMenu() {
         if (filteredCategories.length > 0) {
             setSelectedCategoryId(filteredCategories[0]._id);
         }
+    }
+
+    const handleFirstCategorySelected = (responseCategories, selectedSection) => {
+        console.log(selectedSection);
+        const filteredCategories = responseCategories.filter(category => category.section._id === selectedSection._id);
+
+        setSelectedCategoryId(filteredCategories[0]._id);
     }
 
     return (
@@ -91,7 +100,18 @@ export default function DigitalMenu() {
                                                         </span>
                                                         <p className='text-lg mt-3'>{product.description_es}</p>
                                                         {product.image && product.image.url && (
-                                                            <img src={product.image.url} alt={product.name_es} />
+                                                            <div className='relative w-full h-full'>
+                                                                {imageLoading && (
+                                                                    <div className='absolute top-0 left-0 h-52 w-full bg-silver animate-pulse rounded-sm'></div>
+                                                                )}
+                                                                <img
+                                                                    className={`rounded-sm h-72 w-full object-cover transition-opacity duration-500 ${imageLoading ? 'opacity-0' : 'opacity-100'
+                                                                        }`}
+                                                                    src={product.image.url}
+                                                                    alt={product.name_es}
+                                                                    onLoad={() => setImageLoading(false)}
+                                                                />
+                                                            </div>
                                                         )}
                                                     </div>
                                                 ))}

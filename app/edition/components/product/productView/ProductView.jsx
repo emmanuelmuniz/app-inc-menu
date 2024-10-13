@@ -5,37 +5,6 @@ import { UpdateProductService } from '@/app/edition/services/product/updateProdu
 import DeleteProductForm from '@/app/edition/components/product/deleteProductForm/DeleteProductForm';
 import { uploadImage, deleteImage } from "@/app/edition/services/image/ImageService";
 
-const handleImageUpdate = async (newImage, product) => {
-    try {
-        // Verifica si hay una nueva imagen.
-        if (newImage) {
-            // Si hay una nueva imagen y el producto tiene una imagen existente, elimina la imagen anterior.
-            if (product.image?.storageRef) {
-                await deleteImage(product.image.storageRef);
-            }
-
-            // Sube la nueva imagen.
-            const uploadResult = await uploadImage(newImage, "product");
-
-            // Retorna la URL y el storagePath de la nueva imagen.
-            return {
-                imageUrl: uploadResult.imageUrl,
-                storagePath: uploadResult.storageRef,
-            };
-        } else {
-            // Si no hay una nueva imagen, devuelve la URL y el storagePath actuales del producto.
-            return {
-                imageUrl: product.image?.url || "",
-                storagePath: product.image?.storageRef || "",
-            };
-        }
-    } catch (error) {
-        console.error("Error handling image update:", error);
-        throw error; // Lanza el error para manejarlo en el try-catch donde se llame la función.
-    }
-};
-
-
 export default function ProductView({ product, categories, onProductUpdated, onProductDeleted, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: product.name_es,
@@ -76,7 +45,8 @@ export default function ProductView({ product, categories, onProductUpdated, onP
         setCategory(selectedCategory);
     };
 
-    const handleProductDeleted = (e) => {
+    const handleProductDeleted = async (e) => {
+        deleteProductImage();
         onProductDeleted();
         closeModal();
     };
@@ -123,13 +93,10 @@ export default function ProductView({ product, categories, onProductUpdated, onP
         }
     }
 
-
     const handleImageUpdate = async () => {
         try {
             if (newImage) {
-                if (product.image?.storageRef) {
-                    await deleteImage(product.image.storageRef);
-                }
+                deleteProductImage();
 
                 const uploadResult = await uploadImage(newImage, "product");
 
@@ -148,6 +115,14 @@ export default function ProductView({ product, categories, onProductUpdated, onP
             throw error;
         }
     };
+
+    const deleteProductImage = async () => {
+        if (product.image?.storageRef) {
+            await deleteImage(product.image.storageRef);
+        }
+    }
+
+    const [isLoading, setIsLoading] = useState(true);
 
     return (
         <>
@@ -344,8 +319,17 @@ export default function ProductView({ product, categories, onProductUpdated, onP
                                             Imagen actual
                                         </label>
                                     </div>
-                                    <div className="h-28">
-                                        <img className='rounded-sm h-full' src={product.image.url} alt={product.name_es} />
+                                    <div className='relative w-full h-full'>
+                                        {isLoading && (
+                                            <div className='absolute top-0 left-0 w-32 h-24 bg-silver animate-pulse rounded-sm'></div>
+                                        )}
+                                        <img
+                                            className={`rounded-sm h-24 w-32 object-cover transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'
+                                                }`}
+                                            src={product.image.url}
+                                            alt={product.name_es}
+                                            onLoad={() => setIsLoading(false)}
+                                        />
                                     </div>
                                 </div>
                             </div>

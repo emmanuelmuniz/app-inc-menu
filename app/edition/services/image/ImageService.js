@@ -21,19 +21,21 @@ export const uploadImage = async (image, type) => {
 };
 
 export const deleteImage = async (storagePath) => {
-    try {
-        const fileRef = ref(storage, storagePath);
-        await deleteObject(fileRef);
+    if (storagePath && storagePath != "") {
+        try {
+            const fileRef = ref(storage, storagePath);
+            await deleteObject(fileRef);
 
-        return {
-            success: true,
-            message: "Image deleted successfully",
-        };
-    } catch (error) {
-        console.error("Failed to delete image:", error);
-        return {
-            success: false,
-            message: error.message || "Failed to delete image",
-        };
+            return {
+                success: true,
+                message: "Image deleted successfully",
+            };
+        } catch (error) {
+            console.error("Failed to delete image:", error);
+            return {
+                success: false,
+                message: error.message || "Failed to delete image",
+            };
+        }
     }
 };
