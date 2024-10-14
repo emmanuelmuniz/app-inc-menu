@@ -106,12 +106,11 @@ export default function DigitalMenu() {
                                                     <div key={product._id} className="my-4 shadow-sm rounded-sm overflow-hidden">
                                                         {product.image && product.image.url && (
                                                             <div className='relative w-full h-52'>
-                                                                {imageLoading && (
-                                                                    <div className='absolute top-0 left-0 h-full w-full bg-silver animate-pulse'></div>
-                                                                )}
+                                                                {/* {imageLoading && ( */}
+                                                                <div className='h-full w-full bg-silver animate-pulse'></div>
+                                                                {/* )} */}
                                                                 <img
-                                                                    className={`h-full w-full object-cover transition-opacity duration-500 ${imageLoading ? 'opacity-0' : 'opacity-100'
-                                                                        }`}
+                                                                    className={`h-full w-full absolute top-0 left-0 z-10 object-cover transition-opacity duration-500`}
                                                                     src={product.image.url}
                                                                     alt={product.name_es}
                                                                     onLoad={() => setImageLoading(false)}
@@ -120,6 +119,7 @@ export default function DigitalMenu() {
                                                                 />
                                                             </div>
                                                         )}
+
                                                         <div className="p-4 md:p-2">
                                                             <span className="text-black text-bold text-2xl md:text-lg">
                                                                 {product.name_es} -
