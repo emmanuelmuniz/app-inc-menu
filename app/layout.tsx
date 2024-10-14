@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={gratelos.className}>
-        <div className="layout-container flex flex-col justify-center items-center min-h-screen no-scrollbar font-gratelos">
+        <div className="layout-container flex flex-col justify-center items-center min-h-screen no-scrollbar font-gratelos no-select">
           <div className="layout-container-2 bg-white rounded shadow-lg w-full sm:w-5/12 
                     sm:min-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2.5rem)]
                     sm:rounded sm:shadow-lg h-full min-h-screen overflow-y-auto no-scrollbar relative">

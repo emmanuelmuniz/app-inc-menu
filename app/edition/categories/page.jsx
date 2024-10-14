@@ -80,8 +80,8 @@ export default function Categories() {
                     </div>
                 ) : (
                     <div className="flex flex-col md:flex-row place-content-between bg-white">
-                        <div className="flex flex-col md:w-12/12 my-2 md:flex-row w-full bg-gray-2 p-2 gap-3 overflow-hidden rounded-sm">
-                            <div className="flex flex-col md:w-1/2 my-2 overflow-hidden rounded-sm">
+                        <div className="flex flex-col md:w-12/12 my-2 md:flex-row w-full gap-3 px-2 overflow-hidden rounded-sm">
+                            <div className="flex flex-col md:w-1/2 my-2 overflow-hidden rounded-sm bg-gray-2 p-2">
                                 <div className="flex justify-between items-center mb-2">
                                     <h2 className="font-semibold text-gray-3">Categorías</h2>
                                     <button
@@ -91,7 +91,7 @@ export default function Categories() {
                                         Nueva Categoría
                                     </button>
                                 </div>
-                                <DragDropContext onDragEnd={handleDragEnd}>
+                                <DragDropContext onDragEnd={handleDragEnd} key={selectedSection._id}>
                                     <Droppable droppableId="sections">
                                         {(droppableProvided) => (
                                             <div className="bg-white rounded-sm overflow-hidden" ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
@@ -111,7 +111,7 @@ export default function Categories() {
                                                                 {...provided.dragHandleProps}
                                                                 key={section._id}
                                                                 className={`flex tab text-sm focus:outline-none cursor-pointer transition 
-                                                                    ${selectedSection._id == section._id ? 'bg-inc-light-blue hover:text-white focus:hover:text-white text-white' : 'even:bg-white odd:bg-gray-4 hover:text-inc-light-blue'}
+                                                                    ${selectedSection._id == section._id ? 'bg-inc-light-blue text-white hover:bg-inc-light-blue-hover' : 'even:bg-white odd:bg-gray-4 hover:text-inc-light-blue'}
                                                                     ${isReordering ? 'cursor-wait' : ''}`}
                                                                 onClick={() => {
                                                                     setSelectedSection(section);
@@ -144,8 +144,7 @@ export default function Categories() {
                                     </Droppable>
                                 </DragDropContext>
                             </div>
-
-                            <div className="flex flex-col md:w-1/2 my-2 rounded-sm overflow-hidden">
+                            <div className="flex flex-col md:w-1/2 my-2 rounded-sm overflow-hidden bg-gray-2 p-2">
                                 <div className="flex justify-between items-center mb-2">
                                     <h2 className="font-semibold text-gray-3">Subcategorías</h2>
                                     <button
@@ -166,8 +165,8 @@ export default function Categories() {
                                         </div>
                                     </div>
                                     {selectedSection && (
-                                        <DragDropContext onDragEnd={handleDragEndCategories}>
-                                            <Droppable droppableId="categories">
+                                        <DragDropContext key={selectedSection} onDragEnd={handleDragEndCategories}>
+                                            <Droppable droppableId="filteredCategories">
                                                 {(droppableProvided) => (
                                                     <div ref={droppableProvided.innerRef} {...droppableProvided.droppableProps} className="cursor-pointer" >
                                                         {filteredCategories.map((category, index) => (
@@ -177,7 +176,6 @@ export default function Categories() {
                                                                         ref={provided.innerRef}
                                                                         {...provided.draggableProps}
                                                                         {...provided.dragHandleProps}
-                                                                        key={category._id}
                                                                         className="flex text-sm justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"
                                                                         onClick={() => setSelectedCategory(category)}
                                                                     >
@@ -201,11 +199,13 @@ export default function Categories() {
                                                                 )}
                                                             </Draggable>
                                                         ))}
+                                                        {droppableProvided.placeholder}
                                                     </div>
                                                 )}
                                             </Droppable>
                                         </DragDropContext>
                                     )}
+
                                 </div>
                             </div>
                         </div>

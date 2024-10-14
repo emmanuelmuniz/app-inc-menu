@@ -1,21 +1,25 @@
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 const useFilteredCategories = (categories, selectedSection) => {
-    return useMemo(() => {
-        let filteredCategories = [];
+    const [filteredCategories, setFilteredCategories] = useState([]);
+
+    useEffect(() => {
+        let newFilteredCategories = [];
 
         if (selectedSection != null && selectedSection._id === "ALL") {
-            filteredCategories = categories;
+            newFilteredCategories = categories;
         } else {
             if (selectedSection != null) {
-                filteredCategories = categories.filter((category) => category.section._id === selectedSection._id);
+                newFilteredCategories = categories.filter((category) => category.section._id === selectedSection._id);
             } else {
-                filteredCategories = categories;
+                newFilteredCategories = categories;
             }
         }
 
-        return filteredCategories;
-    }, [categories]);
+        setFilteredCategories(newFilteredCategories);
+    }, [categories, selectedSection]);
+
+    return filteredCategories;
 };
 
 export default useFilteredCategories;

@@ -87,7 +87,8 @@ export default function Editor() {
                                         {sections.map((section) => (
                                             <Tab
                                                 key={section._id}
-                                                className="tab text-sm bg-white cursor-pointer transition focus:outline-none"
+                                                className={`tab text-sm cursor-pointer transition focus:outline-none
+                                                    ${selectedSectionId == section._id ? 'bg-inc-light-blue text-white hover:bg-inc-light-blue-hover' : 'hover:text-inc-light-blue bg-white'}`}
                                             >
                                                 <div className="p-2">{section.name_es}</div>
                                                 <div className="w-full border-b-1 border-gray-2 bg-gray-2"></div>
@@ -105,7 +106,8 @@ export default function Editor() {
                                                         <Tab
                                                             key={sectionCategory._id}
                                                             onClick={() => setSelectedCategoryId(sectionCategory._id)}
-                                                            className="w-full text-sm tab bg-white cursor-pointer transition focus:outline-none"
+                                                            className={`w-full text-sm tab cursor-pointer transition focus:outline-none
+                                                                ${selectedCategoryId == sectionCategory._id ? 'bg-inc-light-blue text-white hover:bg-inc-light-blue-hover' : 'hover:text-inc-light-blue bg-white'}`}
                                                         >
                                                             <div className="p-2">{sectionCategory.name_es}</div>
                                                             <div className="w-full border-b-1 border-gray-2 bg-gray-2"></div>

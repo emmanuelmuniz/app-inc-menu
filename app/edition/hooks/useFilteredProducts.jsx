@@ -1,26 +1,28 @@
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 const useFilteredProducts = (products, categories, selectedCategoryId, selectedSectionId, searchFilter) => {
-    return useMemo(() => {
-        let filteredProducts = [];
+    const [filteredProducts, setFilteredProducts] = useState([]);
+
+    useEffect(() => {
+        let newFilteredProducts = [];
 
         // Filtrar productos según la categoría y la sección seleccionadas
         if (selectedCategoryId === "ALL") {
             if (selectedSectionId === "ALL") {
-                filteredProducts = products;
+                newFilteredProducts = products;
             } else {
-                filteredProducts = products.filter((product) => {
+                newFilteredProducts = products.filter((product) => {
                     const category = categories.find((cat) => cat._id === product.category._id);
                     return category && category.section && category.section._id === selectedSectionId;
                 });
             }
         } else {
-            filteredProducts = products.filter((product) => product.category._id === selectedCategoryId);
+            newFilteredProducts = products.filter((product) => product.category._id === selectedCategoryId);
         }
 
         // Si hay un searchFilter, filtrar también por los nombres en varios idiomas
         if (searchFilter) {
-            filteredProducts = filteredProducts.filter((product) => {
+            newFilteredProducts = newFilteredProducts.filter((product) => {
                 const { name_es, name_en, name_pt } = product;
                 const searchText = searchFilter.toLowerCase();
 
@@ -30,8 +32,10 @@ const useFilteredProducts = (products, categories, selectedCategoryId, selectedS
             });
         }
 
-        return filteredProducts;
+        setFilteredProducts(newFilteredProducts);
     }, [products, categories, selectedCategoryId, selectedSectionId, searchFilter]);
+
+    return filteredProducts;
 };
 
 export default useFilteredProducts;
