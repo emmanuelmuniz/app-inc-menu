@@ -7,7 +7,7 @@ import { GetSections } from '@/app/services/sections';
 import { GetCategories } from '@/app/services/categories';
 import { GetProducts } from '@/app/services/products';
 import LoadingDisplay from '@/app/components/LoadingDisplay';
-
+import Image from 'next/image'
 export default function DigitalMenu() {
     const [sections, setSections] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -106,16 +106,15 @@ export default function DigitalMenu() {
                                                     <div key={product._id} className="my-4 shadow-sm rounded-sm overflow-hidden">
                                                         {product.image && product.image.url && (
                                                             <div className='relative w-full h-52'>
-                                                                {/* {imageLoading && ( */}
-                                                                <div className='h-full w-full bg-silver animate-pulse'></div>
-                                                                {/* )} */}
-                                                                <img
-                                                                    className={`h-full w-full absolute top-0 left-0 z-10 object-cover transition-opacity duration-500`}
+                                                                <Image
                                                                     src={product.image.url}
-                                                                    alt={product.name_es}
-                                                                    onLoad={() => setImageLoading(false)}
-                                                                    onContextMenu={(e) => e.preventDefault()}
-                                                                    draggable='false'
+                                                                    alt="Picture of the author"
+                                                                    width={500}
+                                                                    height={500}
+                                                                    blurDataURL={product.image.url}
+                                                                    placeholder="blur"
+                                                                    className='transition-opacity opacity-0 duration-[0.4s]'
+                                                                    onLoadingComplete={(image) => image.classList.remove("opacity-0")}
                                                                 />
                                                             </div>
                                                         )}
