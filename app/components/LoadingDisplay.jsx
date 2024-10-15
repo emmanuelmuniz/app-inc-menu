@@ -4,10 +4,11 @@ export default function LoadingDisplay() {
 
     return (
         <div className="
-        min-w-full
-        mt-80
-        grid
-        place-content-center">
+            fixed 
+            inset-0 
+            flex 
+            justify-center 
+            items-center">
             <MoonLoader size={35} />
         </div>
     );
