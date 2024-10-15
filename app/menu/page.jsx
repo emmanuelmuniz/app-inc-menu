@@ -99,7 +99,7 @@ export default function DigitalMenu() {
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="px-5 text-black grid gap-4 md:grid-cols-2">
+                                        <div className="px-5 text-black grid gap-4 md:grid-cols-3">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
