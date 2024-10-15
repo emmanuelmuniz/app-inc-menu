@@ -103,7 +103,7 @@ export default function DigitalMenu() {
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
-                                                    <div key={product._id} className="shadow-sm rounded-sm overflow-hidden m-3">
+                                                    <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden m-3">
                                                         {product.image && product.image.url && (
                                                             <div className='relative w-full h-52'>
                                                                 <div className='h-full w-full bg-silver animate-pulse'></div>
