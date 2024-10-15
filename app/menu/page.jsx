@@ -99,11 +99,11 @@ export default function DigitalMenu() {
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="px-5 text-black grid gap-4 md:grid-cols-2">
+                                        <div className="text-black grid gap-4 md:grid-cols-2 m-3">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
-                                                    <div key={product._id} className="my-4 shadow-sm rounded-sm overflow-hidden">
+                                                    <div key={product._id} className="shadow-sm rounded-sm overflow-hidden m-3">
                                                         {product.image && product.image.url && (
                                                             <div className='relative w-full h-52'>
                                                                 <div className='h-full w-full bg-silver animate-pulse'></div>
@@ -113,13 +113,14 @@ export default function DigitalMenu() {
                                                                     blurDataURL={product.image.url}
                                                                     placeholder="blur"
                                                                     fill={true}
-                                                                    className='absolute top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
+                                                                    draggable="false"
+                                                                    className='absolute -mb-10 top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
                                                                     onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
                                                                 />
                                                             </div>
                                                         )}
 
-                                                        <div className="p-4 md:p-2">
+                                                        <div className="p-4">
                                                             <span className="text-black text-bold text-2xl md:text-xl">
                                                                 {product.name_es} -
                                                                 <span className="text-inc-light-blue"> ${product.price}</span>
