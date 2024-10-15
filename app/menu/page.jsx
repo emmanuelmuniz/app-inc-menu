@@ -99,7 +99,7 @@ export default function DigitalMenu() {
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="px-5 text-black grid gap-4 md:grid-cols-3">
+                                        <div className="px-5 text-black grid gap-4 md:grid-cols-2">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
@@ -120,11 +120,11 @@ export default function DigitalMenu() {
                                                         )}
 
                                                         <div className="p-4 md:p-2">
-                                                            <span className="text-black text-bold text-2xl md:text-lg">
+                                                            <span className="text-black text-bold text-2xl md:text-xl">
                                                                 {product.name_es} -
                                                                 <span className="text-inc-light-blue"> ${product.price}</span>
                                                             </span>
-                                                            <p className='text-xl md:text-base mt-2'>{product.description_es}</p>
+                                                            <p className='text-xl md:text-lg mt-2'>{product.description_es}</p>
                                                         </div>
                                                     </div>
                                                 ))}
