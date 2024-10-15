@@ -110,11 +110,10 @@ export default function DigitalMenu() {
                                                                 <Image
                                                                     src={product.image.url}
                                                                     alt="Picture of the author"
-                                                                    width={500}
-                                                                    height={500}
                                                                     blurDataURL={product.image.url}
                                                                     placeholder="blur"
-                                                                    className='h-full w-full absolute top-0 left-0 z-10 transition-opacity opacity-0 duration-[0.4s]'
+                                                                    fill={true}
+                                                                    className='absolute top-0 left-0 z-10 object-cover transition-opacity opacity-0 duration-[0.4s]'
                                                                     onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
                                                                 />
                                                             </div>
