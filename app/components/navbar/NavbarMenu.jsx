@@ -28,7 +28,7 @@ const NavbarMenu = ({ onClose }) => {
     }, [onClose]);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
             <div className="absolute top-0 right-0 m-4">
                 <button onClick={onClose} className="p-2 transform hover:scale-125 transition-transform">
                     <img src={close.src} alt="Icono de Cerrar" className="h-5" />

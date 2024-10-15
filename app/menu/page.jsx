@@ -113,7 +113,7 @@ export default function DigitalMenu() {
                                                                     blurDataURL={product.image.url}
                                                                     placeholder="blur"
                                                                     fill={true}
-                                                                    className='absolute top-0 left-0 z-10 object-cover transition-opacity opacity-0 duration-[0.4s]'
+                                                                    className='absolute top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
                                                                     onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
                                                                 />
                                                             </div>
