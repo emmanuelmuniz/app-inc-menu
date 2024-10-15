@@ -106,6 +106,7 @@ export default function DigitalMenu() {
                                                     <div key={product._id} className="my-4 shadow-sm rounded-sm overflow-hidden">
                                                         {product.image && product.image.url && (
                                                             <div className='relative w-full h-52'>
+                                                                <div className='h-full w-full bg-silver animate-pulse'></div>
                                                                 <Image
                                                                     src={product.image.url}
                                                                     alt="Picture of the author"
@@ -113,8 +114,8 @@ export default function DigitalMenu() {
                                                                     height={500}
                                                                     blurDataURL={product.image.url}
                                                                     placeholder="blur"
-                                                                    className='transition-opacity opacity-0 duration-[0.4s]'
-                                                                    onLoadingComplete={(image) => image.classList.remove("opacity-0")}
+                                                                    className='h-full w-full absolute top-0 left-0 z-10 transition-opacity opacity-0 duration-[0.4s]'
+                                                                    onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
                                                                 />
                                                             </div>
                                                         )}
