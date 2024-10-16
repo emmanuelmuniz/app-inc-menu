@@ -116,8 +116,10 @@ export default function DigitalMenu() {
                                                                     draggable="false"
                                                                     className='absolute -mb-10 top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
                                                                     onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
+                                                                    style={{ objectPosition: 'top' }} // Asegura que la parte superior de la imagen sea prioritaria
                                                                 />
                                                             </div>
+
                                                         )}
 
                                                         <div className="p-4">
