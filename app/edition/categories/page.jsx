@@ -174,6 +174,7 @@ export default function Categories() {
                                                                 {(provided, snapshot) => (
                                                                     <div
                                                                         ref={provided.innerRef}
+                                                                        key={category._id}
                                                                         {...provided.draggableProps}
                                                                         {...provided.dragHandleProps}
                                                                         className="flex text-sm justify-between border-b p-2 cursor-pointer odd:bg-gray-4 even:bg-white border-gray-2"

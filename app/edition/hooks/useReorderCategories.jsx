@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-
 import { UpdateCategoriesService } from '@/app/edition/services/category/updateCategoriesService/UpdateCategoriesService';
 
 const useReorderCategories = (categories, setCategories, filteredCategories) => {
@@ -12,31 +11,31 @@ const useReorderCategories = (categories, setCategories, filteredCategories) => 
         }
     }, []);
 
-    const reorder = useCallback(async (list, startId, endId) => {
-        const result = Array.from(list);
+    const reorder = useCallback(async (allCategories, filteredList, startId, endId) => {
+        const result = Array.from(allCategories);
 
         const startIndex = result.findIndex(category => category._id === startId);
         const endIndex = result.findIndex(category => category._id === endId);
 
         if (startIndex === -1 || endIndex === -1) {
             console.error("No se encontraron las categorías a reordenar");
-            return list;
+            return allCategories;
         }
 
         const startCategory = result[startIndex];
-        const endCategory = result[endIndex]
+        const endCategory = result[endIndex];
 
         const originalStartSequence = startCategory.sequence;
         const originalEndSequence = endCategory.sequence;
 
-        if (startIndex < endIndex) {
+        // Actualizamos el sequence de todas las categorías, no solo de las filtradas
+        if (originalStartSequence < originalEndSequence) {
             result.forEach(category => {
                 if (category.sequence > originalStartSequence && category.sequence <= originalEndSequence) {
                     category.sequence -= 1;
                 }
             });
-        }
-        else if (startIndex > endIndex) {
+        } else if (originalStartSequence > originalEndSequence) {
             result.forEach(category => {
                 if (category.sequence >= originalEndSequence && category.sequence < originalStartSequence) {
                     category.sequence += 1;
@@ -61,15 +60,12 @@ const useReorderCategories = (categories, setCategories, filteredCategories) => 
         const startId = filteredCategories[result.source.index]._id;
         const endId = filteredCategories[result.destination.index]._id;
 
-        const reorderedFilteredCategories = await reorder(filteredCategories, startId, endId);
+        // Reordenamos las categorías considerando todas las categorías
+        const reorderedCategories = await reorder(categories, filteredCategories, startId, endId);
 
-        const updatedCategories = categories.map(category => {
-            const updatedCategory = reorderedFilteredCategories.find(c => c._id === category._id);
-            return updatedCategory ? updatedCategory : category;
-        });
-
-        setCategories(updatedCategories.sort((a, b) => a.sequence - b.sequence));
-    }, [categories, reorder, setCategories]);
+        // Actualizamos el estado con las categorías reordenadas
+        setCategories(reorderedCategories);
+    }, [categories, reorder, filteredCategories, setCategories]);
 
     return { handleDragEndCategories };
 };
