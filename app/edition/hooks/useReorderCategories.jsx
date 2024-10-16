@@ -1,18 +1,24 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { UpdateCategoriesService } from '@/app/edition/services/category/updateCategoriesService/UpdateCategoriesService';
 
 const useReorderCategories = (categories, setCategories, filteredCategories) => {
+    const [isUpdating, setIsUpdating] = useState(false);
+
     const updateDraggedCategories = useCallback(async (categoriesToUpdate) => {
+        setIsUpdating(true);
         try {
             await UpdateCategoriesService(categoriesToUpdate);
-            console.log('Categories updating result');
+            console.log('Categories successfully updated in the database');
         } catch (error) {
             console.error('Failed to update categories:', error);
+            // Optional: rollback to previous state or notify the user
+        } finally {
+            setIsUpdating(false);
         }
     }, []);
 
-    const reorder = useCallback(async (allCategories, filteredList, startId, endId) => {
-        const result = Array.from(allCategories);
+    const reorder = useCallback((allCategories, startId, endId) => {
+        const result = [...allCategories];
 
         const startIndex = result.findIndex(category => category._id === startId);
         const endIndex = result.findIndex(category => category._id === endId);
@@ -22,37 +28,18 @@ const useReorderCategories = (categories, setCategories, filteredCategories) => 
             return allCategories;
         }
 
-        const startCategory = result[startIndex];
-        const endCategory = result[endIndex];
+        // Extraemos la categoría que se está moviendo
+        const [movedCategory] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, movedCategory);
 
-        const originalStartSequence = startCategory.sequence;
-        const originalEndSequence = endCategory.sequence;
+        // Ajustamos los valores de 'sequence' para que coincidan con el nuevo orden
+        return result.map((category, index) => ({
+            ...category,
+            sequence: index + 1,
+        }));
+    }, []);
 
-        // Actualizamos el sequence de todas las categorías, no solo de las filtradas
-        if (originalStartSequence < originalEndSequence) {
-            result.forEach(category => {
-                if (category.sequence > originalStartSequence && category.sequence <= originalEndSequence) {
-                    category.sequence -= 1;
-                }
-            });
-        } else if (originalStartSequence > originalEndSequence) {
-            result.forEach(category => {
-                if (category.sequence >= originalEndSequence && category.sequence < originalStartSequence) {
-                    category.sequence += 1;
-                }
-            });
-        }
-
-        startCategory.sequence = originalEndSequence;
-
-        const reorderedCategories = result.sort((a, b) => a.sequence - b.sequence);
-
-        await updateDraggedCategories(reorderedCategories);
-
-        return reorderedCategories;
-    }, [updateDraggedCategories]);
-
-    const handleDragEndCategories = useCallback(async (result) => {
+    const handleDragEndCategories = useCallback((result) => {
         if (!result.destination) {
             return;
         }
@@ -60,14 +47,17 @@ const useReorderCategories = (categories, setCategories, filteredCategories) => 
         const startId = filteredCategories[result.source.index]._id;
         const endId = filteredCategories[result.destination.index]._id;
 
-        // Reordenamos las categorías considerando todas las categorías
-        const reorderedCategories = await reorder(categories, filteredCategories, startId, endId);
+        // Reordenamos de manera optimista y actualizamos la UI
+        const reorderedCategories = reorder(categories, startId, endId);
 
-        // Actualizamos el estado con las categorías reordenadas
+        // Actualizamos el estado de las categorías para reflejar el cambio instantáneo
         setCategories(reorderedCategories);
-    }, [categories, reorder, filteredCategories, setCategories]);
 
-    return { handleDragEndCategories };
+        // Sincronizamos con el servidor sin bloquear la UI
+        updateDraggedCategories(reorderedCategories);
+    }, [categories, reorder, filteredCategories, setCategories, updateDraggedCategories]);
+
+    return { handleDragEndCategories, isUpdating };
 };
 
 export default useReorderCategories;
