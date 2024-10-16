@@ -47,13 +47,10 @@ const useReorderCategories = (categories, setCategories, filteredCategories) => 
         const startId = filteredCategories[result.source.index]._id;
         const endId = filteredCategories[result.destination.index]._id;
 
-        // Reordenamos de manera optimista y actualizamos la UI
         const reorderedCategories = reorder(categories, startId, endId);
 
-        // Actualizamos el estado de las categorías para reflejar el cambio instantáneo
         setCategories(reorderedCategories);
 
-        // Sincronizamos con el servidor sin bloquear la UI
         updateDraggedCategories(reorderedCategories);
     }, [categories, reorder, filteredCategories, setCategories, updateDraggedCategories]);
 
