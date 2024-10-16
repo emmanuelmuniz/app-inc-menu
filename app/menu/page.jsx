@@ -105,7 +105,7 @@ export default function DigitalMenu() {
                                                 .map((product) => (
                                                     <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden m-3">
                                                         {product.image && product.image.url && (
-                                                            <div className='relative w-full h-52'>
+                                                            <div className='relative w-full h-64'>
                                                                 <div className='h-full w-full bg-silver animate-pulse'></div>
                                                                 <Image
                                                                     src={product.image.url}
@@ -119,7 +119,6 @@ export default function DigitalMenu() {
                                                                     style={{ objectPosition: 'top' }} // Asegura que la parte superior de la imagen sea prioritaria
                                                                 />
                                                             </div>
-
                                                         )}
 
                                                         <div className="p-4">
