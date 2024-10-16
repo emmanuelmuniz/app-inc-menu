@@ -1,34 +1,30 @@
 import { useCallback } from 'react';
-import { useState } from 'react';
 
 import { UpdateSectionsService } from '@/app/edition/services/section/updateSectionsService/UpdateSectionsService';
 
 const useReorderSections = (sections, setSections, setIsReordering) => {
     const updateDraggedSections = useCallback(async (sectionsToUpdate) => {
         try {
-            await UpdateSectionsService(sectionsToUpdate).then(() => {
-                setIsReordering(false);
-            });
-            console.log('Sections updating result');
+            await UpdateSectionsService(sectionsToUpdate);
+            setIsReordering(false);
+            console.log('Sections updated successfully');
         } catch (error) {
             console.error('Failed to update sections:', error);
         }
     }, []);
 
-    const reorder = useCallback(async (list, startId, endId) => {
+    const reorder = useCallback((list, startId, endId) => {
         const result = Array.from(list);
-
         const startIndex = result.findIndex(section => section._id === startId);
         const endIndex = result.findIndex(section => section._id === endId);
 
         if (startIndex === -1 || endIndex === -1) {
-            console.error("No se encontraron las categorías a reordenar");
+            console.error("No se encontraron las secciones a reordenar");
             return list;
         }
 
         const startSection = result[startIndex];
-        const endSection = result[endIndex]
-
+        const endSection = result[endIndex];
         const originalStartSequence = startSection.sequence;
         const originalEndSequence = endSection.sequence;
 
@@ -38,8 +34,7 @@ const useReorderSections = (sections, setSections, setIsReordering) => {
                     section.sequence -= 1;
                 }
             });
-        }
-        else if (startIndex > endIndex) {
+        } else {
             result.forEach(section => {
                 if (section.sequence >= originalEndSequence && section.sequence < originalStartSequence) {
                     section.sequence += 1;
@@ -49,12 +44,8 @@ const useReorderSections = (sections, setSections, setIsReordering) => {
 
         startSection.sequence = originalEndSequence;
 
-        const reorderedSections = result.sort((a, b) => a.sequence - b.sequence);
-
-        await updateDraggedSections(reorderedSections);
-
-        return reorderedSections;
-    }, [updateDraggedSections]);
+        return result.sort((a, b) => a.sequence - b.sequence);
+    }, []);
 
     const handleDragEnd = useCallback(async (result) => {
         if (!result.destination) {
@@ -66,13 +57,13 @@ const useReorderSections = (sections, setSections, setIsReordering) => {
         const startId = sections[result.source.index]._id;
         const endId = sections[result.destination.index]._id;
 
-        const updatedSections = await reorder(sections, startId, endId);
+        const updatedSections = reorder(sections, startId, endId);
+        setSections(updatedSections);
 
-        setSections(updatedSections.sort((a, b) => a.sequence - b.sequence));
-    }, [sections, reorder, setSections]);
+        await updateDraggedSections(updatedSections);
+    }, [sections, reorder, setSections, updateDraggedSections, setIsReordering]);
 
     return { handleDragEnd };
 };
-
 
 export default useReorderSections;

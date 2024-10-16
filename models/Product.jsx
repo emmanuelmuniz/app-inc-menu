@@ -50,6 +50,9 @@ const productSchema = new Schema(
         category: categorySchema,
         lastUpdateUser: {
             type: String
+        },
+        sequence: {
+            type: Number,
         }
     },
     {
