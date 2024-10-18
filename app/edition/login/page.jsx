@@ -50,7 +50,7 @@ export default function Login() {
     return (
         <>
             {!loged ? (
-                <div className="mt-36 mx-auto bg-ghost-white w-full md:w-[350px] pb-3">
+                <div className="mt-36 mx-auto bg-ghost-white w-full md:w-[350px] pb-3 shadow-lg">
                     <div className="w-full bg-gray-2 p-5 flex justify-center">
                         <img src={logoImage.src} alt="Icono de Instagram" className="h-14 mr-2 ml-1 mt-1 text-sm" />
                     </div>
