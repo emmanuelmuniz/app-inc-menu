@@ -79,7 +79,7 @@ export default function DigitalMenu() {
                     <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                         <TabList className="flex flex-wrap text-xl text-black mt-2 w-full px-5 pb-3">
                             {sections.map((section) => (
-                                <Tab key={section._id} className="tab bg-ghost-white focus:outline-none cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
+                                <Tab key={section._id} className="tab text-xl bg-ghost-white focus:outline-none cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                     {section.name_es}
                                 </Tab>
                             ))}
@@ -93,13 +93,13 @@ export default function DigitalMenu() {
                                                 .map((sectionCategory) => (
                                                     <Tab key={sectionCategory._id}
                                                         onClick={() => setSelectedCategoryId(sectionCategory._id)}
-                                                        className="tab focus:outline-none bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
+                                                        className="tab text-lg focus:outline-none bg-ghost-white cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
                                                         {sectionCategory.name_es}
                                                     </Tab>
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="text-black grid md:grid-cols-3 m-3">
+                                        <div className="text-black grid md:grid-cols-2 m-3">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
@@ -122,10 +122,13 @@ export default function DigitalMenu() {
                                                         )}
 
                                                         <div className="p-4">
-                                                            <span className="text-black text-bold text-2xl md:text-xl">
+                                                            <span className="text-black text-bold text-2xl md:text-xl flex">
                                                                 {product.name_es}
                                                                 {!isNaN(product.price) && product.price > 0 && (
-                                                                    <span className="text-inc-light-blue ml-3"> ${product.price}</span>
+                                                                    <div className="flex flex-row">
+                                                                        <span className="mx-2">-</span>
+                                                                        <span className="text-inc-light-blue"> ${product.price}</span>
+                                                                    </div>
                                                                 )}
                                                             </span>
                                                             <p className='text-xl md:text-lg mt-2'>{product.description_es}</p>
