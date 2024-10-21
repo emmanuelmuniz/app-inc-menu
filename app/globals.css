@@ -3,12 +3,16 @@
 @tailwind utilities;
 
 body {
-  background: black;
+  background: theme('colors.inc-light-blue');
 }
 
 .no-select {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* Internet Explorer */
-  user-select: none;         /* Standard */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer */
+  user-select: none;
+  /* Standard */
 }

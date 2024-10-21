@@ -103,39 +103,43 @@ export default function DigitalMenu() {
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
-                                                    <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden m-3">
-                                                        {product.image && product.image.url && (
-                                                            <div className='relative w-full h-64'>
-                                                                <div className='h-full w-full bg-silver animate-pulse'></div>
-                                                                <Image
-                                                                    src={product.image.url}
-                                                                    alt="Picture of the author"
-                                                                    blurDataURL={product.image.url}
-                                                                    placeholder="blur"
-                                                                    fill={true}
-                                                                    draggable="false"
-                                                                    className='absolute -mb-10 top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
-                                                                    onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
-                                                                    style={{ objectPosition: 'top' }} // Asegura que la parte superior de la imagen sea prioritaria
-                                                                />
+                                                    <>
+                                                        {(product.active) && (
+                                                            <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden m-3">
+                                                                {product.image && product.image.url && (
+                                                                    <div className='relative w-full h-64'>
+                                                                        <div className='h-full w-full bg-silver animate-pulse'></div>
+                                                                        <Image
+                                                                            src={product.image.url}
+                                                                            alt="Picture of the author"
+                                                                            blurDataURL={product.image.url}
+                                                                            placeholder="blur"
+                                                                            fill={true}
+                                                                            draggable="false"
+                                                                            className='absolute -mb-10 top-0 left-0 z-2 object-cover transition-opacity opacity-0 duration-[0.4s]'
+                                                                            onLoadingComplete={(image) => { image.classList.remove("opacity-0") }}
+                                                                            style={{ objectPosition: 'top' }} // Asegura que la parte superior de la imagen sea prioritaria
+                                                                        />
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="p-4">
+                                                                    <span className="text-black text-bold text-2xl md:text-xl">
+                                                                        <span className="">
+                                                                            {product.name_es}
+                                                                        </span>
+                                                                        {!isNaN(product.price) && product.price > 0 && (
+                                                                            <>
+                                                                                <span className="mx-2">-</span>
+                                                                                <span className="text-inc-light-blue"> ${product.price}</span>
+                                                                            </>
+                                                                        )}
+                                                                    </span>
+                                                                    <p className='text-xl md:text-lg mt-2'>{product.description_es}</p>
+                                                                </div>
                                                             </div>
                                                         )}
-
-                                                        <div className="p-4">
-                                                            <span className="text-black text-bold text-2xl md:text-xl">
-                                                                <span className="">
-                                                                    {product.name_es}
-                                                                </span>
-                                                                {!isNaN(product.price) && product.price > 0 && (
-                                                                    <>
-                                                                        <span className="mx-2">-</span>
-                                                                        <span className="text-inc-light-blue"> ${product.price}</span>
-                                                                    </>
-                                                                )}
-                                                            </span>
-                                                            <p className='text-xl md:text-lg mt-2'>{product.description_es}</p>
-                                                        </div>
-                                                    </div>
+                                                    </>
                                                 ))}
                                         </div>
 
