@@ -29,7 +29,7 @@ export default function RootLayout({
         <div className="layout-container relative flex flex-col justify-center items-center 
                         bg-[url('/images/inc-front.jpeg')] bg-fixed bg-contain h-screen
                         min-h-screen no-scrollbar font-gratelos no-select">
-          <div className="absolute inset-0 bg-inc-light-blue/5" style={{ backdropFilter: 'blur(1px)' }}></div>
+          <div className="absolute inset-0" style={{ backdropFilter: 'blur(1px)' }}></div>
 
           <div className="layout-container-2 relative z-10 bg-white rounded shadow-lg w-full sm:w-6/12 
                     sm:min-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2.5rem)]
