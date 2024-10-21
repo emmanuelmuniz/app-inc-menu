@@ -7,7 +7,7 @@
 .layout-container {
     padding: 10px;
     margin: 0 !important;
-    background-color: theme('colors.inc-light-blue');
+    background: theme('colors.inc-light-blue');
     font-family: 'Inter', sans-serif;
 }
 
@@ -20,6 +20,8 @@
     width: 100%;
 }
 
-.newProductFormModal, .newSectionFormModal, .newCategoryFormModal {
+.newProductFormModal,
+.newSectionFormModal,
+.newCategoryFormModal {
     font-family: 'Inter', sans-serif;
 }
