@@ -215,6 +215,7 @@ export default function Editor() {
                             <>
                                 <CreateProductForm
                                     categories={categories}
+                                    sections={sections}
                                     className="create-product-form"
                                     onProductCreated={handleProductUpdate}
                                     closeModal={() => onOpenChangeCreateProductForm(false)} />
@@ -234,6 +235,7 @@ export default function Editor() {
                             <>
                                 <ProductView
                                     categories={categories}
+                                    sections={sections}
                                     className="product-view"
                                     onProductUpdated={handleProductUpdate}
                                     onProductDeleted={handleProductUpdate}

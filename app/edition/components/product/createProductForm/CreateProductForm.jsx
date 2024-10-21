@@ -5,7 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { CreateProductService } from '@/app/edition/services/product/createProductService/CreateProductService'
 import { uploadImage, deleteImage } from "@/app/edition/services/image/ImageService";
 
-export default function CreateProductForm({ categories, onProductCreated, closeModal }) {
+export default function CreateProductForm({ sections, categories, onProductCreated, closeModal }) {
     const [nameInputs, setNameInputs] = useState({
         ES: '',
         EN: '',
@@ -213,7 +213,7 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                     </div>
                     {/* Category and Published Input  */}
                     <div className="flex flex-wrap -mx-2 mb-5">
-                        <div className="w-full md:w-8/12 px-2 md:mb-0">
+                        <div className="w-full md:w-5/12 px-2 md:mb-0">
                             <div className="w-full mb-3 md:mb-0 sm:mb-5">
                                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                     Categoría
@@ -244,7 +244,38 @@ export default function CreateProductForm({ categories, onProductCreated, closeM
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full md:w-4/12 px-2 md:mb-0">
+                        <div className="w-full md:w-5/12 px-2 md:mb-0">
+                            <div className="w-full mb-3 md:mb-0 sm:mb-5">
+                                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                    Categoría
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        id="category-select"
+                                        value={category ? JSON.stringify(category) : ''}
+                                        onChange={handleCategoryChange}
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Seleccionar una categoría
+                                        </option>
+                                        {categories.map((category) => (
+                                            <option
+                                                key={category._id}
+                                                value={JSON.stringify(category)}
+                                            >
+                                                {category.name_es}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-full md:w-2/12 px-2 md:mb-0">
                             <div className="w-full mb-3">
                                 <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
                                     Estado
