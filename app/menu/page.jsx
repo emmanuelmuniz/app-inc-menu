@@ -122,13 +122,15 @@ export default function DigitalMenu() {
                                                         )}
 
                                                         <div className="p-4">
-                                                            <span className="text-black text-bold text-2xl md:text-xl flex">
-                                                                {product.name_es}
+                                                            <span className="text-black text-bold text-2xl md:text-xl">
+                                                                <span className="">
+                                                                    {product.name_es}
+                                                                </span>
                                                                 {!isNaN(product.price) && product.price > 0 && (
-                                                                    <div className="flex flex-row">
+                                                                    <>
                                                                         <span className="mx-2">-</span>
                                                                         <span className="text-inc-light-blue"> ${product.price}</span>
-                                                                    </div>
+                                                                    </>
                                                                 )}
                                                             </span>
                                                             <p className='text-xl md:text-lg mt-2'>{product.description_es}</p>
