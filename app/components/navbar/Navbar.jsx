@@ -21,7 +21,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="p-4 px-8 flex justify-between items-center rounded-t-lg border-silver">
+            <nav className="p-4 px-8 flex justify-between items-center md:rounded-t-lg border-silver">
                 <div className="flex items-center">
                     <Link href="/">
                         <img src={logoImage.src} alt="Icono de Instagram" className="h-10 mx-4 text-sm" />

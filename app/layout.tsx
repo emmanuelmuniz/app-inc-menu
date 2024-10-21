@@ -37,7 +37,7 @@ export default function RootLayout({
             <div className="fixed z-10 bg-white w-full md:w-6/12 rounded">
               <Navbar />
             </div>
-            <div className="mt-[calc(4rem+1px)] children-div">
+            <div className="md:mt-[calc(4rem+1px)] children-div">
               {children}
             </div>
           </div>
