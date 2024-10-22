@@ -206,15 +206,14 @@ export default function SectionView({ section, categories, onSectionUpdated, onS
                             </div>
                         </div>
                     </div>
-                    <div className="">
+                    {/* <div className="">
                         <div className="w-full mb-4">
                             <label className="block text-xs font-bold mb-2">
                                 Subir Imagen
                             </label>
                             <input type="file" className="block w-full text-sm file:rounded-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-inc-light-blue file:text-white hover:file:bg-inc-light-blue-hover file:transition file:cursor-pointer" />
-
                         </div>
-                    </div>
+                    </div> */}
                     <div className="w-full text-center mt-7">
                         <button
                             type="submit"
