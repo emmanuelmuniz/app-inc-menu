@@ -99,13 +99,13 @@ export default function DigitalMenu() {
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="text-black grid md:grid-cols-2 m-3">
+                                        <div className="text-black grid md:grid-cols-2 gap-3 p-3">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
                                                     <>
                                                         {(product.active) && (
-                                                            <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden m-3">
+                                                            <div key={product._id} className="bg-white shadow-sm border-1 border-ghost-white rounded-sm overflow-hidden">
                                                                 {product.image && product.image.url && (
                                                                     <div className='relative w-full h-64'>
                                                                         <div className='h-full w-full bg-silver animate-pulse'></div>
