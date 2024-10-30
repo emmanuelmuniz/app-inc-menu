@@ -19,7 +19,9 @@ export default function CreateProductForm({ sections, categories, onProductCreat
     });
 
     const [price, setPrice] = useState("");
+    const [section, setSection] = useState(null);
     const [category, setCategory] = useState(null);
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [active, setActive] = useState("true");
     const [image, setImage] = useState(null);
 
@@ -37,6 +39,17 @@ export default function CreateProductForm({ sections, categories, onProductCreat
             ...descriptionInputs,
             [language]: e.target.value
         });
+    };
+
+    const handleSectionChange = (e) => {
+        const selectedSection = JSON.parse(e.target.value);
+        setSection(selectedSection);
+        setCategory(null);
+        if (selectedSection._id === "ALL") {
+            setFilteredCategories(categories);
+        } else {
+            setFilteredCategories(categories.filter(cat => cat.section._id === selectedSection._id));
+        }
     };
 
     const handleCategoryChange = (e) => {
@@ -73,7 +86,7 @@ export default function CreateProductForm({ sections, categories, onProductCreat
                 active: active,
                 image: {
                     url: imageUrl,
-                    storageRef: storagePath // Asegúrate de que aquí se esté asignando correctamente
+                    storageRef: storagePath
                 },
                 category: {
                     name_es: category.name_es,
@@ -83,7 +96,6 @@ export default function CreateProductForm({ sections, categories, onProductCreat
                 }
             };
 
-            // Crear el producto
             const result = await CreateProductService({ product });
 
             setLoading(false);
@@ -93,9 +105,8 @@ export default function CreateProductForm({ sections, categories, onProductCreat
         } catch (error) {
             console.error('Failed to create product:', error);
 
-            // Si hubo un error y hay una imagen subida, eliminarla
             if (storagePath) {
-                await deleteImage(storagePath); // Asegúrate de que deleteImage acepte el fullPath
+                await deleteImage(storagePath);
             }
 
             setLoading(false);
@@ -214,64 +225,49 @@ export default function CreateProductForm({ sections, categories, onProductCreat
                     {/* Category and Published Input  */}
                     <div className="flex flex-wrap -mx-2 mb-5">
                         <div className="w-full md:w-5/12 px-2 md:mb-0">
-                            <div className="w-full mb-3 md:mb-0 sm:mb-5">
-                                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                    Categoría
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        id="category-select"
-                                        value={category ? JSON.stringify(category) : ''}
-                                        onChange={handleCategoryChange}
-                                        required
-                                    >
-                                        <option value="" disabled>
-                                            Seleccionar una categoría
+                            <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                Categoría
+                            </label>
+                            <div className="relative">
+                                <select
+                                    className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    value={section ? JSON.stringify(section) : ''}
+                                    onChange={handleSectionChange}
+                                    required
+                                >
+                                    <option value="" disabled>Seleccionar una categoría</option>
+                                    {sections.map((section) => (
+                                        <option key={section._id} value={JSON.stringify(section)}>
+                                            {section.name_es}
                                         </option>
-                                        {categories.map((category) => (
-                                            <option
-                                                key={category._id}
-                                                value={JSON.stringify(category)}
-                                            >
-                                                {category.name_es}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                                    </div>
+                                    ))}
+                                </select>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                                 </div>
                             </div>
                         </div>
                         <div className="w-full md:w-5/12 px-2 md:mb-0">
-                            <div className="w-full mb-3 md:mb-0 sm:mb-5">
-                                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                    Categoría
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        id="category-select"
-                                        value={category ? JSON.stringify(category) : ''}
-                                        onChange={handleCategoryChange}
-                                        required
-                                    >
-                                        <option value="" disabled>
-                                            Seleccionar una categoría
+                            <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                Subcategoría
+                            </label>
+                            <div className="relative">
+                                <select
+                                    className="text-sm block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    value={category ? JSON.stringify(category) : ''}
+                                    onChange={handleCategoryChange}
+                                    disabled={!section} // Deshabilitar hasta que se seleccione categoría
+                                    required
+                                >
+                                    <option value="" disabled>Seleccionar una subcategoría</option>
+                                    {filteredCategories.map((subCat) => (
+                                        <option key={subCat._id} value={JSON.stringify(subCat)}>
+                                            {subCat.name_es}
                                         </option>
-                                        {categories.map((category) => (
-                                            <option
-                                                key={category._id}
-                                                value={JSON.stringify(category)}
-                                            >
-                                                {category.name_es}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                                    </div>
+                                    ))}
+                                </select>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg className="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                                 </div>
                             </div>
                         </div>
