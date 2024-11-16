@@ -75,8 +75,8 @@ export default function DigitalMenu() {
                     <LoadingDisplay></LoadingDisplay>
                 </div>
             ) : (
-                <div className="pt-3 w-full min-h-[calc(100vh-5.5rem)]">
-                    <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
+                <div className="pt-3 w-full min-h-screen flex flex-col overflow-x-hidden">
+                    <Tabs className="principal-tabs flex flex-col h-full" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                         <TabList className="flex flex-wrap text-xl text-black mt-2 w-full px-5 pb-3">
                             {sections.map((section) => (
                                 <Tab key={section._id} className="tab text-xl bg-ghost-white focus:outline-none cursor-pointer mr-2 mb-2 p-1 px-4 rounded-sm transition">
@@ -99,7 +99,7 @@ export default function DigitalMenu() {
                                                 ))}
                                         </TabList>
                                         <div className="border-b-1 border-silver w-full"></div>
-                                        <div className="text-black grid md:grid-cols-2 gap-3 p-3">
+                                        <div className="text-black grid md:grid-cols-2 gap-3 p-3 overflow-y-auto">
                                             {products
                                                 .filter((product) => product.category._id === selectedCategoryId)
                                                 .map((product) => (
