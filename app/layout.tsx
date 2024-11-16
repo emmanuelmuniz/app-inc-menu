@@ -32,18 +32,15 @@ export default function RootLayout({
           <div className="absolute inset-0 bg-gray-3/30" style={{ backdropFilter: 'blur(1px)' }}></div>
           <div className="layout-container-2 relative z-10 bg-white rounded shadow-lg w-full md:w-6/12 
       md:min-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-2.5rem)]
-      md:rounded md:shadow-lg h-full min-h-screen overflow-hidden">
-            <div className="sticky top-0 z-10 bg-white w-full">
+      md:rounded md:shadow-lg h-full min-h-screen">
+            <div className="fixed z-10 bg-white w-full md:w-6/12 rounded">
               <Navbar />
             </div>
-            <div className="h-full overflow-y-auto">
+            <div className="pt-[72px]">
               {children}
             </div>
           </div>
         </div>
-
-
-
       </body>
     </html >
   );
