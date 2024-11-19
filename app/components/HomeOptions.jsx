@@ -45,7 +45,7 @@ export default function HomeOptions() {
                 </div>
             </div>
             <a className="" href="https://instagram.com/ineedcoffee.ar" target="_blank" rel="noopener noreferrer">
-                <div className="grid grid-cols-1 text-center text-xl px-1 cursor-pointer mb-1">
+                <div className="grid grid-cols-1 text-center text-xl px-1 cursor-pointer mb-1 h-full">
                     <div className="w-full px-16 py-16 bg-silver relative">Seguinos en redes sociales y conseguí premios
                         y descuentos especiales pensados para vos.
                         <div className="absolute inset-0 bg-black opacity-0 hover:opacity-20 transition-opacity duration-300">
