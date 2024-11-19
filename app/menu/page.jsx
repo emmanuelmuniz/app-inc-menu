@@ -75,7 +75,7 @@ export default function DigitalMenu() {
                     <LoadingDisplay></LoadingDisplay>
                 </div>
             ) : (
-                <div className="w-full min-h-[calc(100vh-4.5rem)]">
+                <div className="w-full min-h-[calc(100vh-4.5rem)] mb-[calc(5vh)]">
                     <Tabs className="principal-tabs" defaultIndex={0} onSelect={(index) => handleSectionSelect(sections[index]._id)}>
                         <TabList className="flex flex-wrap text-xl text-black mt-2 w-full px-5 pb-3">
                             {sections.map((section) => (
