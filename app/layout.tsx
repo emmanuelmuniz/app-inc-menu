@@ -28,17 +28,17 @@ export default function RootLayout({
       <body className={gratelos.className}>
         <div className="layout-container relative flex flex-col justify-center items-center 
                         bg-[url('/images/inc-front.jpeg')] bg-fixed bg-contain h-screen
-                        min-h-screen no-scrollbar font-gratelos no-select">
+                        min-h-screen no-scrollbar font-gratelos no-select overflow-hidden">
           <div className="absolute inset-0 bg-gray-3/30" style={{ backdropFilter: 'blur(1px)' }}></div>
 
-          <div className="layout-container-2 relative z-10 bg-white rounded shadow-lg w-full md:w-6/12 
+          <div className="layout-container-2 overflow-hidden relative z-10 bg-white rounded shadow-lg w-full md:w-6/12 
                     md:min-h-[calc(100vh-1.5rem)] md:max-h-[calc(100vh-2.5rem)]
                     md:rounded md:shadow-lg h-full min-h-screen overflow-y-auto no-scrollbar">
             <div className="sticky top-0 z-10 w-full bg-white rounded">
               <Navbar />
             </div>
 
-            <div className="">
+            <div className=" overflow-hidden">
               {children}
             </div>
           </div>
